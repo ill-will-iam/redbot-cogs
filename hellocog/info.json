@@ -1,0 +1,18 @@
+{
+    "author": [
+        "Will"
+    ],
+    "short": "A simple installation check.",
+    "description": "Adds the coghello command to verify that Red can install and load a cog from this repository.",
+    "install_msg": "Use [p]load hellocog, then [p]coghello to check the installation.",
+    "end_user_data_statement": "This cog does not store user data.",
+    "min_bot_version": "3.5.0",
+    "requirements": [],
+    "tags": [
+        "utility",
+        "starter"
+    ],
+    "type": "COG",
+    "hidden": false,
+    "disabled": false
+}

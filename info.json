@@ -1,0 +1,8 @@
+{
+    "author": [
+        "Will"
+    ],
+    "short": "Custom cogs for Red-DiscordBot.",
+    "description": "A starter repository for Red V3 cogs. Each cog lives in its own folder at the repository root.",
+    "install_msg": "Repository added. Use [p]cog list redbot-cogs to see available cogs."
+}
