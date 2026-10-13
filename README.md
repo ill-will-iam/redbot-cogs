@@ -6,6 +6,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | --- | --- | --- |
 | `hellocog` | `[p]coghello` | Confirms the repository's sample cog is installed and loaded. |
 | `acrogame` | `[p]acro start` | Starts an acronym game using **3–5 random letters**, chat submissions, anonymous voting, and points. |
+| `pp` | `$pp` | Sends `pp1`, 0–7 copies of `pp2`, and `pp3` without spaces or line breaks. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -107,3 +108,16 @@ This starter's Python syntax, JSON metadata, package structure, and ZIP integrit
 - [Red's Downloader commands](https://docs.discord.red/en/stable/cog_guides/downloader.html)
 - [GitHub repository creation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository)
 - [Uploading files to GitHub](https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository)
+
+## Install PP
+
+Create custom server emojis named `pp1`, `pp2`, and `pp3`, and ensure the bot can use them. With the bot's `$` prefix:
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs pp
+$load pp
+$pp
+```
+
+Each use chooses a random number from **0 through 7 inclusive** for the middle emoji. Zero sends `:pp1::pp3:`; seven sends `:pp1::pp2::pp2::pp2::pp2::pp2::pp2::pp2::pp3:`. The response contains only the emojis with no spaces or line breaks. Static and animated custom emojis are supported. Missing or unusable emojis produce an explanatory message. The cog stores no user data.

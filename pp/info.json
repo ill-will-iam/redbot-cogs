@@ -1,0 +1,18 @@
+{
+    "author": [
+        "illwillyum"
+    ],
+    "short": "Random-length custom emoji chain.",
+    "description": "Adds pp: sends pp1, a random 0–7 copies of pp2, and pp3 with no spaces or line breaks. Uses usable custom emojis from the current server.",
+    "install_msg": "Load with [p]load pp and use [p]pp. The server must have custom emojis named pp1, pp2, and pp3.",
+    "end_user_data_statement": "This cog does not store user data.",
+    "min_bot_version": "3.5.0",
+    "requirements": [],
+    "tags": [
+        "fun",
+        "emoji"
+    ],
+    "type": "COG",
+    "hidden": false,
+    "disabled": false
+}
