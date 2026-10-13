@@ -110,7 +110,8 @@ class AcroGame(commands.Cog):
     async def acro(self, ctx):
         """Play the acronym game. See `[p]help acro` for subcommands."""
         await ctx.send(
-            "**Acronym game** — `acro start [LETTERS]`, `acro vote <number>`, "
+            "**Acronym game** — `acro start [LETTERS]`, then type your answer "
+            "and vote by sending an entry number in chat. "
             "`acro score [member]`, `acro top`, `acro status`. "
             "Admins: `acro stop`, `acro setpoints`, `acro setcoins`, `acro setvotetime`."
         )
@@ -167,17 +168,45 @@ class AcroGame(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        """Save the answer and attempt deletion before doing anything slower."""
+        """Capture chat answers or bare-number votes and delete their messages."""
         if not message.guild or message.author.bot or message.webhook_id:
             return
         game = self.rounds.get(message.guild.id)
-        if not game or game.channel_id != message.channel.id or game.phase != "submissions":
+        if not game or game.channel_id != message.channel.id:
             return
         # Leave Red commands alone (including commands from other cogs).
         if not message.content or message.content.startswith(game.prefixes):
             return
         # Leave attachments/files alone, rather than destroying users' uploads.
         if message.attachments or message.stickers:
+            return
+
+        if game.phase == "voting":
+            # Only bare numbers are votes; other chat is left untouched.
+            vote_text = message.content.strip()
+            if not re.fullmatch(r"[0-9]+", vote_text):
+                return
+            async with game.lock:
+                if game.phase != "voting":
+                    return
+                # Do not reveal which entry a player selected. Record only when
+                # the vote message has actually been deleted.
+                try:
+                    await message.delete()
+                except discord.NotFound:
+                    return
+                except (discord.Forbidden, discord.HTTPException):
+                    await self._short_message(
+                        message.channel,
+                        "I couldn't delete that vote; it wasn't recorded. "
+                        "Please check my Manage Messages permission.",
+                    )
+                    return
+                reply = self._record_vote(game, message.author.id, int(vote_text))
+            await self._short_message(message.channel, reply, 4)
+            return
+
+        if game.phase != "submissions":
             return
 
         async with game.lock:
@@ -253,11 +282,10 @@ class AcroGame(commands.Cog):
                     return
                 game.phase = "voting"
             await channel.send(
-                f"**Voting is open for {vote_seconds} seconds.** "
-                "Vote with `acro vote <number>` (using this bot's normal prefix). "
-                "You **cannot vote for your own entry**. "
-                "You can change your vote until voting closes. "
-                "Vote command messages are deleted to keep choices private."
+                f"**VOTING — {vote_seconds} seconds**\n\n"
+                "**Type the number of the submission to vote.** "
+                "For example: `1`, `2`, `3`.\n"
+                "**You cannot vote for yourself.**"
             )
             await asyncio.sleep(vote_seconds)
             async with game.lock:
@@ -325,28 +353,32 @@ class AcroGame(commands.Cog):
             f"Total votes: **{len(votes)}**. Play again with `acro start`."
         )
 
+    @staticmethod
+    def _record_vote(game: Round, voter_id: int, number: int) -> str:
+        """Validate and record one vote. Call only with the game's lock held."""
+        if number < 1 or number > len(game.entries):
+            return "That entry number doesn't exist."
+        author_id, _ = game.entries[number - 1]
+        if voter_id == author_id:
+            return "You can't vote for your own entry."
+        game.votes[voter_id] = number
+        return "Vote recorded (you can change it)."
+
     @acro.command(name="vote")
     async def acro_vote(self, ctx, number: int):
-        """Vote for a numbered entry during the voting phase (not your own)."""
-        # Remove the voting command itself, too, to avoid revealing choices.
+        """Legacy alternative to voting by typing the number in chat."""
         await self._delete_quietly(ctx.message)
         game = self.rounds.get(ctx.guild.id)
         if not game or game.channel_id != ctx.channel.id or game.phase != "voting":
             await self._short_message(ctx.channel, "No vote is open in this channel.")
             return
         async with game.lock:
-            if game.phase != "voting":
-                await self._short_message(ctx.channel, "Voting has already closed.")
-                return
-            if number < 1 or number > len(game.entries):
-                await self._short_message(ctx.channel, "That entry number doesn't exist.")
-                return
-            author_id, _ = game.entries[number - 1]
-            if ctx.author.id == author_id:
-                await self._short_message(ctx.channel, "You can't vote for your own entry.")
-                return
-            game.votes[ctx.author.id] = number
-        await self._short_message(ctx.channel, "Vote recorded (you can change it).", 4)
+            reply = (
+                self._record_vote(game, ctx.author.id, number)
+                if game.phase == "voting"
+                else "Voting has already closed."
+            )
+        await self._short_message(ctx.channel, reply, 4)
 
     @acro.command(name="status")
     async def acro_status(self, ctx):
