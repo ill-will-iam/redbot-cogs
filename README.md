@@ -6,7 +6,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | --- | --- | --- |
 | `hellocog` | `[p]coghello` | Confirms the repository's sample cog is installed and loaded. |
 | `acrogame` | `[p]acro start` | Starts an acronym game using **3–5 random letters**, chat submissions, anonymous voting, and points. |
-| `pp` | `$pp` | Sends `pp1`, 0–7 copies of `pp2`, and `pp3` without spaces or line breaks. |
+| `pp` | `$pp` | Sends `:pp1:`, 0–7 copies of `:pp2:`, and `:pp3:` without spaces or line breaks. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -111,7 +111,7 @@ This starter's Python syntax, JSON metadata, package structure, and ZIP integrit
 
 ## Install PP
 
-Create custom server emojis named `pp1`, `pp2`, and `pp3`, and ensure the bot can use them. With the bot's `$` prefix:
+Use the custom server emojis `:pp1:`, `:pp2:`, and `:pp3:`, and ensure the bot can use them. Discord stores their names as `pp1`, `pp2`, and `pp3`; the surrounding colons are shortcode notation. The cog sends each emoji’s full Discord code (`<:name:id>` or `<a:name:id>`) so it renders as an image. With the bot's `$` prefix:
 
 ```text
 $repo update redbot-cogs

@@ -4,13 +4,16 @@ from redbot.core import commands
 
 
 class PP(commands.Cog):
-    """Send pp1, zero to seven pp2 emojis, and pp3 without gaps."""
+    """Send :pp1:, zero to seven :pp2: emojis, and :pp3: without gaps."""
 
     @commands.command()
     @commands.guild_only()
     @commands.bot_has_permissions(send_messages=True)
     async def pp(self, ctx):
         """Send the server's pp emojis with a random middle length."""
+        # Discord shows :pp1:, :pp2:, and :pp3: in its emoji picker.
+        # Emoji.name excludes those colons; str(emoji) supplies the full
+        # <:name:id> or <a:name:id> code needed to render custom emojis.
         emojis = {
             name: next(
                 (emoji for emoji in ctx.guild.emojis
