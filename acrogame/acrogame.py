@@ -41,6 +41,7 @@ class Round:
     votes: Dict[int, int] = field(default_factory=dict)
     lock: asyncio.Lock = field(default_factory=asyncio.Lock)
     task: Optional[asyncio.Task] = None
+    watcher: Optional[asyncio.Task] = None
     warned_about_deletion: bool = False
 
 
@@ -71,16 +72,52 @@ class AcroGame(commands.Cog):
         # IDs only: suppress delayed raw deletion events after a round finishes.
         # Bound memory usage; no message text is stored here.
         self.log_suppressed_messages = OrderedDict()
+        # Serialize leaderboard writes with data-removal requests.
+        self._data_lock = asyncio.Lock()
 
     async def cog_check(self, ctx):
         """All AcroGame commands operate in servers, not private messages."""
-        return ctx.guild is not None
+        return ctx.guild is not None and await self._enabled(ctx.guild)
 
     def cog_unload(self):
         for game in list(self.rounds.values()):
-            if game.task and not game.task.done():
-                game.task.cancel()
-        self.rounds.clear()
+            self._cancel_round(game)
+
+    def _cancel_round(self, game: Round):
+        """Stop timers and invalidate captured state before any further await."""
+        game.phase = "cancelled"
+        if self.rounds.get(game.guild_id) is game:
+            self.rounds.pop(game.guild_id, None)
+        game.submissions.clear()
+        game.entries.clear()
+        game.votes.clear()
+        current = asyncio.current_task()
+        cancelled = []
+        for task in (game.task, game.watcher):
+            if task and task is not current and not task.done():
+                task.cancel()
+                cancelled.append(task)
+        return cancelled
+
+    async def _enabled(self, guild):
+        if await self.bot.cog_disabled_in_guild(self, guild):
+            game = self.rounds.get(guild.id)
+            if game:
+                self._cancel_round(game)
+            return False
+        return True
+
+    async def _watch_enabled(self, game: Round):
+        """Red exposes no cog-disabled event, so check even in a quiet channel."""
+        try:
+            while self.rounds.get(game.guild_id) is game:
+                guild = self.bot.get_guild(game.guild_id)
+                if guild is None or not await self._enabled(guild):
+                    self._cancel_round(game)
+                    return
+                await asyncio.sleep(1)
+        except asyncio.CancelledError:
+            return
 
     def suppresses_message_log(self, guild_id: int, channel_id: int, message_id=None) -> bool:
         """AdminLog pauses message records in an active game channel."""
@@ -189,7 +226,10 @@ class AcroGame(commands.Cog):
         except discord.HTTPException:
             self.rounds.pop(ctx.guild.id, None)
             raise
+        if self.rounds.get(ctx.guild.id) is not game or not await self._enabled(ctx.guild):
+            return
         game.task = asyncio.create_task(self._round_timer(game))
+        game.watcher = asyncio.create_task(self._watch_enabled(game))
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -198,6 +238,8 @@ class AcroGame(commands.Cog):
             return
         game = self.rounds.get(message.guild.id)
         if not game or game.channel_id != message.channel.id:
+            return
+        if not await self._enabled(message.guild):
             return
         # Leave Red commands alone (including commands from other cogs).
         if not message.content or message.content.startswith(game.prefixes):
@@ -212,7 +254,7 @@ class AcroGame(commands.Cog):
             if not re.fullmatch(r"[0-9]+", vote_text):
                 return
             async with game.lock:
-                if game.phase != "voting":
+                if game.phase != "voting" or not await self._enabled(message.guild):
                     return
                 # Do not reveal which entry a player selected. Record only when
                 # the vote message has actually been deleted.
@@ -227,6 +269,8 @@ class AcroGame(commands.Cog):
                         "Please check my Manage Messages permission.",
                     )
                     return
+                if game.phase != "voting":
+                    return
                 reply = self._record_vote(game, message.author.id, int(vote_text))
             await self._short_message(message.channel, reply, 4)
             return
@@ -235,7 +279,7 @@ class AcroGame(commands.Cog):
             return
 
         async with game.lock:
-            if game.phase != "submissions":
+            if game.phase != "submissions" or not await self._enabled(message.guild):
                 return
             # Capture before deleting so the answer survives deletion, but keep it
             # in memory only if deletion succeeds.
@@ -253,6 +297,8 @@ class AcroGame(commands.Cog):
                         "permission; that entry was **not recorded**.",
                         seconds=15,
                     )
+                return
+            if game.phase != "submissions":
                 return
             if not answer or len(answer) > MAX_ANSWER_LENGTH:
                 await self._short_message(
@@ -275,7 +321,7 @@ class AcroGame(commands.Cog):
             await asyncio.sleep(SUBMISSION_SECONDS)
             channel = self.bot.get_channel(game.channel_id)
             guild = self.bot.get_guild(game.guild_id)
-            if not channel or not guild:
+            if not channel or not guild or not await self._enabled(guild):
                 return
 
             async with game.lock:
@@ -314,12 +360,12 @@ class AcroGame(commands.Cog):
             )
             await asyncio.sleep(vote_seconds)
             async with game.lock:
-                if game.phase != "voting":
+                if game.phase != "voting" or not await self._enabled(guild):
                     return
                 game.phase = "tallying"
                 entries = list(game.entries)
                 votes = dict(game.votes)
-            await self._finish_round(guild, channel, entries, votes)
+            await self._finish_round(guild, channel, entries, votes, game)
 
         except asyncio.CancelledError:
             return
@@ -329,8 +375,12 @@ class AcroGame(commands.Cog):
         finally:
             if self.rounds.get(game.guild_id) is game:
                 self.rounds.pop(game.guild_id, None)
+            if game.watcher and not game.watcher.done():
+                game.watcher.cancel()
 
-    async def _finish_round(self, guild, channel, entries, votes):
+    async def _finish_round(self, guild, channel, entries, votes, game):
+        if game.phase != "tallying" or not await self._enabled(guild):
+            return
         counts = Counter(votes.values())
         if not counts:
             await channel.send("**Round over:** Nobody voted. No points awarded.")
@@ -352,11 +402,22 @@ class AcroGame(commands.Cog):
         points = await self.config.guild(guild).winner_points()
         credits = await self.config.guild(guild).winner_credits()
 
-        async with self.config.guild(guild).scores() as scores:
-            key = str(winner_id)
-            record = scores.setdefault(key, {"wins": 0, "points": 0})
-            record["wins"] += 1
-            record["points"] += points
+        async with self._data_lock:
+            if self.rounds.get(game.guild_id) is not game or game.phase != "tallying":
+                return
+            if not await self._enabled(guild):
+                return
+            async with self.config.guild(guild).scores() as scores:
+                # A data request may cancel this round while Config is awaiting.
+                if game.phase != "tallying":
+                    return
+                key = str(winner_id)
+                record = scores.setdefault(key, {"wins": 0, "points": 0})
+                record["wins"] += 1
+                record["points"] += points
+
+        if game.phase != "tallying":
+            return
 
         credit_note = ""
         if credits and member:
@@ -392,6 +453,8 @@ class AcroGame(commands.Cog):
     @acro.command(name="vote")
     async def acro_vote(self, ctx, number: int):
         """Legacy alternative to voting by typing the number in chat."""
+        if not await self._enabled(ctx.guild):
+            return
         await self._delete_quietly(ctx.message)
         game = self.rounds.get(ctx.guild.id)
         if not game or game.channel_id != ctx.channel.id or game.phase != "voting":
@@ -437,10 +500,7 @@ class AcroGame(commands.Cog):
             if game.phase == "tallying":
                 await ctx.send("Results are already being finalized.")
                 return
-            game.phase = "stopped"
-            self.rounds.pop(ctx.guild.id, None)
-            if game.task:
-                game.task.cancel()
+            self._cancel_round(game)
         await ctx.send("Acronym round cancelled. No points awarded.")
 
     @acro.command(name="score")
@@ -511,11 +571,25 @@ class AcroGame(commands.Cog):
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         """Remove saved leaderboard records if Red processes a data deletion."""
-        for guild_id, record in (await self.config.all_guilds()).items():
-            if str(user_id) in record.get("scores", {}):
-                async with self.config.guild_from_id(guild_id).scores() as scores:
-                    scores.pop(str(user_id), None)
-        for game in self.rounds.values():
-            async with game.lock:
-                game.submissions.pop(user_id, None)
-                game.votes.pop(user_id, None)
+        tasks = []
+        affected = []
+        # Invalidate rounds before reading stored scores, including ballots and
+        # an in-flight tally. Cancelling their timer prevents later payouts.
+        for game in list(self.rounds.values()):
+            if (user_id in game.submissions or user_id in game.votes
+                    or any(author_id == user_id for author_id, _ in game.entries)):
+                tasks.extend(self._cancel_round(game))
+                affected.append(game)
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
+        async with self._data_lock:
+            for guild_id, record in (await self.config.all_guilds()).items():
+                if str(user_id) in record.get("scores", {}):
+                    async with self.config.guild_from_id(guild_id).scores() as scores:
+                        scores.pop(str(user_id), None)
+        for game in affected:
+            channel = self.bot.get_channel(game.channel_id)
+            if channel:
+                await self._short_message(
+                    channel, "Round cancelled because participant data was removed. No further points awarded."
+                )

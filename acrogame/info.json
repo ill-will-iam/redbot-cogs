@@ -1,7 +1,7 @@
 {
   "name": "AcroGame",
   "short": "Acronym game with deleted chat submissions and anonymous voting.",
-  "description": "Players submit acronym answers as ordinary messages, which are deleted after capture. After 30 seconds, players vote for anonymous entries and cannot vote for themselves. Winners earn leaderboard points and optionally Red bank credits.",
+  "description": "Players submit acronym answers as ordinary messages, which are deleted after capture. After 30 seconds, players vote for anonymous entries and cannot vote for themselves. Winners earn leaderboard points and optionally Red bank credits. Active rounds stop when the cog is disabled. User-data deletion cancels affected rounds before removing leaderboard records, including in-flight tallies.",
   "author": [
     "Will"
   ],

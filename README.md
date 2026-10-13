@@ -160,3 +160,14 @@ $reload acrogame adminlog
 ```
 
 Reloading AcroGame cancels an active round; update between games. This integration affects AdminLog only; other logging bots/cogs have their own settings.
+
+### AcroGame cancellation safeguards
+
+AcroGame checks Red's disabled-cog state before capturing/deleting submissions or votes and before awarding points. A watcher also checks active rounds once per second, so disabling the cog cancels a round even if nobody sends another message. Round cancellation clears its captured submissions, ballot and votes and stops both background tasks. AdminLog then resumes ordinary message logging in that channel; already deleted game-message IDs remain suppressed as described above.
+
+```text
+$command disablecog AcroGame
+$command enablecog AcroGame
+```
+
+When Red processes a user-data deletion request, an active round involving that user as an author or voter is cancelled. The cog waits for the cancelled tasks to finish, then removes the user's leaderboard records from all servers. Leaderboard writes and deletion requests are serialized so an in-flight tally cannot recreate the removed record. Unrelated rounds keep running, and normal games can still award points.
