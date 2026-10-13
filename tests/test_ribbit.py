@@ -20,12 +20,17 @@ class TestRibbit(unittest.TestCase):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         self.assertEqual(sum(item["weight"] for item in module.CATCHES.values()), 100)
-        self.assertEqual(set(k for k, item in module.CATCHES.items() if "sting" in item), {"bee", "wasp"})
+        hazards = {k for k, item in module.CATCHES.items() if "penalty" in item}
+        self.assertEqual(hazards, {"bee", "wasp", "fell_in_hole", "hit_by_car"})
+        self.assertEqual(sum(item["weight"] for item in module.CATCHES.values() if "penalty" not in item), 85)
+        self.assertEqual(sum(item["weight"] for item in module.CATCHES.values() if "penalty" in item), 15)
         for name, item in module.CATCHES.items():
             self.assertGreater(item["weight"], 0, name)
-            if "sting" in item:
+            if "penalty" in item:
                 self.assertEqual(item["value"], 0)
-                self.assertGreater(item["sting"][0], 0)
+                self.assertGreater(item["penalty"][0], 0)
+                self.assertGreaterEqual(item["penalty"][1], item["penalty"][0])
+                self.assertTrue(item["incident"])
             else:
                 self.assertGreater(item["value"], 0)
         for item in module.SHOP.values():
