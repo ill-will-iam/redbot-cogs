@@ -1,0 +1,2621 @@
+[
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "Which artist painted the Mona Lisa?",
+    "answers": [
+      "Leonardo da Vinci",
+      "da Vinci",
+      "Leonardo daVinci"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "How many sides does a hexagon have?",
+    "answers": [
+      "6",
+      "six"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What does the Roman numeral X represent?",
+    "answers": [
+      "10",
+      "ten"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "In chess, which piece moves in an L shape?",
+    "answers": [
+      "knight"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "Which fictional detective lives at 221B Baker Street?",
+    "answers": [
+      "Sherlock Holmes",
+      "Holmes"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which language uses 'bonjour' as a greeting?",
+    "answers": [
+      "French"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What is the name of the fairy in Peter Pan?",
+    "answers": [
+      "Tinker Bell",
+      "Tinkerbell"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which ancient civilization built the pyramids at Giza?",
+    "answers": [
+      "ancient Egyptians",
+      "Egyptians",
+      "ancient Egypt",
+      "Egypt"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "What is the currency of Japan?",
+    "answers": [
+      "yen",
+      "Japanese yen"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "What animal appears on Canada's five-cent coin?",
+    "answers": [
+      "beaver"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "How many squares are on a standard chessboard?",
+    "answers": [
+      "64",
+      "sixty-four",
+      "sixty four"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which board game includes Boardwalk and Park Place in its classic US edition?",
+    "answers": [
+      "Monopoly"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "In a standard deck of playing cards, how many suits are there?",
+    "answers": [
+      "4",
+      "four"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which card suit uses a black three-leaf symbol?",
+    "answers": [
+      "clubs",
+      "club"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which author wrote the Harry Potter novels?",
+    "answers": [
+      "J. K. Rowling",
+      "J.K. Rowling",
+      "JK Rowling",
+      "Joanne Rowling",
+      "Rowling"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What is the name of the hobbit who carries the One Ring to Mordor?",
+    "answers": [
+      "Frodo Baggins",
+      "Frodo"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which playwright wrote Romeo and Juliet?",
+    "answers": [
+      "William Shakespeare",
+      "Shakespeare"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What is the plural of 'mouse'?",
+    "answers": [
+      "mice"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What punctuation mark normally ends a direct question?",
+    "answers": [
+      "question mark"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which month contains Halloween?",
+    "answers": [
+      "October"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which month contains Canada Day?",
+    "answers": [
+      "July"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What colour do you get by mixing blue and yellow paint?",
+    "answers": [
+      "green"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What instrument tells you which direction is north?",
+    "answers": [
+      "compass"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What tool is commonly used to measure temperature?",
+    "answers": [
+      "thermometer"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "What is the main language spoken in Brazil?",
+    "answers": [
+      "Portuguese"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "Which ancient Roman leader was assassinated on the Ides of March?",
+    "answers": [
+      "Julius Caesar",
+      "Caesar"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Who was the first person to walk on the Moon?",
+    "answers": [
+      "Neil Armstrong",
+      "Armstrong"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "Which board game uses the term 'checkmate' to end a game?",
+    "answers": [
+      "chess"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Medium",
+    "question": "What is the term for a word that reads the same forwards and backwards?",
+    "answers": [
+      "palindrome"
+    ]
+  },
+  {
+    "topic": "general",
+    "difficulty": "Easy",
+    "question": "What shape is a traditional stop sign in Canada?",
+    "answers": [
+      "octagon",
+      "octagonal"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "Which planet is known as the Red Planet?",
+    "answers": [
+      "Mars"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "Which planet is the largest in our solar system?",
+    "answers": [
+      "Jupiter"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "Which planet has the hottest surface in our solar system?",
+    "answers": [
+      "Venus"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "How many planets are in our solar system?",
+    "answers": [
+      "8",
+      "eight"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What star is at the centre of our solar system?",
+    "answers": [
+      "Sun",
+      "the Sun"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What force keeps planets in orbit around the Sun?",
+    "answers": [
+      "gravity",
+      "gravitation"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What is Earth's natural satellite called?",
+    "answers": [
+      "Moon",
+      "the Moon"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What is the chemical formula for water?",
+    "answers": [
+      "H2O",
+      "H₂O"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What gas do humans need to breathe to survive?",
+    "answers": [
+      "oxygen",
+      "O2",
+      "O₂"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What process lets plants use sunlight to make sugars?",
+    "answers": [
+      "photosynthesis"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What pigment gives most leaves their green colour?",
+    "answers": [
+      "chlorophyll"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "Which organ pumps blood around the human body?",
+    "answers": [
+      "heart"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What is the largest organ of the human body?",
+    "answers": [
+      "skin"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What type of blood cell carries oxygen around the body?",
+    "answers": [
+      "red blood cell",
+      "red blood cells",
+      "erythrocyte",
+      "erythrocytes"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What molecule carries most hereditary information in human cells?",
+    "answers": [
+      "DNA",
+      "deoxyribonucleic acid"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What part of a human cell contains most of its DNA?",
+    "answers": [
+      "nucleus"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What is the chemical symbol for gold?",
+    "answers": [
+      "Au"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What is the chemical symbol for iron?",
+    "answers": [
+      "Fe"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "Is a substance with a pH below 7 acidic or alkaline?",
+    "answers": [
+      "acidic",
+      "acid"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What scale is commonly used to measure acidity and alkalinity?",
+    "answers": [
+      "pH",
+      "pH scale"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "At standard sea-level pressure, at approximately what temperature in Celsius does pure water boil?",
+    "answers": [
+      "100",
+      "one hundred",
+      "100°C",
+      "100 degrees"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "At standard pressure, at what temperature in Celsius does pure water freeze?",
+    "answers": [
+      "0",
+      "zero",
+      "0°C",
+      "0 degrees"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What do we call water in its solid form?",
+    "answers": [
+      "ice"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What is the change from a liquid to a gas called?",
+    "answers": [
+      "evaporation",
+      "vaporization",
+      "vaporisation"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What is the change from a gas to a liquid called?",
+    "answers": [
+      "condensation"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What instrument is used to view tiny objects such as cells?",
+    "answers": [
+      "microscope"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What instrument is used to observe distant objects in space?",
+    "answers": [
+      "telescope"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "Can sound travel through a perfect vacuum?",
+    "answers": [
+      "no",
+      "it cannot",
+      "cannot"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Medium",
+    "question": "What unit is used to measure electrical resistance?",
+    "answers": [
+      "ohm",
+      "ohms"
+    ]
+  },
+  {
+    "topic": "science",
+    "difficulty": "Easy",
+    "question": "What is the name of the galaxy containing our solar system?",
+    "answers": [
+      "Milky Way",
+      "the Milky Way"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of Canada?",
+    "answers": [
+      "Ottawa"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of France?",
+    "answers": [
+      "Paris"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of Japan?",
+    "answers": [
+      "Tokyo"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of the United Kingdom?",
+    "answers": [
+      "London"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "What is the capital city of Australia?",
+    "answers": [
+      "Canberra"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of Italy?",
+    "answers": [
+      "Rome",
+      "Roma"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of Germany?",
+    "answers": [
+      "Berlin"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is the capital city of Spain?",
+    "answers": [
+      "Madrid"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "What is the capital city of Mexico?",
+    "answers": [
+      "Mexico City",
+      "Ciudad de Mexico",
+      "Ciudad de México"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "What is the capital city of British Columbia?",
+    "answers": [
+      "Victoria"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which country contains the cities Sydney and Melbourne?",
+    "answers": [
+      "Australia"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which Canadian province contains Toronto?",
+    "answers": [
+      "Ontario"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which Canadian province contains Montreal?",
+    "answers": [
+      "Quebec",
+      "Québec"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is Earth's largest ocean?",
+    "answers": [
+      "Pacific",
+      "Pacific Ocean"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What ocean lies between North America and Europe?",
+    "answers": [
+      "Atlantic",
+      "Atlantic Ocean"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What continent contains the Sahara Desert?",
+    "answers": [
+      "Africa"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What is Earth's largest continent by land area?",
+    "answers": [
+      "Asia"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "On which continent is the South Pole?",
+    "answers": [
+      "Antarctica"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which country contains the Great Barrier Reef?",
+    "answers": [
+      "Australia"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "Which country contains Machu Picchu?",
+    "answers": [
+      "Peru",
+      "Perú"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which country contains the Taj Mahal?",
+    "answers": [
+      "India"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which country contains the city of Barcelona?",
+    "answers": [
+      "Spain"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "Which river flows through London?",
+    "answers": [
+      "Thames",
+      "River Thames",
+      "Thames River"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "Which river flows through Paris?",
+    "answers": [
+      "Seine",
+      "River Seine",
+      "Seine River"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which mountain is the highest above sea level?",
+    "answers": [
+      "Mount Everest",
+      "Everest"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "What imaginary line divides Earth into the Northern and Southern Hemispheres?",
+    "answers": [
+      "equator"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Medium",
+    "question": "What is the name of the line at zero degrees longitude?",
+    "answers": [
+      "prime meridian",
+      "Greenwich meridian"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which country is directly south of the contiguous United States?",
+    "answers": [
+      "Mexico",
+      "México"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which US state lies northwest of British Columbia?",
+    "answers": [
+      "Alaska"
+    ]
+  },
+  {
+    "topic": "geography",
+    "difficulty": "Easy",
+    "question": "Which country has a maple leaf on its national flag?",
+    "answers": [
+      "Canada"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "How many legs does a spider have?",
+    "answers": [
+      "8",
+      "eight"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "How many legs does an adult insect have?",
+    "answers": [
+      "6",
+      "six"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "How many arms does an octopus have?",
+    "answers": [
+      "8",
+      "eight"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "How many hearts does an octopus have?",
+    "answers": [
+      "3",
+      "three"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "Which group of mammals is capable of sustained powered flight?",
+    "answers": [
+      "bats",
+      "bat"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is a young frog called before it grows legs?",
+    "answers": [
+      "tadpole"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Are frogs mammals, reptiles, or amphibians?",
+    "answers": [
+      "amphibians",
+      "amphibian"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Are snakes mammals, reptiles, or amphibians?",
+    "answers": [
+      "reptiles",
+      "reptile"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is a baby cat called?",
+    "answers": [
+      "kitten"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is a baby dog called?",
+    "answers": [
+      "puppy",
+      "pup"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "What is a baby goat called?",
+    "answers": [
+      "kid"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is a baby sheep called?",
+    "answers": [
+      "lamb"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is a group of wolves commonly called?",
+    "answers": [
+      "pack",
+      "a pack"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which bird is famous for mimicking human speech?",
+    "answers": [
+      "parrot",
+      "parrots"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "Which large flightless bird is native to Africa and is the tallest living bird?",
+    "answers": [
+      "ostrich"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which flightless birds are associated with Antarctica?",
+    "answers": [
+      "penguins",
+      "penguin"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which animal is known for black-and-white stripes and resembles a horse?",
+    "answers": [
+      "zebra"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which animal has a long neck and a spotted coat?",
+    "answers": [
+      "giraffe"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which bear species is strongly associated with eating bamboo?",
+    "answers": [
+      "giant panda",
+      "panda"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is the largest living animal species?",
+    "answers": [
+      "blue whale"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What type of animal is a dolphin: a fish or a mammal?",
+    "answers": [
+      "mammal"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "Which egg-laying Australian mammal has a duck-like bill?",
+    "answers": [
+      "platypus"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "What is the name of an animal that eats both plants and animals?",
+    "answers": [
+      "omnivore"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "What is the name of an animal that primarily eats plants?",
+    "answers": [
+      "herbivore"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which insects make honey?",
+    "answers": [
+      "honey bees",
+      "honeybees",
+      "bees",
+      "bee"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Medium",
+    "question": "What is the transformation from a caterpillar to a butterfly called?",
+    "answers": [
+      "metamorphosis"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which animal builds dams using branches and mud?",
+    "answers": [
+      "beaver",
+      "beavers"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which animal is known for its black facial mask and ringed tail?",
+    "answers": [
+      "raccoon",
+      "raccoons"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which animal is known for defensive quills on its body?",
+    "answers": [
+      "porcupine",
+      "porcupines"
+    ]
+  },
+  {
+    "topic": "animals",
+    "difficulty": "Easy",
+    "question": "Which animal species has a mane in adult males and is often called the king of the jungle?",
+    "answers": [
+      "lion"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "Alongside fries and gravy, what cheese ingredient is used in classic poutine?",
+    "answers": [
+      "cheese curds",
+      "curds"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What fruit is the main ingredient in guacamole?",
+    "answers": [
+      "avocado",
+      "avocados"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What bean is used to make tofu?",
+    "answers": [
+      "soybean",
+      "soybeans",
+      "soya bean",
+      "soya beans",
+      "soy",
+      "soya"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What plant produces the beans used to make chocolate?",
+    "answers": [
+      "cacao",
+      "cocoa",
+      "cacao tree"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What grain is traditionally used to make risotto?",
+    "answers": [
+      "rice"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What legume is the main ingredient in traditional hummus?",
+    "answers": [
+      "chickpeas",
+      "chickpea",
+      "garbanzo beans",
+      "garbanzo bean"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "Which country is associated with sushi?",
+    "answers": [
+      "Japan"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "Which country is associated with kimchi?",
+    "answers": [
+      "Korea",
+      "South Korea"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "Which country is associated with tacos?",
+    "answers": [
+      "Mexico",
+      "México"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What is the main ingredient in traditional mashed potatoes?",
+    "answers": [
+      "potatoes",
+      "potato"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What do bees produce that people use as a sweetener?",
+    "answers": [
+      "honey"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What fruit is dried to make raisins?",
+    "answers": [
+      "grapes",
+      "grape"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What fruit is dried to make prunes?",
+    "answers": [
+      "plums",
+      "plum"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What vegetable is traditionally the main ingredient in sauerkraut?",
+    "answers": [
+      "cabbage"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What is the main herb in traditional pesto alla genovese?",
+    "answers": [
+      "basil"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What is the thickening mixture of fat and flour used in many sauces called?",
+    "answers": [
+      "roux"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What is cooking an egg without its shell in gently heated water called?",
+    "answers": [
+      "poaching",
+      "poach"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What does 'al dente' describe when cooking pasta?",
+    "answers": [
+      "firm to the bite",
+      "firm",
+      "slightly firm"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What is the name of the coffee drink made with espresso, steamed milk, and milk foam, usually in roughly equal portions?",
+    "answers": [
+      "cappuccino"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What stimulant is naturally present in coffee?",
+    "answers": [
+      "caffeine"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What tree's sap is used to make maple syrup?",
+    "answers": [
+      "maple",
+      "maple tree",
+      "sugar maple"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "Which Canadian coffee chain is named after a hockey player?",
+    "answers": [
+      "Tim Hortons",
+      "Tim Horton's",
+      "Tims",
+      "Tim's"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "Which ring-shaped bread is typically boiled before it is baked?",
+    "answers": [
+      "bagel"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What food is popped from dried kernels and often eaten at cinemas?",
+    "answers": [
+      "popcorn"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What cereal grain is used to make oatmeal?",
+    "answers": [
+      "oats",
+      "oat"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What type of nut is used to make marzipan?",
+    "answers": [
+      "almond",
+      "almonds"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What dairy product is churned to make butter?",
+    "answers": [
+      "cream"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Medium",
+    "question": "What cooking process browns sugar by heating it?",
+    "answers": [
+      "caramelization",
+      "caramelisation",
+      "caramelizing",
+      "caramelising"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "What fungus is used to make bread dough rise?",
+    "answers": [
+      "yeast"
+    ]
+  },
+  {
+    "topic": "food",
+    "difficulty": "Easy",
+    "question": "Botanically, is a tomato a fruit or a vegetable?",
+    "answers": [
+      "fruit"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which band released 'Bohemian Rhapsody'?",
+    "answers": [
+      "Queen"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which artist released the album Thriller?",
+    "answers": [
+      "Michael Jackson"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which singer is known for the albums 1989 and Midnights?",
+    "answers": [
+      "Taylor Swift"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which singer is known for 'Rolling in the Deep' and 'Hello'?",
+    "answers": [
+      "Adele"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which artist's fans are commonly called the BeyHive?",
+    "answers": [
+      "Beyonce",
+      "Beyoncé"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which singer is known as the Material Girl?",
+    "answers": [
+      "Madonna"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which Canadian singer released 'Blinding Lights'?",
+    "answers": [
+      "The Weeknd",
+      "Weeknd"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which artist released 'Purple Rain'?",
+    "answers": [
+      "Prince"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which rock band includes Mick Jagger and Keith Richards?",
+    "answers": [
+      "The Rolling Stones",
+      "Rolling Stones"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which band included John Lennon, Paul McCartney, George Harrison, and Ringo Starr?",
+    "answers": [
+      "The Beatles",
+      "Beatles"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which band released 'Smells Like Teen Spirit'?",
+    "answers": [
+      "Nirvana"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which band released the album American Idiot?",
+    "answers": [
+      "Green Day"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which band released 'In the End' on Hybrid Theory?",
+    "answers": [
+      "Linkin Park"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which band released 'Hotel California'?",
+    "answers": [
+      "Eagles",
+      "the Eagles"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which singer released 'bad guy' on her debut studio album?",
+    "answers": [
+      "Billie Eilish"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which rapper starred as himself in the film 8 Mile?",
+    "answers": [
+      "Eminem",
+      "Marshall Mathers"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which rapper is associated with 'Gin and Juice' and Doggystyle?",
+    "answers": [
+      "Snoop Dogg",
+      "Snoop"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which singer is known for 'Born This Way' and 'Poker Face'?",
+    "answers": [
+      "Lady Gaga",
+      "Gaga"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which Canadian singer is known for 'My Heart Will Go On'?",
+    "answers": [
+      "Celine Dion",
+      "Céline Dion"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which singer released 'Rocket Man'?",
+    "answers": [
+      "Elton John"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "What instrument normally has six strings and can be acoustic or electric?",
+    "answers": [
+      "guitar"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "What keyboard instrument uses hammers to strike strings inside it?",
+    "answers": [
+      "piano"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which instrument family includes trumpets and trombones?",
+    "answers": [
+      "brass"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "What instrument is commonly played with a bow and held under the chin?",
+    "answers": [
+      "violin",
+      "fiddle"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "What word means the speed of a piece of music?",
+    "answers": [
+      "tempo"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "What musical symbol raises a note by a semitone?",
+    "answers": [
+      "sharp",
+      "sharp sign"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "What musical symbol lowers a note by a semitone?",
+    "answers": [
+      "flat",
+      "flat sign"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation DJ stand for?",
+    "answers": [
+      "disc jockey",
+      "disk jockey"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Easy",
+    "question": "Which music genre is associated with Bob Marley?",
+    "answers": [
+      "reggae"
+    ]
+  },
+  {
+    "topic": "music",
+    "difficulty": "Medium",
+    "question": "Which duo was known for robot helmets and the album Random Access Memories?",
+    "answers": [
+      "Daft Punk"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "In Toy Story, what is the name of the cowboy toy?",
+    "answers": [
+      "Woody"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "In Toy Story, what is the name of the space-ranger toy?",
+    "answers": [
+      "Buzz Lightyear",
+      "Buzz"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What kind of fish is Nemo in Finding Nemo?",
+    "answers": [
+      "clownfish",
+      "clown fish"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What kind of animal is Remy in Ratatouille?",
+    "answers": [
+      "rat"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which Pixar film centres on a waste-compacting robot on Earth?",
+    "answers": [
+      "WALL-E",
+      "WALL E",
+      "WALLE",
+      "WALL·E"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Medium",
+    "question": "In Inside Out, what is the name of the girl whose emotions are characters?",
+    "answers": [
+      "Riley",
+      "Riley Andersen"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Medium",
+    "question": "Which new emotion is voiced by Maya Hawke in Inside Out 2?",
+    "answers": [
+      "Anxiety"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What is the name of the snowman in Frozen?",
+    "answers": [
+      "Olaf"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What is the name of the queen with ice powers in Frozen?",
+    "answers": [
+      "Elsa"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What is the name of the ogre voiced by Mike Myers?",
+    "answers": [
+      "Shrek"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What animal is Po in Kung Fu Panda?",
+    "answers": [
+      "panda",
+      "giant panda"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which 2023 movie stars Margot Robbie as a famous doll?",
+    "answers": [
+      "Barbie"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Who plays Ken opposite Margot Robbie in the 2023 Barbie film?",
+    "answers": [
+      "Ryan Gosling"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which actor plays Jack Dawson in Titanic?",
+    "answers": [
+      "Leonardo DiCaprio",
+      "DiCaprio",
+      "Leonardo Di Caprio"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which actor plays Rose in Titanic?",
+    "answers": [
+      "Kate Winslet",
+      "Winslet"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which film franchise includes the dinosaur theme park on Isla Nublar?",
+    "answers": [
+      "Jurassic Park",
+      "Jurassic World"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What is the name of the fictional African nation in Black Panther?",
+    "answers": [
+      "Wakanda"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What superhero identity does Peter Parker use?",
+    "answers": [
+      "Spider-Man",
+      "Spider Man",
+      "Spiderman"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What superhero identity does Bruce Wayne use?",
+    "answers": [
+      "Batman"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What is the name of Batman's home city?",
+    "answers": [
+      "Gotham",
+      "Gotham City"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Medium",
+    "question": "Which Spider-Man is the main hero of Into the Spider-Verse?",
+    "answers": [
+      "Miles Morales",
+      "Miles"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Medium",
+    "question": "What is the desert planet in the Dune films called?",
+    "answers": [
+      "Arrakis"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Medium",
+    "question": "What is the name of the blue-skinned people in James Cameron's Avatar?",
+    "answers": [
+      "Na'vi",
+      "Navi",
+      "Na’vi"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which film franchise features the character Darth Vader?",
+    "answers": [
+      "Star Wars"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "What weapon do Jedi commonly use in Star Wars?",
+    "answers": [
+      "lightsaber",
+      "lightsabers",
+      "light saber"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which actor plays Captain Jack Sparrow in Pirates of the Caribbean?",
+    "answers": [
+      "Johnny Depp",
+      "Depp"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which Hogwarts house is Harry Potter sorted into?",
+    "answers": [
+      "Gryffindor"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "In The Matrix, which colour pill does Neo take to learn the truth?",
+    "answers": [
+      "red",
+      "red pill"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Easy",
+    "question": "Which movie features a house lifted into the sky by balloons?",
+    "answers": [
+      "Up"
+    ]
+  },
+  {
+    "topic": "movies",
+    "difficulty": "Medium",
+    "question": "Which animated film follows Miguel into the Land of the Dead?",
+    "answers": [
+      "Coco"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "In Friends, what is the name of the coffee shop where the characters meet?",
+    "answers": [
+      "Central Perk"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "In The Office US, what paper company employs the main characters?",
+    "answers": [
+      "Dunder Mifflin"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "In The Office US, who is the regional manager played by Steve Carell?",
+    "answers": [
+      "Michael Scott",
+      "Michael"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "In Parks and Recreation, which character is played by Amy Poehler?",
+    "answers": [
+      "Leslie Knope",
+      "Leslie"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "In Brooklyn Nine-Nine, which detective is played by Andy Samberg?",
+    "answers": [
+      "Jake Peralta",
+      "Jake"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which TV series follows Walter White and Jesse Pinkman?",
+    "answers": [
+      "Breaking Bad"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "What alias does Walter White use in Breaking Bad?",
+    "answers": [
+      "Heisenberg"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which Breaking Bad spin-off follows lawyer Jimmy McGill?",
+    "answers": [
+      "Better Call Saul"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "In Stranger Things, which character is also called El?",
+    "answers": [
+      "Eleven",
+      "11"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "What is the dark parallel dimension in Stranger Things called?",
+    "answers": [
+      "Upside Down",
+      "the Upside Down"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which Netflix series centres on Wednesday Addams at Nevermore Academy?",
+    "answers": [
+      "Wednesday"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "What is the name of the sentient hand in the Addams Family?",
+    "answers": [
+      "Thing"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which Korean series features deadly versions of children's games?",
+    "answers": [
+      "Squid Game"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which city do the Simpson family live in?",
+    "answers": [
+      "Springfield"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "What is the name of the father in The Simpsons?",
+    "answers": [
+      "Homer",
+      "Homer Simpson"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which animated series features the town of South Park in Colorado?",
+    "answers": [
+      "South Park"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which animated series follows a scientist named Rick and his grandson?",
+    "answers": [
+      "Rick and Morty"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "What is the name of the dog in Scooby-Doo?",
+    "answers": [
+      "Scooby-Doo",
+      "Scooby Doo",
+      "Scooby"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which cartoon character lives in a pineapple under the sea?",
+    "answers": [
+      "SpongeBob SquarePants",
+      "SpongeBob"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "What is SpongeBob's starfish best friend called?",
+    "answers": [
+      "Patrick",
+      "Patrick Star"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which Australian animated series follows a blue heeler puppy and her family?",
+    "answers": [
+      "Bluey"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "In Adventure Time, what is the name of Finn's magical dog friend?",
+    "answers": [
+      "Jake",
+      "Jake the Dog"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "What is the name of the main bounty hunter in The Mandalorian?",
+    "answers": [
+      "Din Djarin",
+      "the Mandalorian",
+      "Mando"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "What is the real name of the small character often nicknamed Baby Yoda?",
+    "answers": [
+      "Grogu"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "In Game of Thrones, what family is associated with the motto 'Winter Is Coming'?",
+    "answers": [
+      "Stark",
+      "House Stark",
+      "the Starks"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which fantasy series features Geralt of Rivia?",
+    "answers": [
+      "The Witcher",
+      "Witcher"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which sitcom centres on Ted Mosby telling his children about meeting their mother?",
+    "answers": [
+      "How I Met Your Mother",
+      "HIMYM"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Easy",
+    "question": "Which long-running science-fiction series features a time machine called the TARDIS?",
+    "answers": [
+      "Doctor Who",
+      "Dr Who",
+      "Dr. Who"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "In Schitt's Creek, what is the surname of the formerly wealthy central family?",
+    "answers": [
+      "Rose",
+      "the Roses"
+    ]
+  },
+  {
+    "topic": "tv",
+    "difficulty": "Medium",
+    "question": "Which series features the fictional restaurant The Original Beef and chef Carmy?",
+    "answers": [
+      "The Bear"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What is the name of Mario's brother?",
+    "answers": [
+      "Luigi"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which princess does Mario often rescue?",
+    "answers": [
+      "Princess Peach",
+      "Peach"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which Nintendo franchise features the hero Link?",
+    "answers": [
+      "The Legend of Zelda",
+      "Legend of Zelda",
+      "Zelda"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Medium",
+    "question": "What is the kingdom commonly associated with Princess Zelda and Link?",
+    "answers": [
+      "Hyrule"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What yellow Electric-type Pokemon is Ash's best-known partner?",
+    "answers": [
+      "Pikachu"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What device do Pokemon trainers use to catch Pokemon?",
+    "answers": [
+      "Poke Ball",
+      "Poké Ball",
+      "Pokeball",
+      "Pokéball"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Medium",
+    "question": "Which Pokemon is commonly depicted as a sleeping giant blocking a path?",
+    "answers": [
+      "Snorlax"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What colour is Sonic the Hedgehog?",
+    "answers": [
+      "blue"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What animal is Sonic's friend Tails?",
+    "answers": [
+      "fox",
+      "a fox"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What is the name of the green exploding mob in Minecraft?",
+    "answers": [
+      "creeper"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which Minecraft boss lives in the End dimension?",
+    "answers": [
+      "Ender Dragon"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What Minecraft block lets players combine ingredients in a 3-by-3 crafting grid?",
+    "answers": [
+      "crafting table"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What is the hot, lava-filled Minecraft dimension called?",
+    "answers": [
+      "Nether",
+      "the Nether"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which Epic Games title includes a battle royale mode with building mechanics?",
+    "answers": [
+      "Fortnite"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which game asks crewmates to identify hidden impostors aboard a spaceship?",
+    "answers": [
+      "Among Us"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Medium",
+    "question": "What does the gaming abbreviation NPC stand for?",
+    "answers": [
+      "non-player character",
+      "non player character",
+      "nonplayer character"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What does the gaming abbreviation RPG stand for?",
+    "answers": [
+      "role-playing game",
+      "role playing game",
+      "roleplaying game"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What does the gaming abbreviation FPS mean when describing a game genre?",
+    "answers": [
+      "first-person shooter",
+      "first person shooter"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What term describes damage inflicted on members of your own team?",
+    "answers": [
+      "friendly fire"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Medium",
+    "question": "Which Animal Crossing character runs Nook's Homes in New Leaf?",
+    "answers": [
+      "Tom Nook",
+      "Nook"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which Animal Crossing character is the mayor's helpful secretary in New Leaf?",
+    "answers": [
+      "Isabelle"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which farming game starts with the player inheriting their grandfather's old farm?",
+    "answers": [
+      "Stardew Valley"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "What game features a portal gun and the AI antagonist GLaDOS?",
+    "answers": [
+      "Portal",
+      "Portal 2"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which puzzle game involves fitting falling tetrominoes into rows?",
+    "answers": [
+      "Tetris"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which game series features the vault-suited mascot Vault Boy?",
+    "answers": [
+      "Fallout"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which game series includes the factions Horde and Alliance?",
+    "answers": [
+      "Warcraft",
+      "World of Warcraft",
+      "WoW"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Medium",
+    "question": "Which game franchise features the assassin Ezio Auditore?",
+    "answers": [
+      "Assassin's Creed",
+      "Assassins Creed",
+      "Assassin’s Creed"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which game franchise features Lara Croft?",
+    "answers": [
+      "Tomb Raider"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which game franchise features the Spartan soldier Master Chief?",
+    "answers": [
+      "Halo"
+    ]
+  },
+  {
+    "topic": "gaming",
+    "difficulty": "Easy",
+    "question": "Which game is commonly described as soccer played with rocket-powered cars?",
+    "answers": [
+      "Rocket League"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What does the abbreviation URL stand for?",
+    "answers": [
+      "Uniform Resource Locator"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What does the abbreviation HTML stand for?",
+    "answers": [
+      "Hypertext Markup Language",
+      "Hyper Text Markup Language"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation Wi-Fi commonly identify: wireless networking or a type of battery?",
+    "answers": [
+      "wireless networking",
+      "wireless network",
+      "networking"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What is the common name for an unsolicited bulk email message?",
+    "answers": [
+      "spam"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What is a fraudulent message that tries to trick you into revealing a password commonly called?",
+    "answers": [
+      "phishing",
+      "a phishing message"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation DM stand for in online chat?",
+    "answers": [
+      "direct message",
+      "direct messages"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation AFK stand for?",
+    "answers": [
+      "away from keyboard",
+      "away from the keyboard"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation BRB stand for?",
+    "answers": [
+      "be right back"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation LOL stand for?",
+    "answers": [
+      "laughing out loud",
+      "laugh out loud"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation IRL stand for?",
+    "answers": [
+      "in real life"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What does the abbreviation FAQ stand for?",
+    "answers": [
+      "frequently asked questions",
+      "frequently asked question"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What does the abbreviation GIF stand for?",
+    "answers": [
+      "Graphics Interchange Format"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What symbol begins a hashtag?",
+    "answers": [
+      "#",
+      "hash",
+      "hash sign",
+      "number sign",
+      "pound sign"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What symbol separates the username and domain in an email address?",
+    "answers": [
+      "@",
+      "at",
+      "at sign",
+      "at symbol"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What term is used for pictographic symbols such as smiley faces in messages?",
+    "answers": [
+      "emoji",
+      "emojis"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What do you call a person who mainly reads an online community without posting?",
+    "answers": [
+      "lurker",
+      "a lurker"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What is the term for deliberately provoking people in an online discussion?",
+    "answers": [
+      "trolling",
+      "troll"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What is the term for a joke or idea repeatedly adapted and shared online?",
+    "answers": [
+      "meme",
+      "internet meme"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What is the term for a website's main introductory page?",
+    "answers": [
+      "homepage",
+      "home page"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What kind of software is Firefox: a browser, a spreadsheet, or a game?",
+    "answers": [
+      "browser",
+      "web browser"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "Which Wikimedia project is a collaborative online encyclopedia?",
+    "answers": [
+      "Wikipedia"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "Which video-sharing platform uses channels and a Subscribe button and is operated by Google?",
+    "answers": [
+      "YouTube"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "Which chat platform uses servers, channels, and a mascot called Wumpus?",
+    "answers": [
+      "Discord"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "Which live-streaming platform is strongly associated with a purple logo and gaming streams?",
+    "answers": [
+      "Twitch"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "Which website organizes communities into subreddits?",
+    "answers": [
+      "Reddit"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What is the term for a program that automates actions in a chat community?",
+    "answers": [
+      "bot",
+      "chatbot",
+      "chat bot"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What browser feature lets you save a page to revisit later?",
+    "answers": [
+      "bookmark",
+      "bookmarks",
+      "favorite",
+      "favourite",
+      "favorites",
+      "favourites"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Easy",
+    "question": "What is the name for the list of websites a browser has visited?",
+    "answers": [
+      "browsing history",
+      "browser history",
+      "history"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What is the term for a small piece of website data stored by a browser, often used to remember a login?",
+    "answers": [
+      "cookie",
+      "cookies"
+    ]
+  },
+  {
+    "topic": "internet",
+    "difficulty": "Medium",
+    "question": "What security method combines a password with a second, different authentication factor?",
+    "answers": [
+      "two-factor authentication",
+      "two factor authentication",
+      "2FA",
+      "multi-factor authentication",
+      "multifactor authentication",
+      "MFA"
+    ]
+  }
+]

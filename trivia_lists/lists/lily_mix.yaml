@@ -1,0 +1,822 @@
+AUTHOR: Will
+DESCRIPTION: A broad mix of 300 easy and medium questions. No APIs or specialist knowledge required.
+'[General] Which artist painted the Mona Lisa?':
+- Leonardo da Vinci
+- da Vinci
+- Leonardo daVinci
+'[General] How many sides does a hexagon have?':
+- '6'
+- six
+'[General] What does the Roman numeral X represent?':
+- '10'
+- ten
+'[General] In chess, which piece moves in an L shape?':
+- knight
+'[General] Which fictional detective lives at 221B Baker Street?':
+- Sherlock Holmes
+- Holmes
+'[General] Which language uses ''bonjour'' as a greeting?':
+- French
+'[General] What is the name of the fairy in Peter Pan?':
+- Tinker Bell
+- Tinkerbell
+'[General] Which ancient civilization built the pyramids at Giza?':
+- ancient Egyptians
+- Egyptians
+- ancient Egypt
+- Egypt
+'[General] What is the currency of Japan?':
+- yen
+- Japanese yen
+'[General] What animal appears on Canada''s five-cent coin?':
+- beaver
+'[General] How many squares are on a standard chessboard?':
+- '64'
+- sixty-four
+- sixty four
+'[General] Which board game includes Boardwalk and Park Place in its classic US edition?':
+- Monopoly
+'[General] In a standard deck of playing cards, how many suits are there?':
+- '4'
+- four
+'[General] Which card suit uses a black three-leaf symbol?':
+- clubs
+- club
+'[General] Which author wrote the Harry Potter novels?':
+- J. K. Rowling
+- J.K. Rowling
+- JK Rowling
+- Joanne Rowling
+- Rowling
+'[General] What is the name of the hobbit who carries the One Ring to Mordor?':
+- Frodo Baggins
+- Frodo
+'[General] Which playwright wrote Romeo and Juliet?':
+- William Shakespeare
+- Shakespeare
+'[General] What is the plural of ''mouse''?':
+- mice
+'[General] What punctuation mark normally ends a direct question?':
+- question mark
+'[General] Which month contains Halloween?':
+- October
+'[General] Which month contains Canada Day?':
+- July
+'[General] What colour do you get by mixing blue and yellow paint?':
+- green
+'[General] What instrument tells you which direction is north?':
+- compass
+'[General] What tool is commonly used to measure temperature?':
+- thermometer
+'[General] What is the main language spoken in Brazil?':
+- Portuguese
+'[General] Which ancient Roman leader was assassinated on the Ides of March?':
+- Julius Caesar
+- Caesar
+'[General] Who was the first person to walk on the Moon?':
+- Neil Armstrong
+- Armstrong
+'[General] Which board game uses the term ''checkmate'' to end a game?':
+- chess
+'[General] What is the term for a word that reads the same forwards and backwards?':
+- palindrome
+'[General] What shape is a traditional stop sign in Canada?':
+- octagon
+- octagonal
+'[Science] Which planet is known as the Red Planet?':
+- Mars
+'[Science] Which planet is the largest in our solar system?':
+- Jupiter
+'[Science] Which planet has the hottest surface in our solar system?':
+- Venus
+'[Science] How many planets are in our solar system?':
+- '8'
+- eight
+'[Science] What star is at the centre of our solar system?':
+- Sun
+- the Sun
+'[Science] What force keeps planets in orbit around the Sun?':
+- gravity
+- gravitation
+'[Science] What is Earth''s natural satellite called?':
+- Moon
+- the Moon
+'[Science] What is the chemical formula for water?':
+- H2O
+- H₂O
+'[Science] What gas do humans need to breathe to survive?':
+- oxygen
+- O2
+- O₂
+'[Science] What process lets plants use sunlight to make sugars?':
+- photosynthesis
+'[Science] What pigment gives most leaves their green colour?':
+- chlorophyll
+'[Science] Which organ pumps blood around the human body?':
+- heart
+'[Science] What is the largest organ of the human body?':
+- skin
+'[Science] What type of blood cell carries oxygen around the body?':
+- red blood cell
+- red blood cells
+- erythrocyte
+- erythrocytes
+'[Science] What molecule carries most hereditary information in human cells?':
+- DNA
+- deoxyribonucleic acid
+'[Science] What part of a human cell contains most of its DNA?':
+- nucleus
+'[Science] What is the chemical symbol for gold?':
+- Au
+'[Science] What is the chemical symbol for iron?':
+- Fe
+'[Science] Is a substance with a pH below 7 acidic or alkaline?':
+- acidic
+- acid
+'[Science] What scale is commonly used to measure acidity and alkalinity?':
+- pH
+- pH scale
+'[Science] At standard sea-level pressure, at approximately what temperature in Celsius does pure water boil?':
+- '100'
+- one hundred
+- 100°C
+- 100 degrees
+'[Science] At standard pressure, at what temperature in Celsius does pure water freeze?':
+- '0'
+- zero
+- 0°C
+- 0 degrees
+'[Science] What do we call water in its solid form?':
+- ice
+'[Science] What is the change from a liquid to a gas called?':
+- evaporation
+- vaporization
+- vaporisation
+'[Science] What is the change from a gas to a liquid called?':
+- condensation
+'[Science] What instrument is used to view tiny objects such as cells?':
+- microscope
+'[Science] What instrument is used to observe distant objects in space?':
+- telescope
+'[Science] Can sound travel through a perfect vacuum?':
+- 'no'
+- it cannot
+- cannot
+'[Science] What unit is used to measure electrical resistance?':
+- ohm
+- ohms
+'[Science] What is the name of the galaxy containing our solar system?':
+- Milky Way
+- the Milky Way
+'[Geography] What is the capital city of Canada?':
+- Ottawa
+'[Geography] What is the capital city of France?':
+- Paris
+'[Geography] What is the capital city of Japan?':
+- Tokyo
+'[Geography] What is the capital city of the United Kingdom?':
+- London
+'[Geography] What is the capital city of Australia?':
+- Canberra
+'[Geography] What is the capital city of Italy?':
+- Rome
+- Roma
+'[Geography] What is the capital city of Germany?':
+- Berlin
+'[Geography] What is the capital city of Spain?':
+- Madrid
+'[Geography] What is the capital city of Mexico?':
+- Mexico City
+- Ciudad de Mexico
+- Ciudad de México
+'[Geography] What is the capital city of British Columbia?':
+- Victoria
+'[Geography] Which country contains the cities Sydney and Melbourne?':
+- Australia
+'[Geography] Which Canadian province contains Toronto?':
+- Ontario
+'[Geography] Which Canadian province contains Montreal?':
+- Quebec
+- Québec
+'[Geography] What is Earth''s largest ocean?':
+- Pacific
+- Pacific Ocean
+'[Geography] What ocean lies between North America and Europe?':
+- Atlantic
+- Atlantic Ocean
+'[Geography] What continent contains the Sahara Desert?':
+- Africa
+'[Geography] What is Earth''s largest continent by land area?':
+- Asia
+'[Geography] On which continent is the South Pole?':
+- Antarctica
+'[Geography] Which country contains the Great Barrier Reef?':
+- Australia
+'[Geography] Which country contains Machu Picchu?':
+- Peru
+- Perú
+'[Geography] Which country contains the Taj Mahal?':
+- India
+'[Geography] Which country contains the city of Barcelona?':
+- Spain
+'[Geography] Which river flows through London?':
+- Thames
+- River Thames
+- Thames River
+'[Geography] Which river flows through Paris?':
+- Seine
+- River Seine
+- Seine River
+'[Geography] Which mountain is the highest above sea level?':
+- Mount Everest
+- Everest
+'[Geography] What imaginary line divides Earth into the Northern and Southern Hemispheres?':
+- equator
+'[Geography] What is the name of the line at zero degrees longitude?':
+- prime meridian
+- Greenwich meridian
+'[Geography] Which country is directly south of the contiguous United States?':
+- Mexico
+- México
+'[Geography] Which US state lies northwest of British Columbia?':
+- Alaska
+'[Geography] Which country has a maple leaf on its national flag?':
+- Canada
+'[Animals] How many legs does a spider have?':
+- '8'
+- eight
+'[Animals] How many legs does an adult insect have?':
+- '6'
+- six
+'[Animals] How many arms does an octopus have?':
+- '8'
+- eight
+'[Animals] How many hearts does an octopus have?':
+- '3'
+- three
+'[Animals] Which group of mammals is capable of sustained powered flight?':
+- bats
+- bat
+'[Animals] What is a young frog called before it grows legs?':
+- tadpole
+'[Animals] Are frogs mammals, reptiles, or amphibians?':
+- amphibians
+- amphibian
+'[Animals] Are snakes mammals, reptiles, or amphibians?':
+- reptiles
+- reptile
+'[Animals] What is a baby cat called?':
+- kitten
+'[Animals] What is a baby dog called?':
+- puppy
+- pup
+'[Animals] What is a baby goat called?':
+- kid
+'[Animals] What is a baby sheep called?':
+- lamb
+'[Animals] What is a group of wolves commonly called?':
+- pack
+- a pack
+'[Animals] Which bird is famous for mimicking human speech?':
+- parrot
+- parrots
+'[Animals] Which large flightless bird is native to Africa and is the tallest living bird?':
+- ostrich
+'[Animals] Which flightless birds are associated with Antarctica?':
+- penguins
+- penguin
+'[Animals] Which animal is known for black-and-white stripes and resembles a horse?':
+- zebra
+'[Animals] Which animal has a long neck and a spotted coat?':
+- giraffe
+'[Animals] Which bear species is strongly associated with eating bamboo?':
+- giant panda
+- panda
+'[Animals] What is the largest living animal species?':
+- blue whale
+'[Animals] What type of animal is a dolphin: a fish or a mammal?':
+- mammal
+'[Animals] Which egg-laying Australian mammal has a duck-like bill?':
+- platypus
+'[Animals] What is the name of an animal that eats both plants and animals?':
+- omnivore
+'[Animals] What is the name of an animal that primarily eats plants?':
+- herbivore
+'[Animals] Which insects make honey?':
+- honey bees
+- honeybees
+- bees
+- bee
+'[Animals] What is the transformation from a caterpillar to a butterfly called?':
+- metamorphosis
+'[Animals] Which animal builds dams using branches and mud?':
+- beaver
+- beavers
+'[Animals] Which animal is known for its black facial mask and ringed tail?':
+- raccoon
+- raccoons
+'[Animals] Which animal is known for defensive quills on its body?':
+- porcupine
+- porcupines
+'[Animals] Which animal species has a mane in adult males and is often called the king of the jungle?':
+- lion
+'[Food] Alongside fries and gravy, what cheese ingredient is used in classic poutine?':
+- cheese curds
+- curds
+'[Food] What fruit is the main ingredient in guacamole?':
+- avocado
+- avocados
+'[Food] What bean is used to make tofu?':
+- soybean
+- soybeans
+- soya bean
+- soya beans
+- soy
+- soya
+'[Food] What plant produces the beans used to make chocolate?':
+- cacao
+- cocoa
+- cacao tree
+'[Food] What grain is traditionally used to make risotto?':
+- rice
+'[Food] What legume is the main ingredient in traditional hummus?':
+- chickpeas
+- chickpea
+- garbanzo beans
+- garbanzo bean
+'[Food] Which country is associated with sushi?':
+- Japan
+'[Food] Which country is associated with kimchi?':
+- Korea
+- South Korea
+'[Food] Which country is associated with tacos?':
+- Mexico
+- México
+'[Food] What is the main ingredient in traditional mashed potatoes?':
+- potatoes
+- potato
+'[Food] What do bees produce that people use as a sweetener?':
+- honey
+'[Food] What fruit is dried to make raisins?':
+- grapes
+- grape
+'[Food] What fruit is dried to make prunes?':
+- plums
+- plum
+'[Food] What vegetable is traditionally the main ingredient in sauerkraut?':
+- cabbage
+'[Food] What is the main herb in traditional pesto alla genovese?':
+- basil
+'[Food] What is the thickening mixture of fat and flour used in many sauces called?':
+- roux
+'[Food] What is cooking an egg without its shell in gently heated water called?':
+- poaching
+- poach
+'[Food] What does ''al dente'' describe when cooking pasta?':
+- firm to the bite
+- firm
+- slightly firm
+? '[Food] What is the name of the coffee drink made with espresso, steamed milk, and milk foam, usually in roughly
+  equal portions?'
+: - cappuccino
+'[Food] What stimulant is naturally present in coffee?':
+- caffeine
+'[Food] What tree''s sap is used to make maple syrup?':
+- maple
+- maple tree
+- sugar maple
+'[Food] Which Canadian coffee chain is named after a hockey player?':
+- Tim Hortons
+- Tim Horton's
+- Tims
+- Tim's
+'[Food] Which ring-shaped bread is typically boiled before it is baked?':
+- bagel
+'[Food] What food is popped from dried kernels and often eaten at cinemas?':
+- popcorn
+'[Food] What cereal grain is used to make oatmeal?':
+- oats
+- oat
+'[Food] What type of nut is used to make marzipan?':
+- almond
+- almonds
+'[Food] What dairy product is churned to make butter?':
+- cream
+'[Food] What cooking process browns sugar by heating it?':
+- caramelization
+- caramelisation
+- caramelizing
+- caramelising
+'[Food] What fungus is used to make bread dough rise?':
+- yeast
+'[Food] Botanically, is a tomato a fruit or a vegetable?':
+- fruit
+'[Music] Which band released ''Bohemian Rhapsody''?':
+- Queen
+'[Music] Which artist released the album Thriller?':
+- Michael Jackson
+'[Music] Which singer is known for the albums 1989 and Midnights?':
+- Taylor Swift
+'[Music] Which singer is known for ''Rolling in the Deep'' and ''Hello''?':
+- Adele
+'[Music] Which artist''s fans are commonly called the BeyHive?':
+- Beyonce
+- Beyoncé
+'[Music] Which singer is known as the Material Girl?':
+- Madonna
+'[Music] Which Canadian singer released ''Blinding Lights''?':
+- The Weeknd
+- Weeknd
+'[Music] Which artist released ''Purple Rain''?':
+- Prince
+'[Music] Which rock band includes Mick Jagger and Keith Richards?':
+- The Rolling Stones
+- Rolling Stones
+'[Music] Which band included John Lennon, Paul McCartney, George Harrison, and Ringo Starr?':
+- The Beatles
+- Beatles
+'[Music] Which band released ''Smells Like Teen Spirit''?':
+- Nirvana
+'[Music] Which band released the album American Idiot?':
+- Green Day
+'[Music] Which band released ''In the End'' on Hybrid Theory?':
+- Linkin Park
+'[Music] Which band released ''Hotel California''?':
+- Eagles
+- the Eagles
+'[Music] Which singer released ''bad guy'' on her debut studio album?':
+- Billie Eilish
+'[Music] Which rapper starred as himself in the film 8 Mile?':
+- Eminem
+- Marshall Mathers
+'[Music] Which rapper is associated with ''Gin and Juice'' and Doggystyle?':
+- Snoop Dogg
+- Snoop
+'[Music] Which singer is known for ''Born This Way'' and ''Poker Face''?':
+- Lady Gaga
+- Gaga
+'[Music] Which Canadian singer is known for ''My Heart Will Go On''?':
+- Celine Dion
+- Céline Dion
+'[Music] Which singer released ''Rocket Man''?':
+- Elton John
+'[Music] What instrument normally has six strings and can be acoustic or electric?':
+- guitar
+'[Music] What keyboard instrument uses hammers to strike strings inside it?':
+- piano
+'[Music] Which instrument family includes trumpets and trombones?':
+- brass
+'[Music] What instrument is commonly played with a bow and held under the chin?':
+- violin
+- fiddle
+'[Music] What word means the speed of a piece of music?':
+- tempo
+'[Music] What musical symbol raises a note by a semitone?':
+- sharp
+- sharp sign
+'[Music] What musical symbol lowers a note by a semitone?':
+- flat
+- flat sign
+'[Music] What does the abbreviation DJ stand for?':
+- disc jockey
+- disk jockey
+'[Music] Which music genre is associated with Bob Marley?':
+- reggae
+'[Music] Which duo was known for robot helmets and the album Random Access Memories?':
+- Daft Punk
+'[Movies] In Toy Story, what is the name of the cowboy toy?':
+- Woody
+'[Movies] In Toy Story, what is the name of the space-ranger toy?':
+- Buzz Lightyear
+- Buzz
+'[Movies] What kind of fish is Nemo in Finding Nemo?':
+- clownfish
+- clown fish
+'[Movies] What kind of animal is Remy in Ratatouille?':
+- rat
+'[Movies] Which Pixar film centres on a waste-compacting robot on Earth?':
+- WALL-E
+- WALL E
+- WALLE
+- WALL·E
+'[Movies] In Inside Out, what is the name of the girl whose emotions are characters?':
+- Riley
+- Riley Andersen
+'[Movies] Which new emotion is voiced by Maya Hawke in Inside Out 2?':
+- Anxiety
+'[Movies] What is the name of the snowman in Frozen?':
+- Olaf
+'[Movies] What is the name of the queen with ice powers in Frozen?':
+- Elsa
+'[Movies] What is the name of the ogre voiced by Mike Myers?':
+- Shrek
+'[Movies] What animal is Po in Kung Fu Panda?':
+- panda
+- giant panda
+'[Movies] Which 2023 movie stars Margot Robbie as a famous doll?':
+- Barbie
+'[Movies] Who plays Ken opposite Margot Robbie in the 2023 Barbie film?':
+- Ryan Gosling
+'[Movies] Which actor plays Jack Dawson in Titanic?':
+- Leonardo DiCaprio
+- DiCaprio
+- Leonardo Di Caprio
+'[Movies] Which actor plays Rose in Titanic?':
+- Kate Winslet
+- Winslet
+'[Movies] Which film franchise includes the dinosaur theme park on Isla Nublar?':
+- Jurassic Park
+- Jurassic World
+'[Movies] What is the name of the fictional African nation in Black Panther?':
+- Wakanda
+'[Movies] What superhero identity does Peter Parker use?':
+- Spider-Man
+- Spider Man
+- Spiderman
+'[Movies] What superhero identity does Bruce Wayne use?':
+- Batman
+'[Movies] What is the name of Batman''s home city?':
+- Gotham
+- Gotham City
+'[Movies] Which Spider-Man is the main hero of Into the Spider-Verse?':
+- Miles Morales
+- Miles
+'[Movies] What is the desert planet in the Dune films called?':
+- Arrakis
+'[Movies] What is the name of the blue-skinned people in James Cameron''s Avatar?':
+- Na'vi
+- Navi
+- Na’vi
+'[Movies] Which film franchise features the character Darth Vader?':
+- Star Wars
+'[Movies] What weapon do Jedi commonly use in Star Wars?':
+- lightsaber
+- lightsabers
+- light saber
+'[Movies] Which actor plays Captain Jack Sparrow in Pirates of the Caribbean?':
+- Johnny Depp
+- Depp
+'[Movies] Which Hogwarts house is Harry Potter sorted into?':
+- Gryffindor
+'[Movies] In The Matrix, which colour pill does Neo take to learn the truth?':
+- red
+- red pill
+'[Movies] Which movie features a house lifted into the sky by balloons?':
+- Up
+'[Movies] Which animated film follows Miguel into the Land of the Dead?':
+- Coco
+'[Tv] In Friends, what is the name of the coffee shop where the characters meet?':
+- Central Perk
+'[Tv] In The Office US, what paper company employs the main characters?':
+- Dunder Mifflin
+'[Tv] In The Office US, who is the regional manager played by Steve Carell?':
+- Michael Scott
+- Michael
+'[Tv] In Parks and Recreation, which character is played by Amy Poehler?':
+- Leslie Knope
+- Leslie
+'[Tv] In Brooklyn Nine-Nine, which detective is played by Andy Samberg?':
+- Jake Peralta
+- Jake
+'[Tv] Which TV series follows Walter White and Jesse Pinkman?':
+- Breaking Bad
+'[Tv] What alias does Walter White use in Breaking Bad?':
+- Heisenberg
+'[Tv] Which Breaking Bad spin-off follows lawyer Jimmy McGill?':
+- Better Call Saul
+'[Tv] In Stranger Things, which character is also called El?':
+- Eleven
+- '11'
+'[Tv] What is the dark parallel dimension in Stranger Things called?':
+- Upside Down
+- the Upside Down
+'[Tv] Which Netflix series centres on Wednesday Addams at Nevermore Academy?':
+- Wednesday
+'[Tv] What is the name of the sentient hand in the Addams Family?':
+- Thing
+'[Tv] Which Korean series features deadly versions of children''s games?':
+- Squid Game
+'[Tv] Which city do the Simpson family live in?':
+- Springfield
+'[Tv] What is the name of the father in The Simpsons?':
+- Homer
+- Homer Simpson
+'[Tv] Which animated series features the town of South Park in Colorado?':
+- South Park
+'[Tv] Which animated series follows a scientist named Rick and his grandson?':
+- Rick and Morty
+'[Tv] What is the name of the dog in Scooby-Doo?':
+- Scooby-Doo
+- Scooby Doo
+- Scooby
+'[Tv] Which cartoon character lives in a pineapple under the sea?':
+- SpongeBob SquarePants
+- SpongeBob
+'[Tv] What is SpongeBob''s starfish best friend called?':
+- Patrick
+- Patrick Star
+'[Tv] Which Australian animated series follows a blue heeler puppy and her family?':
+- Bluey
+'[Tv] In Adventure Time, what is the name of Finn''s magical dog friend?':
+- Jake
+- Jake the Dog
+'[Tv] What is the name of the main bounty hunter in The Mandalorian?':
+- Din Djarin
+- the Mandalorian
+- Mando
+'[Tv] What is the real name of the small character often nicknamed Baby Yoda?':
+- Grogu
+'[Tv] In Game of Thrones, what family is associated with the motto ''Winter Is Coming''?':
+- Stark
+- House Stark
+- the Starks
+'[Tv] Which fantasy series features Geralt of Rivia?':
+- The Witcher
+- Witcher
+'[Tv] Which sitcom centres on Ted Mosby telling his children about meeting their mother?':
+- How I Met Your Mother
+- HIMYM
+'[Tv] Which long-running science-fiction series features a time machine called the TARDIS?':
+- Doctor Who
+- Dr Who
+- Dr. Who
+'[Tv] In Schitt''s Creek, what is the surname of the formerly wealthy central family?':
+- Rose
+- the Roses
+'[Tv] Which series features the fictional restaurant The Original Beef and chef Carmy?':
+- The Bear
+'[Gaming] What is the name of Mario''s brother?':
+- Luigi
+'[Gaming] Which princess does Mario often rescue?':
+- Princess Peach
+- Peach
+'[Gaming] Which Nintendo franchise features the hero Link?':
+- The Legend of Zelda
+- Legend of Zelda
+- Zelda
+'[Gaming] What is the kingdom commonly associated with Princess Zelda and Link?':
+- Hyrule
+'[Gaming] What yellow Electric-type Pokemon is Ash''s best-known partner?':
+- Pikachu
+'[Gaming] What device do Pokemon trainers use to catch Pokemon?':
+- Poke Ball
+- Poké Ball
+- Pokeball
+- Pokéball
+'[Gaming] Which Pokemon is commonly depicted as a sleeping giant blocking a path?':
+- Snorlax
+'[Gaming] What colour is Sonic the Hedgehog?':
+- blue
+'[Gaming] What animal is Sonic''s friend Tails?':
+- fox
+- a fox
+'[Gaming] What is the name of the green exploding mob in Minecraft?':
+- creeper
+'[Gaming] Which Minecraft boss lives in the End dimension?':
+- Ender Dragon
+'[Gaming] What Minecraft block lets players combine ingredients in a 3-by-3 crafting grid?':
+- crafting table
+'[Gaming] What is the hot, lava-filled Minecraft dimension called?':
+- Nether
+- the Nether
+'[Gaming] Which Epic Games title includes a battle royale mode with building mechanics?':
+- Fortnite
+'[Gaming] Which game asks crewmates to identify hidden impostors aboard a spaceship?':
+- Among Us
+'[Gaming] What does the gaming abbreviation NPC stand for?':
+- non-player character
+- non player character
+- nonplayer character
+'[Gaming] What does the gaming abbreviation RPG stand for?':
+- role-playing game
+- role playing game
+- roleplaying game
+'[Gaming] What does the gaming abbreviation FPS mean when describing a game genre?':
+- first-person shooter
+- first person shooter
+'[Gaming] What term describes damage inflicted on members of your own team?':
+- friendly fire
+'[Gaming] Which Animal Crossing character runs Nook''s Homes in New Leaf?':
+- Tom Nook
+- Nook
+'[Gaming] Which Animal Crossing character is the mayor''s helpful secretary in New Leaf?':
+- Isabelle
+'[Gaming] Which farming game starts with the player inheriting their grandfather''s old farm?':
+- Stardew Valley
+'[Gaming] What game features a portal gun and the AI antagonist GLaDOS?':
+- Portal
+- Portal 2
+'[Gaming] Which puzzle game involves fitting falling tetrominoes into rows?':
+- Tetris
+'[Gaming] Which game series features the vault-suited mascot Vault Boy?':
+- Fallout
+'[Gaming] Which game series includes the factions Horde and Alliance?':
+- Warcraft
+- World of Warcraft
+- WoW
+'[Gaming] Which game franchise features the assassin Ezio Auditore?':
+- Assassin's Creed
+- Assassins Creed
+- Assassin’s Creed
+'[Gaming] Which game franchise features Lara Croft?':
+- Tomb Raider
+'[Gaming] Which game franchise features the Spartan soldier Master Chief?':
+- Halo
+'[Gaming] Which game is commonly described as soccer played with rocket-powered cars?':
+- Rocket League
+'[Internet] What does the abbreviation URL stand for?':
+- Uniform Resource Locator
+'[Internet] What does the abbreviation HTML stand for?':
+- Hypertext Markup Language
+- Hyper Text Markup Language
+'[Internet] What does the abbreviation Wi-Fi commonly identify: wireless networking or a type of battery?':
+- wireless networking
+- wireless network
+- networking
+'[Internet] What is the common name for an unsolicited bulk email message?':
+- spam
+'[Internet] What is a fraudulent message that tries to trick you into revealing a password commonly called?':
+- phishing
+- a phishing message
+'[Internet] What does the abbreviation DM stand for in online chat?':
+- direct message
+- direct messages
+'[Internet] What does the abbreviation AFK stand for?':
+- away from keyboard
+- away from the keyboard
+'[Internet] What does the abbreviation BRB stand for?':
+- be right back
+'[Internet] What does the abbreviation LOL stand for?':
+- laughing out loud
+- laugh out loud
+'[Internet] What does the abbreviation IRL stand for?':
+- in real life
+'[Internet] What does the abbreviation FAQ stand for?':
+- frequently asked questions
+- frequently asked question
+'[Internet] What does the abbreviation GIF stand for?':
+- Graphics Interchange Format
+'[Internet] What symbol begins a hashtag?':
+- '#'
+- hash
+- hash sign
+- number sign
+- pound sign
+'[Internet] What symbol separates the username and domain in an email address?':
+- '@'
+- at
+- at sign
+- at symbol
+'[Internet] What term is used for pictographic symbols such as smiley faces in messages?':
+- emoji
+- emojis
+'[Internet] What do you call a person who mainly reads an online community without posting?':
+- lurker
+- a lurker
+'[Internet] What is the term for deliberately provoking people in an online discussion?':
+- trolling
+- troll
+'[Internet] What is the term for a joke or idea repeatedly adapted and shared online?':
+- meme
+- internet meme
+'[Internet] What is the term for a website''s main introductory page?':
+- homepage
+- home page
+'[Internet] What kind of software is Firefox: a browser, a spreadsheet, or a game?':
+- browser
+- web browser
+'[Internet] Which Wikimedia project is a collaborative online encyclopedia?':
+- Wikipedia
+'[Internet] Which video-sharing platform uses channels and a Subscribe button and is operated by Google?':
+- YouTube
+'[Internet] Which chat platform uses servers, channels, and a mascot called Wumpus?':
+- Discord
+'[Internet] Which live-streaming platform is strongly associated with a purple logo and gaming streams?':
+- Twitch
+'[Internet] Which website organizes communities into subreddits?':
+- Reddit
+'[Internet] What is the term for a program that automates actions in a chat community?':
+- bot
+- chatbot
+- chat bot
+'[Internet] What browser feature lets you save a page to revisit later?':
+- bookmark
+- bookmarks
+- favorite
+- favourite
+- favorites
+- favourites
+'[Internet] What is the name for the list of websites a browser has visited?':
+- browsing history
+- browser history
+- history
+'[Internet] What is the term for a small piece of website data stored by a browser, often used to remember a login?':
+- cookie
+- cookies
+'[Internet] What security method combines a password with a second, different authentication factor?':
+- two-factor authentication
+- two factor authentication
+- 2FA
+- multi-factor authentication
+- multifactor authentication
+- MFA

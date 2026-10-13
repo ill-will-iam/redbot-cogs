@@ -184,3 +184,7 @@ $adminlog status
 Select the actual bot member when mentioning it. This setting is per server and persists across restarts. Use `$adminlog unignorebot @CatBot` to resume its message records. Member, voice and server events are not excluded by this setting.
 
 For ignored bots (and this bot itself), AdminLog retains up to 10,000 recent message IDs and their guild/author IDs in memory, without message contents. This lets it suppress automatic deletions even after the original message has left Red's cache. It cannot identify the author of an uncached deletion it never observed; configure the exclusion before triggering new bot replies. The ID registry resets on reload/restart. Existing posted logs are not removed.
+
+## Refreshed trivia questions
+
+See [trivia_lists/README.md](trivia_lists/README.md) for the Lily Pad Trivia pack: 300 easy/medium questions across 10 broad topics, plus a combined `lily_mix` list. Upload `trivia_lists/lists/lily_mix.yaml` with `$triviaset custom upload` and play `$trivia lily_mix`. The full question/answer catalog and review notes are included. These custom lists work with the existing Trivia cog; bundled categories remain available under their old names.
