@@ -147,3 +147,16 @@ Replace `#admin-logs` with your chosen text channel. Administrators or members w
 Only the log-channel ID is stored in the cog's configuration. Discord log records include user IDs, names and available message text; administrators manage their retention and removal. Red's user-data deletion hook does not delete already posted Discord records. No extra message archive or user database is maintained by this cog. Logging is best effort while the bot is online and has the needed permissions.
 
 Validation: source syntax, metadata and simulated event/recording behavior are tested; check `$adminlog test` and real events on your running bot after installation.
+
+### AcroGame integration
+
+AdminLog automatically pauses message deletion, bulk-deletion and edit records in the active AcroGame channel for the entire round. It resumes normal message logging when the round ends or is stopped. Other channels and member/voice/server events continue to be logged. No channel exclusion command is needed, so games can run in general chat. Update and reload both cogs to enable this integration.
+
+AcroGame remembers up to 10,000 IDs of messages it deletes (including invalid submissions and vote messages) in memory. AdminLog also filters those IDs after a round finishes, preventing delayed deletion events from revealing game entries or votes. No extra message content is archived, and these suppression IDs are cleared when AcroGame is reloaded or the bot restarts.
+
+```text
+$cog update acrogame adminlog
+$reload acrogame adminlog
+```
+
+Reloading AcroGame cancels an active round; update between games. This integration affects AdminLog only; other logging bots/cogs have their own settings.

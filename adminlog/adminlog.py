@@ -215,10 +215,26 @@ class AdminLog(commands.Cog):
         if changes:
             await self.emit(member.guild, "Voice activity", identity(member) + "\n" + "\n".join(changes))
 
+    def game_suppresses_message(self, guild_id, channel_id, message_id=None):
+        """Coordinate with AcroGame without disabling logging elsewhere."""
+        game = self.bot.get_cog("AcroGame")
+        if game is None:
+            return False
+        suppress = getattr(game, "suppresses_message_log", None)
+        if suppress is not None:
+            return suppress(guild_id, channel_id, message_id)
+        # Also support an older AcroGame while the two cogs are being updated.
+        active = game.rounds.get(guild_id)
+        return bool(active and active.channel_id == channel_id)
+
     async def message_event_guild(self, payload):
         """Ignore DMs and changes to the log channel to prevent recursion."""
         guild = self.bot.get_guild(payload.guild_id) if payload.guild_id else None
         if not guild:
+            return None
+        if self.game_suppresses_message(
+            guild.id, payload.channel_id, getattr(payload, "message_id", None)
+        ):
             return None
         channel_id = await self.config.guild(guild).channel_id()
         if not channel_id or channel_id == payload.channel_id:
@@ -249,6 +265,8 @@ class AdminLog(commands.Cog):
         cached = {m.id: m for m in payload.cached_messages}
         records = []
         for message_id in sorted(payload.message_ids):
+            if self.game_suppresses_message(guild.id, payload.channel_id, message_id):
+                continue
             message = cached.get(message_id)
             if message and self.bot.user and message.author.id == self.bot.user.id:
                 continue
@@ -259,7 +277,7 @@ class AdminLog(commands.Cog):
         if records:
             await self.emit(
                 guild, "Messages bulk deleted",
-                f"Channel: <#{payload.channel_id}>\nDeleted messages: {len(payload.message_ids)}",
+                f"Channel: <#{payload.channel_id}>\nDeleted messages: {len(records)}",
                 text="\n\n---\n\n".join(records),
             )
 

@@ -1,12 +1,18 @@
 {
-    "author": ["Will"],
+    "author": [
+        "Will"
+    ],
     "short": "Simple administration logs for members, messages, voice, and server changes.",
-    "description": "Configurable per-server log channel for joins/leaves, nicknames, roles, profiles, bans, timeouts, message deletions/edits, voice activity, and channel/role/server changes. Deleted text is available only when cached by Red. Long records are preserved as text attachments.",
+    "description": "Configurable per-server log channel for joins/leaves, nicknames, roles, profiles, bans, timeouts, message deletions/edits, voice activity, and channel/role/server changes. Deleted text is available only when cached by Red. Long records are preserved as text attachments. Automatically pauses message logging in an active AcroGame channel and suppresses delayed deletions of game messages.",
     "install_msg": "Run [p]load adminlog, then [p]adminlog channel #admin-logs. Enable Server Members and Message Content intents. Use [p]adminlog status and [p]adminlog test to check setup.",
     "end_user_data_statement": "Persists only each server's log channel ID in Red Config. Sends user IDs, names, nicknames, roles, activity, and available edited/deleted message content and attachment URLs into the configured Discord channel. These Discord records remain until administrators delete them; Red data-deletion requests do not purge them. This cog maintains no additional message cache or per-user database. It uses Red's existing temporary message cache.",
     "min_bot_version": "3.5.0",
     "requirements": [],
-    "tags": ["administration", "logging", "moderation"],
+    "tags": [
+        "administration",
+        "logging",
+        "moderation"
+    ],
     "type": "COG",
     "hidden": false,
     "disabled": false

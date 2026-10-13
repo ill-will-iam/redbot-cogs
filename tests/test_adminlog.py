@@ -30,6 +30,7 @@ class AdminLogTests(unittest.IsolatedAsyncioTestCase):
         self.bot = Mock()
         self.bot.user = NS(id=999)
         self.bot.guilds = [self.guild]
+        self.bot.get_cog.return_value = None
         self.bot.get_guild.side_effect = lambda guild_id: self.guild if guild_id == 10 else None
         self.bot.cog_disabled_in_guild = AsyncMock(return_value=False)
         self.value = AsyncMock(return_value=20)

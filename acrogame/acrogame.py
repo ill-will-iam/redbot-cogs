@@ -9,7 +9,7 @@ NOTE: Discord message deletion is not instantaneous or a secrecy guarantee.
 import asyncio
 import random
 import re
-from collections import Counter
+from collections import Counter, OrderedDict
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
@@ -19,6 +19,7 @@ from redbot.core import Config, bank, commands, errors
 
 SUBMISSION_SECONDS = 30
 MAX_ANSWER_LENGTH = 150
+MAX_LOG_SUPPRESSIONS = 10000
 def random_acronym() -> str:
     """Generate 3–5 independent random uppercase letters for each new round."""
     return "".join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=random.randint(3, 5)))
@@ -67,6 +68,9 @@ class AcroGame(commands.Cog):
         )
         # Ongoing entries and votes are NOT persisted across bot restarts.
         self.rounds: Dict[int, Round] = {}
+        # IDs only: suppress delayed raw deletion events after a round finishes.
+        # Bound memory usage; no message text is stored here.
+        self.log_suppressed_messages = OrderedDict()
 
     async def cog_check(self, ctx):
         """All AcroGame commands operate in servers, not private messages."""
@@ -78,10 +82,31 @@ class AcroGame(commands.Cog):
                 game.task.cancel()
         self.rounds.clear()
 
-    @staticmethod
-    async def _delete_quietly(message: discord.Message):
+    def suppresses_message_log(self, guild_id: int, channel_id: int, message_id=None) -> bool:
+        """AdminLog pauses message records in an active game channel."""
+        game = self.rounds.get(guild_id)
+        if game and game.channel_id == channel_id:
+            return True
+        return message_id in self.log_suppressed_messages
+
+    async def _delete_game_message(self, message: discord.Message):
+        """Mark before requesting deletion so even fast events are suppressed."""
+        self.log_suppressed_messages[message.id] = None
+        self.log_suppressed_messages.move_to_end(message.id)
+        while len(self.log_suppressed_messages) > MAX_LOG_SUPPRESSIONS:
+            self.log_suppressed_messages.popitem(last=False)
         try:
             await message.delete()
+        except discord.NotFound:
+            # Already deleted; a raw deletion event may still be in flight.
+            raise
+        except discord.HTTPException:
+            self.log_suppressed_messages.pop(message.id, None)
+            raise
+
+    async def _delete_quietly(self, message: discord.Message):
+        try:
+            await self._delete_game_message(message)
         except (discord.Forbidden, discord.NotFound, discord.HTTPException):
             pass
 
@@ -192,7 +217,7 @@ class AcroGame(commands.Cog):
                 # Do not reveal which entry a player selected. Record only when
                 # the vote message has actually been deleted.
                 try:
-                    await message.delete()
+                    await self._delete_game_message(message)
                 except discord.NotFound:
                     return
                 except (discord.Forbidden, discord.HTTPException):
@@ -216,7 +241,7 @@ class AcroGame(commands.Cog):
             # in memory only if deletion succeeds.
             answer = " ".join(message.content.split())
             try:
-                await message.delete()
+                await self._delete_game_message(message)
             except discord.NotFound:
                 return
             except (discord.Forbidden, discord.HTTPException):

@@ -16,6 +16,6 @@
   "type": "COG",
   "disabled": false,
   "hidden": false,
-  "end_user_data_statement": "Persists Discord user IDs and game scores (wins/points). Keeps answer submissions and votes in memory for the duration of a round only; deletes original Discord chat submissions after capture.",
+  "end_user_data_statement": "Persists Discord user IDs and game scores (wins/points). Keeps answer submissions and votes in memory for the duration of a round only; deletes original Discord chat submissions after capture. Keeps a bounded in-memory set of up to 10,000 message IDs deleted by the game so AdminLog can suppress delayed deletion records; this set contains no message text and clears on cog reload/restart.",
   "install_msg": "AcroGame installed. Run [p]load acrogame and [p]acro start to begin."
 }
