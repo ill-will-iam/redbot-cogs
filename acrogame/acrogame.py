@@ -19,12 +19,10 @@ from redbot.core import Config, bank, commands, errors
 
 SUBMISSION_SECONDS = 30
 MAX_ANSWER_LENGTH = 150
-PROMPTS = (
-    "FROG", "TOAD", "MOON", "VIBE", "CHAOS", "DARK", "WILD", "BATS",
-    "MOSS", "GOAT", "VOID", "SPIN", "LILY", "NOVA", "SALT", "MINT",
-    "RATS", "ZOOM", "TACO", "BEAR", "FISH", "CATS", "WOLF", "SPOOK",
-    "GHOST", "MAGIC", "GLITCH", "PIXEL", "RADIO", "FUNK", "MOTH",
-)
+def random_acronym() -> str:
+    """Generate 3–5 independent random uppercase letters for each new round."""
+    return "".join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=random.randint(3, 5)))
+
 
 
 @dataclass
@@ -112,7 +110,7 @@ class AcroGame(commands.Cog):
     async def acro(self, ctx):
         """Play the acronym game. See `[p]help acro` for subcommands."""
         await ctx.send(
-            "**Acronym game** — `acro start [WORD]`, `acro vote <number>`, "
+            "**Acronym game** — `acro start [LETTERS]`, `acro vote <number>`, "
             "`acro score [member]`, `acro top`, `acro status`. "
             "Admins: `acro stop`, `acro setpoints`, `acro setcoins`, `acro setvotetime`."
         )
@@ -120,7 +118,7 @@ class AcroGame(commands.Cog):
     @acro.command(name="start")
     @commands.cooldown(1, 15, commands.BucketType.guild)
     async def acro_start(self, ctx, acronym: Optional[str] = None):
-        """Start a round here. Optionally supply a 3–6-letter acronym."""
+        """Start a round here. Optionally supply a 3–5-letter acronym."""
         if ctx.guild.id in self.rounds:
             await ctx.send("A round is already running in this server. Use `acro status`.")
             return
@@ -141,11 +139,11 @@ class AcroGame(commands.Cog):
             return
 
         if acronym is None:
-            acronym = random.choice(PROMPTS)
+            acronym = random_acronym()
         else:
             acronym = acronym.upper().strip()
-            if not re.fullmatch(r"[A-Z]{3,6}", acronym):
-                await ctx.send("Use a word of 3 to 6 English letters, such as FROG.")
+            if not re.fullmatch(r"[A-Z]{3,5}", acronym):
+                await ctx.send("Use 3 to 5 letters (A–Z), such as KZP.")
                 return
 
         prefixes = tuple(await self.bot.get_valid_prefixes(ctx.guild))
@@ -159,7 +157,7 @@ class AcroGame(commands.Cog):
                 f"**ACRONYM ROUND: {' · '.join(acronym)}**\n"
                 f"You have **{SUBMISSION_SECONDS} seconds**! Type one {len(acronym)}-word "
                 "phrase directly into this channel, one word per letter.\n"
-                "Example for FROG: `Fuzzy Raccoons Own Gardens`\n"
+                "Example: `K · Z · P` could become `Kooky Zebras Party`\n"
                 "**Messages during the entry phase are immediately deleted**, "
                 "including invalid entries. Your most recent valid answer counts. "
                 "No forms, no DMs."
