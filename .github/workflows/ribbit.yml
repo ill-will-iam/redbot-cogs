@@ -1,0 +1,22 @@
+name: Ribbit checks
+on:
+  push:
+    paths:
+      - "ribbit/**"
+      - "tests/test_ribbit.py"
+      - ".github/workflows/ribbit.yml"
+  pull_request:
+    paths:
+      - "ribbit/**"
+      - "tests/test_ribbit.py"
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check syntax and frog loot
+        run: python -m unittest discover -s tests -p "test_ribbit.py" -v
