@@ -1,0 +1,15 @@
+{
+  "name": "DailyDrawings",
+  "short": "Daily paper drawing challenges with a fifteen-minute timer and community voting.",
+  "description": "Announces one drawing topic daily at a configurable time, defaulting to 20:00 America/New_York. Artists have fifteen minutes to upload one photo of a physical drawing on paper. At least three different artists are required for a five-minute button vote. Everyone has one changeable vote, self-votes are rejected, and the most-voted drawing receives props and cheers. Ties share the applause. Includes 120 rotating topics and recovery of active drawing/voting windows. Staff enforce the physical-only rule; the bot cannot establish how an image was created.",
+  "author": ["Will"],
+  "requirements": [],
+  "tags": ["drawing", "art", "daily", "community", "voting"],
+  "min_bot_version": "3.5.24",
+  "min_python_version": [3, 9, 0],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Stores per-server channel and schedule settings, daily topic rotation, and the current drawing round for restart recovery. Active rounds contain entrant/voter Discord IDs, submission and ballot message IDs, attachment IDs/URLs and vote choices. These records clear when a round ends or is cancelled. No image files, leaderboard or win history are stored locally. User-data deletion cancels affected rounds and clears their stored state. Already posted Discord photos, gallery posts and announcements remain.",
+  "install_msg": "Daily Drawings installed! Run [p]load dailydrawings, then [p]draw channel #daily-drawings. Default: 8 PM Eastern, 15 minutes to draw, 5 minutes to vote. Change the daily time with [p]draw time 21:00 America/New_York. See [p]draw status and [p]help draw."
+}

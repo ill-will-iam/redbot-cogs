@@ -9,6 +9,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | `pp` | `$pp` | Sends `:pp1:`, 0–7 copies of `:pp2:`, and `:pp3:` without spaces or line breaks. |
 | `adminlog` | `$adminlog channel #admin-logs` | Logs member, message, voice, channel, role, and server changes. |
 | `frogpond` | `$frog` | Race to unscramble pond words, catch golden flies and help a frog hop home. |
+| `dailydrawings` | `$draw channel #daily-drawings` | Daily paper drawing topics, a 15-minute drawing window and community voting. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -217,4 +218,32 @@ Message Content Intent and permission to send messages/embeds are required.
 See [frogpond/README.md](frogpond/README.md) for scoring, privacy, permissions and
 AcroGame coexistence details. Creator and version appear in `$help frog`.
 
+
+
+## Install Daily Drawings
+
+Daily Drawings announces a shared paper drawing topic at **8 PM Eastern** by
+default. Members have **15 minutes** to draw and upload a photo. At least
+**three artists** are required for **five minutes** of button voting. Everyone
+gets one changeable vote and cannot vote for themselves; the most votes earns
+props and cheers, with ties sharing the applause. The physical-only rule is
+enforced by staff; uploaded images alone do not establish how artwork was made.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs dailydrawings
+$load dailydrawings
+$draw channel #daily-drawings
+$draw time 20:00 America/New_York
+$draw status
+```
+
+Change the time later with `$draw time 19:00` or `$draw time 21:00`. Eastern
+daylight-saving changes are handled automatically. There are 120 rotating
+topics spanning fantasy, real life, funny, serious, scary and nature. Active
+drawing/voting windows and votes survive normal restarts; no image files,
+leaderboard or prizes are stored on the VPS. Use `$draw remove @member` for
+ineligible entries and `$draw off` to pause. See
+[dailydrawings/README.md](dailydrawings/README.md) for permissions, commands,
+scheduling/recovery details and the data statement.
 
