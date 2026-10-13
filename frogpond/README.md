@@ -21,17 +21,18 @@ can send messages. No Manage Messages permission or API key is needed.
 
 ## Play
 
-Each crossing has five puzzles by default, sampled without repeats from 100
-familiar animals, plants and outdoor words. Each puzzle shows scrambled letters
-and a short clue. For example:
+Each crossing has **10 puzzles by default**, with **10–20** available. The bank
+contains **114 distinct answers of at least seven letters**, with more indirect
+clues covering pond life, wildlife, plants, science, weather and adventure.
+Each puzzle shows scrambled letters and a clue. For example:
 
-> 🐸 Frog Pond • Lily pad 1/5
+> 🐸 Frog Pond • Lily pad 1/10
 >
-> **Unscramble: `GFOR`**
+> **Unscramble: `COONRAC`**
 >
-> A pond resident that says ribbit.
+> This masked visitor treats your rubbish bin like a buffet.
 
-Type `frog` to answer. Capitalization and surrounding whitespace do not matter;
+Type `raccoon` to answer. Capitalization and surrounding whitespace do not matter;
 the message must contain just the answer. Only the first correct guess counts.
 Bots cannot play, and unrelated conversation is ignored.
 
@@ -42,15 +43,15 @@ chosen puzzle per crossing has a **golden fly**, doubling its points. Default
 time per puzzle: **25 seconds**. A timeout reveals the answer.
 
 Every solved puzzle moves the frog forward. Solving at least **60%** of the
-crossing's puzzles gets it home (three out of five). The final message shows
+crossing's puzzles gets it home (six out of ten, or twelve out of twenty). The final message shows
 the individual scores. Earned points are saved immediately per solved puzzle.
 
 ## Commands
 
 | Command | Effect |
 | --- | --- |
-| `$frog` | Start five puzzles in this channel. |
-| `$frog start [rounds]` | Start 3–10 puzzles; default five. |
+| `$frog` | Start ten puzzles in this channel. |
+| `$frog start [rounds]` | Start 10–20 puzzles; default ten. |
 | `$frog rules` | Explain hints, points and the team goal. |
 | `$frog top` | Show the server's ten highest scorers. |
 | `$frog score` | Show your own points and number of puzzles solved. |
@@ -63,6 +64,19 @@ and restarts; active crossings do not. Stopping a game preserves points already
 earned. Disabling the whole `FrogPond` cog cancels an active game; a watcher checks
 once per second even when chat is quiet. Individual command-disabling settings
 control those commands; use the whole-cog setting to stop gameplay listeners.
+
+### Question rotation
+
+Each server has its own saved shuffled question deck. Answers are drawn once
+per deck before reshuffling, so completed games do not keep sampling the same
+few questions. Crossings spanning a reshuffle still contain no repeated answers.
+The last answer of one crossing cannot immediately become the first of the next.
+The remaining deck survives reloads and bot restarts.
+
+Starting a crossing reserves its full question set. Stopping or reloading that
+crossing does not return unused reserved questions to the deck. Scores already
+earned and the remaining deck are kept. Updating from version 1.0 initializes
+the new deck without clearing existing scores or changing the puzzle timer.
 
 ## Other games and logging
 
@@ -83,7 +97,8 @@ disable, ignored-channel and user allow/block settings.
 No database, network lookup or additional Python package is used. The packaged
 word bank is loaded once; only active game state and two tasks per active server
 are kept in memory. Red Config stores user IDs, total points and solved counts,
-plus the server timer. Guess text is not archived by the cog.
+plus the server timer, remaining question keys and last drawn answer. The deck
+contains only packaged answer keys, without player IDs. Guess text is not archived by the cog.
 
 Red user-data deletion removes the user's scores across all servers and cancels
 any active game they started or scored in, including a pending winning answer.
@@ -97,5 +112,9 @@ $cog update frogpond
 $reload frogpond
 ```
 
-Validation uses real Red/discord.py command classes with simulated Discord
-events and Config persistence. Live Discord installation is a separate check.
+Validation: 32 tests cover gameplay, 10–20-puzzle crossings, two complete deck
+cycles, reload persistence, existing settings, cancellation and privacy races.
+Tests use real Red/discord.py command classes, simulated Discord events, and
+Red's JSON storage driver to check saved-deck recovery. Live Discord installation
+is a separate check.
+

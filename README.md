@@ -204,12 +204,17 @@ $load frogpond
 $frog
 ```
 
-Default: five puzzles, 25 seconds each. Use `$frog start 10` for a longer crossing,
+Default: ten puzzles, 25 seconds each. Use `$frog start 20` for a longer crossing,
 `$frog rules` for instructions, `$frog top` for the server leaderboard, and
 `$frog stop` to stop. Administrators can set the next game's timer with
-`$frog time 30`. There are 100 built-in clues, no API keys and no extra packages.
+`$frog time 30`. There are 114 distinct answers of seven or more letters, with
+harder clues, no API keys and no extra packages. Crossings accept 10–20 puzzles.
+Each server's shuffled question deck is saved through reloads and restarts;
+answers do not repeat until the deck is exhausted, and crossings spanning a
+reshuffle still contain no duplicates. Existing points and timer settings remain.
 Message Content Intent and permission to send messages/embeds are required.
 
 See [frogpond/README.md](frogpond/README.md) for scoring, privacy, permissions and
 AcroGame coexistence details. Creator and version appear in `$help frog`.
+
 

@@ -15,6 +15,9 @@ from .words import WORDS
 
 LOG = logging.getLogger("red.will.frogpond")
 COLOUR = 0x73C75A
+MIN_ROUNDS = 10
+MAX_ROUNDS = 20
+DEFAULT_ROUNDS = 10
 
 
 def scramble(word):
@@ -62,12 +65,12 @@ class FrogPond(commands.Cog):
     """Unscramble pond words, catch golden flies, and get the frog home."""
 
     __author__ = "Will"
-    __version__ = "1.0.0"
+    __version__ = "1.1.0"
 
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=524913102026, force_registration=True)
-        self.config.register_guild(seconds=25, scores={})
+        self.config.register_guild(seconds=25, scores={}, remaining_words=[], last_word="")
         # At most one game per server, with two small tasks per active game.
         self.games = {}
         self._data_lock = asyncio.Lock()
@@ -144,6 +147,36 @@ class FrogPond(commands.Cog):
             await asyncio.wait_for(game.event.wait(), timeout=remaining)
         except asyncio.TimeoutError:
             pass
+
+    async def _draw_puzzles(self, guild, count):
+        """Reserve puzzles from a saved server deck. Caller holds _data_lock."""
+        bank = dict(WORDS)
+        async with self.config.guild(guild).all() as settings:
+            # Stable answer keys tolerate bank updates without stale list indices.
+            raw_queue = settings.get("remaining_words", [])
+            queue = []
+            seen = set()
+            if isinstance(raw_queue, list):
+                for word in raw_queue:
+                    if isinstance(word, str) and word in bank and word not in seen:
+                        queue.append(word)
+                        seen.add(word)
+            chosen = []
+            while len(chosen) < count:
+                if not queue:
+                    queue = list(bank)
+                    random.shuffle(queue)
+                    # A crossing spanning two decks still has no duplicates.
+                    # Also prevent the last old word starting the next crossing.
+                    deferred = set(chosen) or {settings.get("last_word", "")}
+                    queue = ([word for word in queue if word not in deferred]
+                             + [word for word in queue if word in deferred])
+                take = min(count - len(chosen), len(queue))
+                chosen.extend(queue[:take])
+                del queue[:take]
+            settings["remaining_words"] = queue
+            settings["last_word"] = chosen[-1]
+        return [(word, bank[word]) for word in chosen]
 
     async def _award(self, game):
         # Serializing this with privacy requests prevents deleted scores returning.
@@ -273,17 +306,17 @@ class FrogPond(commands.Cog):
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def frog(self, ctx):
         """Start Frog Pond, or use start, stop, rules, top, score and time."""
-        await self._start(ctx, 5)
+        await self._start(ctx, DEFAULT_ROUNDS)
 
     @frog.command(name="start")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def frog_start(self, ctx, rounds: int = 5):
-        """Start a crossing with 3–10 puzzles. Anyone can join by guessing."""
+    async def frog_start(self, ctx, rounds: int = DEFAULT_ROUNDS):
+        """Start a crossing with 10–20 puzzles (default 10). Anyone can guess."""
         await self._start(ctx, rounds)
 
     async def _start(self, ctx, rounds):
-        if not 3 <= rounds <= 10:
-            await ctx.send("Choose between **3 and 10** lily pads.")
+        if not MIN_ROUNDS <= rounds <= MAX_ROUNDS:
+            await ctx.send("Choose between **10 and 20** lily pads.")
             return
         if not self.bot.intents.message_content:
             await ctx.send("Enable **Message Content Intent** and restart the bot to read guesses.")
@@ -299,9 +332,10 @@ class FrogPond(commands.Cog):
                 await ctx.send(f"A frog is already crossing in <#{existing.channel.id}>.")
                 return
             seconds = await self.config.guild(ctx.guild).seconds()
+            puzzles = await self._draw_puzzles(ctx.guild, rounds)
             game = PondGame(
                 channel=ctx.channel, starter_id=ctx.author.id,
-                puzzles=random.sample(WORDS, rounds), seconds=seconds,
+                puzzles=puzzles, seconds=seconds,
                 golden_round=random.randrange(rounds),
             )
             self.games[ctx.guild.id] = game
@@ -338,7 +372,8 @@ class FrogPond(commands.Cog):
             "After the halfway hint: **2**; after the vowel hint: **1**. "
             "One **golden-fly** round doubles points. Solve at least **60%** of the "
             "puzzles together to get the frog home!\n"
-            f"`{prefix}frog` starts 5 rounds; `{prefix}frog start 10` starts 10.\n"
+            f"`{prefix}frog` starts 10 puzzles; `{prefix}frog start 20` starts 20.\n"
+            "The server's question deck cycles only after every answer is drawn.\n"
             f"`{prefix}frog top` shows server scores. Anyone can join by guessing."
         )
 
@@ -370,7 +405,8 @@ class FrogPond(commands.Cog):
         if not 10 <= seconds <= 60:
             await ctx.send("Choose between **10 and 60 seconds**.")
             return
-        await self.config.guild(ctx.guild).seconds.set(seconds)
+        async with self._data_lock:
+            await self.config.guild(ctx.guild).seconds.set(seconds)
         await ctx.send(f"🐸 Future crossings will allow **{seconds} seconds** per puzzle.")
 
     async def red_delete_data_for_user(self, *, requester, user_id):
@@ -384,3 +420,4 @@ class FrogPond(commands.Cog):
             for guild_id in await self.config.all_guilds():
                 async with self.config.guild_from_id(guild_id).scores() as scores:
                     scores.pop(str(user_id), None)
+
