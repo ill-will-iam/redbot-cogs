@@ -1,0 +1,21 @@
+{
+  "name": "AcroGame",
+  "short": "Acronym game with deleted chat submissions and anonymous voting.",
+  "description": "Players submit acronym answers as ordinary messages, which are deleted after capture. After 30 seconds, players vote for anonymous entries and cannot vote for themselves. Winners earn leaderboard points and optionally Red bank credits.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "game",
+    "acronym",
+    "voting",
+    "economy"
+  ],
+  "min_bot_version": "3.5.0",
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Persists Discord user IDs and game scores (wins/points). Keeps answer submissions and votes in memory for the duration of a round only; deletes original Discord chat submissions after capture.",
+  "install_msg": "AcroGame installed. Run [p]load acrogame and [p]acro start to begin."
+}
