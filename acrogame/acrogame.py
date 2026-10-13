@@ -154,13 +154,11 @@ class AcroGame(commands.Cog):
 
         try:
             await ctx.send(
-                f"**ACRONYM ROUND: {' · '.join(acronym)}**\n"
-                f"You have **{SUBMISSION_SECONDS} seconds**! Type one {len(acronym)}-word "
-                "phrase directly into this channel, one word per letter.\n"
-                "Example: `K · Z · P` could become `Kooky Zebras Party`\n"
-                "**Messages during the entry phase are immediately deleted**, "
-                "including invalid entries. Your most recent valid answer counts. "
-                "No forms, no DMs."
+                f"**ACRONYM ROUND**\n\n"
+                f"# {' · '.join(acronym)}\n\n"
+                f"⏱️ **{SUBMISSION_SECONDS} seconds to answer**\n"
+                f"Create a **{len(acronym)}-word phrase**, using the letters in order.\n\n"
+                "**Type your answer below!**"
             )
         except discord.HTTPException:
             self.rounds.pop(ctx.guild.id, None)
