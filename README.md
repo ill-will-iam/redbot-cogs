@@ -9,6 +9,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | `pp` | `$pp` | Sends `:pp1:`, 0–7 copies of `:pp2:`, and `:pp3:` without spaces or line breaks. |
 | `adminlog` | `$adminlog channel #admin-logs` | Logs member, message, voice, channel, role, and server changes. |
 | `frogpond` | `$frog` | Race to unscramble pond words, catch golden flies and help a frog hop home. |
+| `ribbit` | `$ribbit` | **The Royal Ribbit Reserve:** Ribbucks, catch/sell marsh critters, daily jobs, market and wallet/vault banking. |
 | `dailydrawings` | `$draw channel #daily-drawings` | Daily paper drawing topics, a 15-minute drawing window and community voting. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
