@@ -24,7 +24,7 @@ $ribbit
 
 | Command | Effect |
 | --- | --- |
-| `$ribbit catch` | One weighted catch every 15 minutes by default; a bee or wasp can sting |
+| `$ribbit catch` | One weighted marsh search every 15 minutes by default; 85% catches, 15% mishaps |
 | `$ribbit rates` | Odds and sell values for catches |
 | `$ribbit bag [@member]` | Inventory (caught creatures and cosmetic collectibles) |
 | `$ribbit sell housefly [qty]` | Sell a specified catch |
@@ -56,9 +56,11 @@ The shop items are collectible only: they do not grant Discord roles, special pe
 
 ### Catch probabilities
 
-Housefly 26%, Gnat 18%, Mosquito 14%, Moth 12%, Cricket 9%, Grasshopper 8%, Butterfly 5%, Dragonfly 3%, Firefly 2%, Royal Moth 1%, Bee 1%, Wasp 1%.
+**Edible catches (85% total):** Housefly 23% (6), Gnat 15% (3), Mosquito 12% (9), Moth 10% (15), Cricket 8% (25), Grasshopper 7% (40), Butterfly 4% (70), Dragonfly 3% (110), Firefly 2% (175), Royal Moth 1% (350). Figures in parentheses are Ribbucks earned when sold.
 
-Bee costs 5–15 Ribbucks; wasp costs 15–30, capped at current wallet balance. Sting catches produce no item. Positive catches go into inventory and yield credits **only when sold**.
+**Mishaps (15% total):** Bee 5% (lose 5–12 Ribbucks), Wasp 4% (lose 10–24), Fell in a Hole 4% (lose 7–20), Hit by a Car 2% (lose 25–60). Penalties are capped at the wallet's current balance, so a mishap cannot cause negative funds. Mishaps never produce an inventory item.
+
+Positive catches go into inventory and yield credits **only when sold**. The chance distribution totals exactly 100%.
 
 ## Integration with existing cogs
 
