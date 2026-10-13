@@ -1,1 +1,20 @@
+# Python cache and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Editor and test files
+.vscode/
+.idea/
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
 
