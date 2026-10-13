@@ -8,6 +8,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | `acrogame` | `[p]acro start` | Starts an acronym game using **3–5 random letters**, chat submissions, anonymous voting, and points. |
 | `pp` | `$pp` | Sends `:pp1:`, 0–7 copies of `:pp2:`, and `:pp3:` without spaces or line breaks. |
 | `adminlog` | `$adminlog channel #admin-logs` | Logs member, message, voice, channel, role, and server changes. |
+| `frogpond` | `$frog` | Race to unscramble pond words, catch golden flies and help a frog hop home. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -188,3 +189,27 @@ For ignored bots (and this bot itself), AdminLog retains up to 10,000 recent mes
 ## Refreshed trivia questions
 
 See [trivia_lists/README.md](trivia_lists/README.md) for the Lily Pad Trivia pack: 300 easy/medium questions across 10 broad topics, plus a combined `lily_mix` list. Upload `trivia_lists/lists/lily_mix.yaml` with `$triviaset custom upload` and play `$trivia lily_mix`. The full question/answer catalog and review notes are included. These custom lists work with the existing Trivia cog; bundled categories remain available under their old names.
+
+## Install Frog Pond
+
+Frog Pond is a lightweight frog rescue word game. Unscramble a nature word and
+type it in chat before the timer ends. The first correct guess earns points and
+moves the frog forward. Hints reduce the available points, and one golden-fly
+round doubles them. Solve at least 60% of a crossing together to get the frog home.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs frogpond
+$load frogpond
+$frog
+```
+
+Default: five puzzles, 25 seconds each. Use `$frog start 10` for a longer crossing,
+`$frog rules` for instructions, `$frog top` for the server leaderboard, and
+`$frog stop` to stop. Administrators can set the next game's timer with
+`$frog time 30`. There are 100 built-in clues, no API keys and no extra packages.
+Message Content Intent and permission to send messages/embeds are required.
+
+See [frogpond/README.md](frogpond/README.md) for scoring, privacy, permissions and
+AcroGame coexistence details. Creator and version appear in `$help frog`.
+
