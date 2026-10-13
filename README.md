@@ -5,6 +5,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | Cog | Command | Purpose |
 | --- | --- | --- |
 | `hellocog` | `[p]coghello` | Confirms the repository's sample cog is installed and loaded. |
+| `acrogame` | `[p]acro start` | Starts an acronym game using **3–5 random letters**, chat submissions, anonymous voting, and points. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -57,7 +58,7 @@ Each cog package belongs directly in the repository root.
 | `hellocog/hellocog.py` | The cog's Python implementation. |
 | `hellocog/info.json` | Cog metadata, requirements, and data statement. |
 
-A future acronym game could live in its own `acro` folder, beside `hellocog`, with the same three-file pattern. That game is not included in this starter.
+`acrogame/` is the acronym game package. Running `[p]acro start` chooses 3–5 random letters (not preset words). Players type their answers directly into the game channel; the bot stores and deletes those messages, then reveals anonymous submissions for voting after 30 seconds. Note that Discord messages may briefly appear before deletion.
 
 ## Add another cog
 
@@ -67,6 +68,17 @@ A future acronym game could live in its own `acro` folder, beside `hellocog`, wi
 4. Describe any stored user data accurately and implement Red's data-deletion hook if needed.
 5. Commit the files to GitHub.
 6. Run `[p]repo update redbot-cogs`, then `[p]cog install redbot-cogs acro` and `[p]load acro`.
+
+## Install AcroGame
+
+```text
+[p]repo update redbot-cogs
+[p]cog install redbot-cogs acrogame
+[p]load acrogame
+[p]acro start
+```
+
+To vote once submissions are revealed, use `[p]acro vote <number>`. Self-votes are rejected. The optional `[p]acro start KZP` form supplies a custom 3–5-letter prompt. The game awards leaderboard points, and optional Red economy credits can be configured with `[p]acro setcoins`.
 
 ## Update installed code
 
