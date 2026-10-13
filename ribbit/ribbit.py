@@ -107,19 +107,19 @@ class Ribbit(commands.Cog):
 
     @ribbit.command(name="rates", aliases=["critters", "catches"])
     async def rates(self, ctx):
-        """Show catch probabilities, sale values, and sting hazards."""
+        """Show catch odds, sale prices, and unlucky pond mishaps."""
         lines = []
         for key, item in CATCHES.items():
-            if "sting" in item:
-                lo, hi = item["sting"]
-                lines.append(f"{item['name']}: {item['weight']}% chance | sting: -{lo} to -{hi} Ribbucks")
+            if "penalty" in item:
+                lo, hi = item["penalty"]
+                lines.append(f"{item['name']}: {item['weight']}% chance | mishap: lose {lo}–{hi} Ribbucks")
             else:
                 lines.append(f"{item['name']}: {item['weight']}% chance | sells for {item['value']}")
         await ctx.send("**Marsh field guide**\n" + "\n".join(lines))
 
     @ribbit.command(name="catch", aliases=["flies", "hunt"])
     async def catch(self, ctx):
-        """Catch a random marsh critter; bad luck can sting."""
+        """Catch an edible critter or stumble into a pond mishap."""
         if not await self._ready(ctx):
             return
         async with self._lock(ctx.guild):
@@ -132,16 +132,15 @@ class Ribbit(commands.Cog):
                 return
             item_id = catch_random()
             item = CATCHES[item_id]
-            if "sting" in item:
-                lo, hi = item["sting"]
-                injury = random.randint(lo, hi)
-                balance = await bank.get_balance(ctx.author)
-                injury = min(injury, balance)
-                if injury:
-                    await bank.withdraw_credits(ctx.author, injury)
-                    await self._log(ctx.guild, f"stung:{item_id}", ctx.author.id, -injury)
-                msg = (f"A wild **{item['name']}** stung you! You lost **{injury} Ribbucks**."
-                       if injury else f"A wild **{item['name']}** chased you off! No catch, but you had no Ribbucks to lose.")
+            if "penalty" in item:
+                lo, hi = item["penalty"]
+                penalty = min(random.randint(lo, hi), await bank.get_balance(ctx.author))
+                if penalty:
+                    await bank.withdraw_credits(ctx.author, penalty)
+                await self._log(ctx.guild, f"mishap:{item_id}", ctx.author.id, -penalty)
+                result = (f"You lost **{penalty} Ribbucks**."
+                          if penalty else "You escaped without losing Ribbucks because your wallet was empty.")
+                msg = f"**Pond mishap: {item['name']}!** {item['incident']}\n{result} No catch this round."
             else:
                 async with conf.inventory() as inventory:
                     inventory[item_id] = int(inventory.get(item_id, 0)) + 1
