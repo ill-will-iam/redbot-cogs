@@ -198,7 +198,12 @@ class Ribbit(commands.Cog):
                 inv[k] -= v
                 if inv[k] <= 0:
                     del inv[k]
-            await conf.inventory.set(inv)
+            try:
+                await conf.inventory.set(inv)
+            except Exception:
+                # Restore the original credit balance if inventory persistence fails.
+                await bank.withdraw_credits(ctx.author, total)
+                raise
             await self._log(ctx.guild, "sell", ctx.author.id, total)
         await ctx.send(f"Sold **{sum(sold.values())} catches** for **{total} Ribbucks**. Ribbit!")
 
