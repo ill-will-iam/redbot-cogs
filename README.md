@@ -78,7 +78,7 @@ Each cog package belongs directly in the repository root.
 [p]acro start
 ```
 
-To vote once submissions are revealed, use `[p]acro vote <number>`. Self-votes are rejected. The optional `[p]acro start KZP` form supplies a custom 3–5-letter prompt. The game awards leaderboard points, and optional Red economy credits can be configured with `[p]acro setcoins`.
+When the submissions are revealed, **type only the number** of the entry you want to vote for (for example, `1`, `2`, or `3`) directly into the same channel. Your vote message is deleted after it is captured, self-votes are rejected, and you can change your vote until voting ends. The older `$acro vote <number>` command still works, but is no longer needed. To begin a game, use `$acro start`; `$acro start KZP` supplies custom 3–5-letter prompts. The game awards leaderboard points, and optional Red economy credits can be configured with `$acro setcoins`.
 
 ## Update installed code
 
