@@ -1,20 +1,36 @@
 """The Royal Ribbit Reserve's forage loot and cosmetic marketplace."""
 import random
 
-# Probability weights intentionally add up to 100.
+# Odds add to exactly 100: 85% edible catches, 15% setbacks.
+# Edible catches go into inventory and only generate credits when sold.
+# Mishaps never put anything in the inventory.
 CATCHES = {
-    "housefly": {"name": "Housefly", "weight": 26, "value": 10},
-    "gnat": {"name": "Gnat", "weight": 18, "value": 4},
-    "mosquito": {"name": "Mosquito", "weight": 14, "value": 8},
-    "moth": {"name": "Moth", "weight": 12, "value": 18},
-    "cricket": {"name": "Cricket", "weight": 9, "value": 25},
-    "grasshopper": {"name": "Grasshopper", "weight": 8, "value": 35},
-    "butterfly": {"name": "Butterfly", "weight": 5, "value": 55},
-    "dragonfly": {"name": "Dragonfly", "weight": 3, "value": 90},
-    "firefly": {"name": "Firefly", "weight": 2, "value": 125},
-    "royal_moth": {"name": "Royal Moth", "weight": 1, "value": 280},
-    "bee": {"name": "Bee", "weight": 1, "value": 0, "sting": (5, 15)},
-    "wasp": {"name": "Wasp", "weight": 1, "value": 0, "sting": (15, 30)},
+    "housefly": {"name": "Housefly", "weight": 23, "value": 6},
+    "gnat": {"name": "Gnat", "weight": 15, "value": 3},
+    "mosquito": {"name": "Mosquito", "weight": 12, "value": 9},
+    "moth": {"name": "Moth", "weight": 10, "value": 15},
+    "cricket": {"name": "Cricket", "weight": 8, "value": 25},
+    "grasshopper": {"name": "Grasshopper", "weight": 7, "value": 40},
+    "butterfly": {"name": "Butterfly", "weight": 4, "value": 70},
+    "dragonfly": {"name": "Dragonfly", "weight": 3, "value": 110},
+    "firefly": {"name": "Firefly", "weight": 2, "value": 175},
+    "royal_moth": {"name": "Royal Moth", "weight": 1, "value": 350},
+    "bee": {
+        "name": "Bee", "weight": 5, "value": 0, "penalty": (5, 12),
+        "incident": "You tried to munch a bee and got stung!",
+    },
+    "wasp": {
+        "name": "Wasp", "weight": 4, "value": 0, "penalty": (10, 24),
+        "incident": "A furious wasp chased you through the reeds and stung you!",
+    },
+    "fell_in_hole": {
+        "name": "Fell in a Hole", "weight": 4, "value": 0, "penalty": (7, 20),
+        "incident": "You missed a leap, fell in a hole, and had to pay for a rescue rope!",
+    },
+    "hit_by_car": {
+        "name": "Hit by a Car", "weight": 2, "value": 0, "penalty": (25, 60),
+        "incident": "You hopped across the road and got clipped by a passing car! The pond medic sent a bill.",
+    },
 }
 
 SHOP = {
@@ -34,6 +50,7 @@ WORK = (
     "counted the Reserve's emergency mosquito supply",
     "cleaned the pond's enchanted fountains",
 )
+
 
 def catch_random():
     names = list(CATCHES)
