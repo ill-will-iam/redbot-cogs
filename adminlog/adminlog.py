@@ -2,12 +2,14 @@
 
 import io
 import logging
+from collections import OrderedDict
 
 import discord
 from redbot.core import Config, commands
 
 
 log = logging.getLogger("red.illwill.adminlog")
+MAX_IGNORED_MESSAGES = 10000
 
 
 def label(value):
@@ -38,7 +40,31 @@ class AdminLog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=2026101308295901, force_registration=True)
-        self.config.register_guild(channel_id=None)
+        self.config.register_guild(channel_id=None, ignored_bot_ids=[])
+        self._ignored_messages = OrderedDict()
+
+    async def ignored_message(self, guild, message_id, author_id=None):
+        if self.bot.user and author_id == self.bot.user.id:
+            return True
+        if message_id in self._ignored_messages:
+            return True
+        return bool(author_id and author_id in await self.config.guild(guild).ignored_bot_ids())
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        """Remember ignored bot message IDs, never their contents."""
+        if not message.guild or not message.author.bot:
+            return
+        if await self.bot.cog_disabled_in_guild(self, message.guild):
+            return
+        if not await self.config.guild(message.guild).channel_id():
+            return
+        if not await self.ignored_message(message.guild, message.id, message.author.id):
+            return
+        self._ignored_messages[message.id] = (message.guild.id, message.author.id)
+        self._ignored_messages.move_to_end(message.id)
+        while len(self._ignored_messages) > MAX_IGNORED_MESSAGES:
+            self._ignored_messages.popitem(last=False)
 
     async def destination(self, guild):
         if not guild or await self.bot.cog_disabled_in_guild(self, guild):
@@ -131,8 +157,14 @@ class AdminLog(commands.Cog):
         else:
             destination = "Off" if channel_id is None else f"Configured channel {channel_id} no longer exists"
         intents = self.bot.intents
+        ignored = await self.config.guild(ctx.guild).ignored_bot_ids()
+        ignored_text = ", ".join(
+            identity(member) if (member := ctx.guild.get_member(bot_id)) else str(bot_id)
+            for bot_id in ignored
+        ) or "none"
         await ctx.send(
             f"**AdminLog**\nChannel: {destination}\n"
+            f"Ignored bot messages: {ignored_text}\n"
             f"Member events: {'on' if intents.members else 'OFF — enable Server Members Intent'}\n"
             f"Message text: {'on' if intents.message_content else 'OFF — enable Message Content Intent'}\n"
             f"Voice events: {'on' if intents.voice_states else 'OFF'}\n"
@@ -140,6 +172,28 @@ class AdminLog(commands.Cog):
             f"Message events: {'on' if intents.guild_messages else 'OFF'}\n"
             "Deleted text is available only for messages in the bot's cache."
         )
+
+    @adminlog.command(name="ignorebot")
+    async def ignore_bot(self, ctx, member: discord.Member):
+        """Ignore a bot's message deletions/edits: `[p]adminlog ignorebot @CatBot`."""
+        if not member.bot:
+            await ctx.send("Choose a bot member of this server.")
+            return
+        async with self.config.guild(ctx.guild).ignored_bot_ids() as ignored:
+            if member.id not in ignored:
+                ignored.append(member.id)
+        await ctx.send(f"Message deletions and edits from {label(member)} will be ignored.")
+
+    @adminlog.command(name="unignorebot")
+    async def unignore_bot(self, ctx, member: discord.Member):
+        """Resume logging a bot's message deletions and edits."""
+        async with self.config.guild(ctx.guild).ignored_bot_ids() as ignored:
+            if member.id in ignored:
+                ignored.remove(member.id)
+        for message_id, (guild_id, author_id) in list(self._ignored_messages.items()):
+            if guild_id == ctx.guild.id and author_id == member.id:
+                self._ignored_messages.pop(message_id, None)
+        await ctx.send(f"Message deletions and edits from {label(member)} will be logged again.")
 
     @adminlog.command(name="test")
     async def test_log(self, ctx):
@@ -247,7 +301,7 @@ class AdminLog(commands.Cog):
         if guild is None:
             return
         message = payload.cached_message
-        if message and self.bot.user and message.author.id == self.bot.user.id:
+        if await self.ignored_message(guild, payload.message_id, message.author.id if message else None):
             return
         details = f"Channel: <#{payload.channel_id}>\nMessage ID: {payload.message_id}"
         if message:
@@ -268,7 +322,7 @@ class AdminLog(commands.Cog):
             if self.game_suppresses_message(guild.id, payload.channel_id, message_id):
                 continue
             message = cached.get(message_id)
-            if message and self.bot.user and message.author.id == self.bot.user.id:
+            if await self.ignored_message(guild, message_id, message.author.id if message else None):
                 continue
             records.append(f"Message ID: {message_id}\n" + (
                 f"Author: {identity(message.author)}\n{message_text(message)}" if message else
@@ -292,7 +346,7 @@ class AdminLog(commands.Cog):
         before = payload.cached_message
         author = before.author if before else None
         author_id = author.id if author else int(payload.data.get("author", {}).get("id", 0))
-        if self.bot.user and author_id == self.bot.user.id:
+        if await self.ignored_message(guild, payload.message_id, author_id):
             return
         after_text = payload.data["content"] or "[No text content]"
         if before and before.content == payload.data["content"]:
@@ -358,6 +412,12 @@ class AdminLog(commands.Cog):
             await self.emit(after, "Server updated", "\n".join(changes))
 
     async def red_delete_data_for_user(self, *, requester, user_id):
-        # No per-user database or extra message cache is maintained by this cog.
+        for guild_id, record in (await self.config.all_guilds()).items():
+            if user_id in record.get("ignored_bot_ids", []):
+                async with self.config.guild_from_id(guild_id).ignored_bot_ids() as ignored:
+                    ignored.remove(user_id)
+        for message_id, (_, author_id) in list(self._ignored_messages.items()):
+            if author_id == user_id:
+                self._ignored_messages.pop(message_id, None)
         # Posted Discord records are managed by server administrators.
         return

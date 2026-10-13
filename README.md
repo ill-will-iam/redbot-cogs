@@ -171,3 +171,16 @@ $command enablecog AcroGame
 ```
 
 When Red processes a user-data deletion request, an active round involving that user as an author or voter is cancelled. The cog waits for the cancelled tasks to finish, then removes the user's leaderboard records from all servers. Leaderboard writes and deletion requests are serialized so an in-flight tally cannot recreate the removed record. Unrelated rounds keep running, and normal games can still award points.
+
+### Ignore automatic bot cleanup
+
+To omit CatBot's image deletions and edits while retaining human message records:
+
+```text
+$adminlog ignorebot @CatBot
+$adminlog status
+```
+
+Select the actual bot member when mentioning it. This setting is per server and persists across restarts. Use `$adminlog unignorebot @CatBot` to resume its message records. Member, voice and server events are not excluded by this setting.
+
+For ignored bots (and this bot itself), AdminLog retains up to 10,000 recent message IDs and their guild/author IDs in memory, without message contents. This lets it suppress automatic deletions even after the original message has left Red's cache. It cannot identify the author of an uncached deletion it never observed; configure the exclusion before triggering new bot replies. The ID registry resets on reload/restart. Existing posted logs are not removed.

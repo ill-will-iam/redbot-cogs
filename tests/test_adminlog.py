@@ -36,7 +36,8 @@ class AdminLogTests(unittest.IsolatedAsyncioTestCase):
         self.value = AsyncMock(return_value=20)
         self.value.set = AsyncMock()
         self.config = Mock()
-        self.config.guild.return_value = NS(channel_id=self.value)
+        self.ignored_bots = AsyncMock(return_value=[])
+        self.config.guild.return_value = NS(channel_id=self.value, ignored_bot_ids=self.ignored_bots)
         with patch.object(MODULE.Config, "get_conf", return_value=self.config):
             self.cog = MODULE.AdminLog(self.bot)
 
@@ -51,7 +52,8 @@ class AdminLogTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_loadable_commands_and_metadata(self):
         self.assertEqual(self.cog.adminlog.name, "adminlog")
-        self.assertEqual({c.name for c in self.cog.adminlog.commands}, {"channel", "status", "test", "off"})
+        self.assertEqual({c.name for c in self.cog.adminlog.commands},
+                         {"channel", "status", "test", "off", "ignorebot", "unignorebot"})
         self.assertTrue(self.cog.adminlog.requires.user_perms.manage_guild)
         self.assertIn("end_user_data_statement", json.loads((ROOT / "adminlog/info.json").read_text()))
 
