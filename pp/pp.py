@@ -32,5 +32,5 @@ class PP(commands.Cog):
 
         count = random.randint(0, 7)
         await ctx.send(
-            str(emojis["pp1"]) + str(emojis["pp2"]) * count + str(emojis["pp3"])
+            str(emojis[":pp1:"]) + str(emojis[":pp2:"]) * count + str(emojis[":pp3:"])
         )
