@@ -1,0 +1,19 @@
+{
+    "author": [
+        "CrunchBangDev",
+        "Zanidom",
+        "ill-will-iam"
+    ],
+    "name": "Markov",
+    "short": "Per-user Markov text models, chain stats, and admin user controls",
+    "description": "ZanCogs-compatible Markov with chain statistics, opt-out-respecting server admin enrollment and data deletion.",
+    "requirements": [],
+    "min_bot_version": "3.5.0",
+    "tags": [
+        "markov",
+        "fun",
+        "statistics"
+    ],
+    "type": "COG",
+    "end_user_data_statement": "Stores user message-derived Markov models (across guilds), opt-in/opt-out flags, user model settings, and per-server admin-enabled user IDs. Guild administrator enrollment is announced and optionally DM-notified. Users can opt out with markov disable and delete models with markov reset. The cog supports Red's user data deletion."
+}

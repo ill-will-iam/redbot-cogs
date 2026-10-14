@@ -13,6 +13,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | `frogcrib` | `$crib` / `$ribbit crib` | Two-player 121-point cribbage with private hands and capped Ribbucks rewards. |
 | `dailydrawings` | `$draw channel #daily-drawings` | Daily paper drawing topics, a 15-minute drawing window and community voting. |
 | `sanity` | `$sanity` | Random 0–100% sanity reading, a mini meter, and 30 silly quips. |
+| `markov` | `$markov stats` | Markov text modeling with chain size statistics and administrator-managed guild enrollment. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -263,3 +264,8 @@ $sanity
 ```
 
 Each `$sanity` run randomly generates a new score. Scores of 0–33 get a low-sanity quip, 34–66 a mid-sanity quip, and 67–100 a high-sanity quip. The cog saves no user data and needs no extra dependencies.
+
+
+## Markov chain statistics and manual enrollment
+
+This repository includes a compatibility fork of ZanCogs Markov. See [markov/README.md](markov/README.md) for behavior, opt-out safeguards, and important backup/switching instructions before replacing the installed ZanCogs package. New commands: `$markov stats`, `$markov stats @member`, `$markov statsall`, `$markov userenable @member`, `$markov userdisable @member`, and `$markov userlist`. Existing stored models use the unchanged Red Config identifier and `Markov` class.
