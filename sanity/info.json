@@ -1,0 +1,14 @@
+{
+  "name": "Sanity",
+  "short": "A random sanity percentage with funny quips.",
+  "description": "Use [p]sanity to roll a fresh 0–100% sanity score, show a 10-segment meter and receive a random quip for low, medium or high scores. Entertainment only; no stored data, cooldowns, API keys or dependencies.",
+  "author": ["Will"],
+  "requirements": [],
+  "tags": ["fun", "random", "sanity", "game"],
+  "min_bot_version": "3.5.0",
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "This cog does not store user data. Scores are randomly generated for each command and are not retained.",
+  "install_msg": "Sanity Check installed! Run [p]load sanity and use [p]sanity to roll your score."
+}
