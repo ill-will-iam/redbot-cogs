@@ -43,6 +43,12 @@ class AdminLog(commands.Cog):
         self.config.register_guild(channel_id=None, ignored_bot_ids=[])
         self._ignored_messages = OrderedDict()
 
+    async def ignored_bot_activity(self, guild, user):
+        """Ignore configured bots' own profile, member and voice updates per server."""
+        if not getattr(user, "bot", False):
+            return False
+        return user.id in await self.config.guild(guild).ignored_bot_ids()
+
     async def ignored_message(self, guild, message_id, author_id=None):
         if self.bot.user and author_id == self.bot.user.id:
             return True
@@ -164,7 +170,7 @@ class AdminLog(commands.Cog):
         ) or "none"
         await ctx.send(
             f"**AdminLog**\nChannel: {destination}\n"
-            f"Ignored bot messages: {ignored_text}\n"
+            f"Ignored bot activity: {ignored_text}\n"
             f"Member events: {'on' if intents.members else 'OFF — enable Server Members Intent'}\n"
             f"Message text: {'on' if intents.message_content else 'OFF — enable Message Content Intent'}\n"
             f"Voice events: {'on' if intents.voice_states else 'OFF'}\n"
@@ -175,25 +181,25 @@ class AdminLog(commands.Cog):
 
     @adminlog.command(name="ignorebot")
     async def ignore_bot(self, ctx, member: discord.Member):
-        """Ignore a bot's message deletions/edits: `[p]adminlog ignorebot @CatBot`."""
+        """Ignore a bot's message, profile, member and voice updates in this server."""
         if not member.bot:
             await ctx.send("Choose a bot member of this server.")
             return
         async with self.config.guild(ctx.guild).ignored_bot_ids() as ignored:
             if member.id not in ignored:
                 ignored.append(member.id)
-        await ctx.send(f"Message deletions and edits from {label(member)} will be ignored.")
+        await ctx.send(f"Message, profile, member and voice updates from {label(member)} will be ignored.")
 
     @adminlog.command(name="unignorebot")
     async def unignore_bot(self, ctx, member: discord.Member):
-        """Resume logging a bot's message deletions and edits."""
+        """Resume logging a bot's message, profile, member and voice updates."""
         async with self.config.guild(ctx.guild).ignored_bot_ids() as ignored:
             if member.id in ignored:
                 ignored.remove(member.id)
         for message_id, (guild_id, author_id) in list(self._ignored_messages.items()):
             if guild_id == ctx.guild.id and author_id == member.id:
                 self._ignored_messages.pop(message_id, None)
-        await ctx.send(f"Message deletions and edits from {label(member)} will be logged again.")
+        await ctx.send(f"Message, profile, member and voice updates from {label(member)} will be logged again.")
 
     @adminlog.command(name="test")
     async def test_log(self, ctx):
@@ -212,6 +218,8 @@ class AdminLog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
+        if await self.ignored_bot_activity(after.guild, after):
+            return
         changes = []
         if before.nick != after.nick:
             changes.append(f"Nickname: {label(before.nick or '[None]')} → {label(after.nick or '[None]')}")
@@ -239,7 +247,8 @@ class AdminLog(commands.Cog):
             changes.append("Profile avatar changed.")
         if changes:
             for guild in self.bot.guilds:
-                if guild.get_member(after.id):
+                member = guild.get_member(after.id)
+                if member and not await self.ignored_bot_activity(guild, member):
                     await self.emit(guild, "User profile updated", identity(after) + "\n" + "\n".join(changes))
 
     @commands.Cog.listener()
@@ -252,6 +261,8 @@ class AdminLog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        if await self.ignored_bot_activity(member.guild, member):
+            return
         changes = []
         if before.channel != after.channel:
             if before.channel is None:
