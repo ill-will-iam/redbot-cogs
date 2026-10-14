@@ -1,0 +1,12 @@
+{
+  "author": ["Will"],
+  "name": "FrogCrib",
+  "short": "Full two-player cribbage with Ribbit Ribbucks rewards.",
+  "description": "Traditional 121-point cribbage: private six-card hands, discards to dealer crib, starter cut, pegging, automatic scoring, statistics, and a configurable capped payout through The Royal Ribbit Reserve.",
+  "install_msg": "Load with `$load frogcrib`. For rewards, also load `ribbit` and run `$ribbit setup`. Start with `$crib challenge @member`. Players must allow DMs from the bot.",
+  "required_cogs": {},
+  "requirements": [],
+  "tags": ["games", "cards", "cribbage", "frogs", "economy", "ribbucks"],
+  "min_bot_version": "3.5.0",
+  "end_user_data_statement": "Stores each server member's cribbage games, wins, losses, total Ribbucks earned, and daily payout count/date. An active game's cards and participant IDs are kept only in memory until completion, inactivity, cancellation, or restart. Economic credits are held by Red's local bank through Ribbit."
+}

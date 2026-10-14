@@ -10,6 +10,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | `adminlog` | `$adminlog channel #admin-logs` | Logs member, message, voice, channel, role, and server changes. |
 | `frogpond` | `$frog` | Race to unscramble pond words, catch golden flies and help a frog hop home. |
 | `ribbit` | `$ribbit` | **The Royal Ribbit Reserve:** Ribbucks, catch/sell marsh critters, daily jobs, market and wallet/vault banking. |
+| `frogcrib` | `$crib` / `$ribbit crib` | Two-player 121-point cribbage with private hands and capped Ribbucks rewards. |
 | `dailydrawings` | `$draw channel #daily-drawings` | Daily paper drawing topics, a 15-minute drawing window and community voting. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.

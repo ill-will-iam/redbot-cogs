@@ -1,0 +1,22 @@
+name: Frog Cribbage checks
+on:
+  push:
+    paths:
+      - "frogcrib/**"
+      - "tests/test_frogcrib.py"
+      - ".github/workflows/frogcrib.yml"
+  pull_request:
+    paths:
+      - "frogcrib/**"
+      - "tests/test_frogcrib.py"
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run cribbage scoring and match tests
+        run: python -m unittest discover -s tests -p "test_frogcrib.py" -v

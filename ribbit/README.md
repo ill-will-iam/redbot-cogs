@@ -66,6 +66,7 @@ Positive catches go into inventory and yield credits **only when sold**. The cha
 
 - **AcroGame:** its existing `$acro setcoins <amount>` deposits into Red's native bank, the same Ribbucks wallet.
 - **FrogPond / DailyDrawings:** their code currently awards separate points/recognition; no Ribbucks payouts until those cogs are explicitly wired up.
+- **FrogCrib:** standard two-player 121-point cribbage with `$crib challenge @member`. Completed matches pay capped, configurable Ribbuck rewards through `Ribbit.award_for_game`. `$ribbit crib` provides the game entry command; no competing currency.
 - Other custom cogs may call `await bot.get_cog("Ribbit").award_for_game(member, amount, "game_name")`. This routine enforces the per-server enabled state, shared bank cap, and records the payout. It returns a boolean.
 - The Red stock **Economy** cog should stay unloaded to avoid competing `payday`, `slot` and `bank` interfaces.
 - The new cog registers the `ribbit` group (alias `rrr`), not generic top-level names such as `catch`, `shop`, or `bank`, to minimize command collisions. Short aliases can be made later via Red's Alias cog.

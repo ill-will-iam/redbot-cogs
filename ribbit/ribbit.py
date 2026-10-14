@@ -87,7 +87,7 @@ class Ribbit(commands.Cog):
             "`$ribbit balance [@member]` / `$ribbit pay @member <amount>`\n"
             "`$ribbit deposit <amount>` / `$ribbit withdraw <amount>`\n"
             "`$ribbit shop` / `$ribbit buy <item> [count]`\n"
-            "`$ribbit top` / `$ribbit rates`\n"
+            "`$ribbit top` / `$ribbit rates` / `$ribbit crib`\n"
             "Admin: `$ribbit setup`, `$ribbit config`, `$ribbit grant`, `$ribbit audit`."
         )
 
@@ -104,6 +104,19 @@ class Ribbit(commands.Cog):
             await bank.set_default_balance(0, ctx.guild)
             await self.config.guild(ctx.guild).enabled.set(True)
         await ctx.send(f"**{BANK_NAME} is OPEN!** All newly created accounts start with **0 {CURRENCY}**. Try `$ribbit catch`.")
+
+    @ribbit.command(name="crib")
+    async def crib_shortcut(self, ctx):
+        """Find the connected Frog Cribbage table."""
+        if self.bot.get_cog("FrogCrib") is None:
+            await ctx.send("Frog Cribbage is not loaded. Install `frogcrib` and run `$load frogcrib`.")
+            return
+        await ctx.send(
+            "**Frog Cribbage at the Royal Ribbit Reserve\n"
+            "Challenge another player with `$crib challenge @member`. "
+            "Use `$crib` for game commands. Completed games pay Ribbucks "
+            "through the Reserve; no wagers or entry fees."
+        )
 
     @ribbit.command(name="rates", aliases=["critters", "catches"])
     async def rates(self, ctx):
