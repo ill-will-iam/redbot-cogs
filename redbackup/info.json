@@ -1,0 +1,14 @@
+{
+  "name": "RedBackup",
+  "short": "Owner-only VPS-local Red recovery snapshots from Discord.",
+  "description": "Creates verified timestamped ZIP snapshots of Red's instance data, installed/custom cogs, and instance registration, with SQLite online snapshots, retention controls, and integrity checks. Archive creation is live and not a substitute for Red's offline backup procedure.",
+  "author": ["Will"],
+  "requirements": [],
+  "min_bot_version": "3.5.24",
+  "min_python_version": [3, 9, 0],
+  "tags": ["backup", "recovery", "owner", "administration"],
+  "type": "COG",
+  "hidden": false,
+  "disabled": false,
+  "end_user_data_statement": "Does not collect new user data; archives can contain existing personal information, bot credentials and settings held by other installed cogs. Backups are stored only on the VPS and are never sent into Discord. Only bot owners can invoke commands."
+}
