@@ -12,6 +12,7 @@ A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/sta
 | `ribbit` | `$ribbit` | **The Royal Ribbit Reserve:** Ribbucks, catch/sell marsh critters, daily jobs, market and wallet/vault banking. |
 | `frogcrib` | `$crib` / `$ribbit crib` | Two-player 121-point cribbage with private hands and capped Ribbucks rewards. |
 | `dailydrawings` | `$draw channel #daily-drawings` | Daily paper drawing topics, a 15-minute drawing window and community voting. |
+| `sanity` | `$sanity` | Random 0–100% sanity reading, a mini meter, and 30 silly quips. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
@@ -249,3 +250,16 @@ ineligible entries and `$draw off` to pause. See
 [dailydrawings/README.md](dailydrawings/README.md) for permissions, commands,
 scheduling/recovery details and the data statement.
 
+
+## Install Sanity Check
+
+Use the established repository on your bot:
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs sanity
+$load sanity
+$sanity
+```
+
+Each `$sanity` run randomly generates a new score. Scores of 0–33 get a low-sanity quip, 34–66 a mid-sanity quip, and 67–100 a high-sanity quip. The cog saves no user data and needs no extra dependencies.
