@@ -1,49 +1,50 @@
-# Haven — reversible Discord lockdown for Red-DiscordBot
+# Haven — reversible read-only server mode
 
-Haven is an **owner-only** channel visibility lockdown. It is NOT a server wipe,
-and **does not delete messages, channels, or roles, kick/ban members, revoke
-other admins, or grant anyone Administrator**.
+Haven temporarily blocks posting and reacting, including threads and speaking/
+streaming in voice channels, for non-administrators. It preserves who can see
+each channel, including private channels, and snapshots original permission
+overwrites for a reversible restoration.
 
-## Setup
+It never deletes channels, messages, roles, or members. It **does not remove
+Administrator roles**. Discord Administrators bypass channel overwrites and
+can still post or change permissions.
 
-Install from the existing cog repository:
+## Installation
 
 ```text
 $repo update redbot-cogs
 $cog install redbot-cogs haven
-$load haven
+$reload haven
 ```
 
-## Commands (the server owner only)
+## Access
 
-- `$haven inspect` — preview how many channels and overwrites need changes;
-  list administrator roles that will bypass lockdown.
-- `$haven seal` — prompts for `SEAL <server_id>` confirmation, then saves the
-  original overwrites and hides channels from non-administrators.
-- `$haven status` — reports whether an active snapshot exists.
-- `$haven restore` — prompts for `RESTORE <server_id>` confirmation, then
-  re-applies the saved permission overwrites and clears the snapshot upon
-  successful restoration.
+The actual Discord guild owner can always operate Haven. For another
+Administrator to run Haven, the guild owner must first authorize the account:
 
-## Important limitations
+```text
+$haven authorize @TrustedAdmin
+$haven revoke @TrustedAdmin
+```
 
-- Discord Administrator permissions **bypass** all channel overwrites. Other
-  administrators are not modified by this cog. Review roles using `inspect`.
-- The bot **must already** have the Administrator permission. It is never
-  granted by this cog.
-- Discord server ownership is permanent and belongs to the actual guild owner;
-  the bot does not acquire or transfer that status.
-- Channel/category changes made after sealing can conflict with restored
-  overwrites. Backup your Red data before large administrative changes.
-- This saves current channel permission overwrites, not a copy of server data.
-  It cannot recover deleted channels/messages.
-- Categories and channels synced to those categories are treated together to
-  avoid unnecessary channel/category permission desynchronization.
-- In rare cases a role/member or channel deleted since sealing cannot be
-  restored. Haven retains the snapshot when an error occurs.
-- Lockdown does not remove members from an existing voice connection, and
-  permissions can be cached briefly on clients. Audit logs show changes.
+Authorization applies only while that human member has Administrator.
 
-**Security:** Because each subcommand is checked against Discord's actual
-server owner ID, Red bot owners and arbitrary admins do not get access unless
-they are also the owner of that Discord server.
+## Commands
+
+```text
+$haven inspect
+$haven status
+$haven seal
+$haven restore
+```
+
+`seal` and `restore` require a follow-up confirmation with the guild ID.
+Haven saves a full permission overwrite snapshot before applying changes.
+If Discord rejects any permission changes, the snapshot is kept for recovery.
+
+Bot Administrator permission is required for consistent read-only and recovery
+behavior. Roles and users with Discord Administrator bypass channel overwrites.
+Synced channels are modified through categories to preserve sync relationships.
+Existing voice connections may remain active, and new channels created after
+a seal are not automatically included. Changes during lockdown can be undone
+by restoration because it reapplies the saved permission overwrites.

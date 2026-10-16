@@ -1,12 +1,18 @@
 {
   "name": "Haven",
-  "short": "Reversible owner-only server channel lockdown",
-  "description": "Hides server channels from non-administrators while preserving a permission snapshot for recovery. No deletion, hidden admin grants, or member removals.",
-  "end_user_data_statement": "Stores server channel IDs and channel permission overwrite snapshots needed for recovery. Does not retain user message content.",
-  "install_msg": "Use [p]haven inspect, then [p]haven seal, and [p]haven restore to recover. Only the actual server owner can use these commands.",
-  "author": ["ChatGPT"],
+  "short": "Reversible read-only lockdown with owner-delegated Administrator access",
+  "description": "Temporarily restricts posting and reactions while preserving private-channel visibility, with a snapshot to restore original overwrites. No role removal or deletion.",
+  "end_user_data_statement": "Stores guild permission-overwrite snapshots and IDs of owner-delegated administrator accounts to enable recovery and access checks.",
+  "install_msg": "Owner can allow a trusted Administrator using [p]haven authorize @member, then [p]haven inspect, [p]haven seal and [p]haven restore.",
+  "author": [
+    "ChatGPT"
+  ],
   "required_cogs": {},
   "requirements": [],
-  "tags": ["administration", "lockdown", "recovery"],
+  "tags": [
+    "administration",
+    "lockdown",
+    "recovery"
+  ],
   "min_bot_version": "3.5.0"
 }

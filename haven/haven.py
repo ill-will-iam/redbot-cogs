@@ -25,15 +25,21 @@ class Haven(commands.Cog):
         self.config = Config.get_conf(
             self, identifier=8481726062026, force_registration=True
         )
-        self.config.register_guild(snapshot=None, sealed=False)
+        self.config.register_guild(snapshot=None, sealed=False, delegates=[])
         self._locks: Dict[int, asyncio.Lock] = {}
 
     def _lock(self, guild_id: int) -> asyncio.Lock:
         return self._locks.setdefault(guild_id, asyncio.Lock())
 
     async def cog_check(self, ctx: commands.Context) -> bool:
-        # Discord guild ownership is checked, not just Red's "bot owner" role.
-        return ctx.guild is not None and ctx.author.id == ctx.guild.owner_id
+        """Only the guild owner or an explicitly delegated Administrator may use Haven."""
+        if ctx.guild is None:
+            return False
+        if ctx.author.id == ctx.guild.owner_id:
+            return True
+        if not ctx.author.guild_permissions.administrator:
+            return False
+        return ctx.author.id in await self.config.guild(ctx.guild).delegates()
 
     @staticmethod
     def _eligible_channels(guild: discord.Guild):
@@ -65,32 +71,84 @@ class Haven(commands.Cog):
 
     @classmethod
     def _targets(cls, guild: discord.Guild, channel) -> List[Tuple[OverwriteTarget, discord.PermissionOverwrite, bool]]:
+        """Track @everyone and every role/member overwrite that allows posting."""
         existing = channel.overwrites
-        result = []
-        # @everyone deny prevents ordinary public role access.
         everyone = guild.default_role
-        result.append((everyone, channel.overwrites_for(everyone), everyone in existing))
-
-        # Explicit member/role channel grants override @everyone denies. Remove
-        # only view grants for those explicit targets. Admins still bypass.
+        targets = [(everyone, channel.overwrites_for(everyone), everyone in existing)]
+        readonly_flags = (
+            "send_messages", "send_messages_in_threads", "send_tts_messages",
+            "add_reactions", "create_public_threads", "create_private_threads",
+            "speak", "stream", "request_to_speak", "send_voice_messages",
+            "use_soundboard", "use_external_sounds", "send_polls", "create_polls",
+            "manage_messages", "manage_threads", "manage_webhooks",
+        )
         for target, overwrite in existing.items():
-            if target.id == everyone.id and isinstance(target, discord.Role):
+            if target == everyone:
                 continue
-            if cls._target_is_administrator(target):
-                continue
-            if overwrite.view_channel is True:
-                result.append((target, overwrite, True))
-        return result
+            if any(
+                flag in discord.Permissions.VALID_FLAGS and getattr(overwrite, flag, None) is True
+                for flag in readonly_flags
+            ):
+                targets.append((target, overwrite, True))
+        return targets
+
+    @staticmethod
+    def _read_only_overwrite(target, original, everyone):
+        updated = discord.PermissionOverwrite.from_pair(*original.pair())
+        readonly_flags = (
+            "send_messages", "send_messages_in_threads", "send_tts_messages",
+            "add_reactions", "create_public_threads", "create_private_threads",
+            "speak", "stream", "request_to_speak", "send_voice_messages",
+            "use_soundboard", "use_external_sounds", "send_polls", "create_polls",
+            "manage_messages", "manage_threads", "manage_webhooks",
+        )
+        for flag in readonly_flags:
+            if flag in discord.Permissions.VALID_FLAGS and (
+                target == everyone or getattr(original, flag, None) is True
+            ):
+                setattr(updated, flag, False)
+        # Do not alter view_channel: private channels remain private.
+        return updated
 
     @commands.group(name="haven", invoke_without_command=True)
     @commands.guild_only()
     async def haven(self, ctx: commands.Context):
-        """Server owner utilities: inspect, seal, restore, status."""
+        """Owner/delegated Administrator: inspect, seal, restore, status."""
         await ctx.send(
-            "**Haven** — reversible server lockdown. Commands: "
+            "**Haven** — reversible read-only server mode: "
             "`haven inspect`, `haven seal`, `haven restore`, `haven status`. "
-            "No members, roles, channels, or messages are deleted."
+            "Owner-only delegation: `haven authorize @member` and "
+            "`haven revoke @member`. No roles, channels, members, or messages are deleted."
         )
+
+    @haven.command(name="authorize")
+    async def haven_authorize(self, ctx: commands.Context, member: discord.Member):
+        """Server owner: explicitly authorize a current Administrator to operate Haven."""
+        if ctx.author.id != ctx.guild.owner_id:
+            await ctx.send("Only the server owner can delegate Haven access.")
+            return
+        if not member.guild_permissions.administrator or member.bot:
+            await ctx.send("Choose a human member with the Administrator permission.")
+            return
+        async with self._lock(ctx.guild.id):
+            ids = await self.config.guild(ctx.guild).delegates()
+            if member.id not in ids:
+                ids.append(member.id)
+                await self.config.guild(ctx.guild).delegates.set(ids)
+        await ctx.send(f"{member.mention} is now authorized to operate Haven.")
+
+    @haven.command(name="revoke")
+    async def haven_revoke(self, ctx: commands.Context, member: discord.Member):
+        """Server owner: revoke Haven operating authorization."""
+        if ctx.author.id != ctx.guild.owner_id:
+            await ctx.send("Only the server owner can revoke Haven access.")
+            return
+        async with self._lock(ctx.guild.id):
+            ids = await self.config.guild(ctx.guild).delegates()
+            await self.config.guild(ctx.guild).delegates.set(
+                [member_id for member_id in ids if member_id != member.id]
+            )
+        await ctx.send(f"{member.mention}'s Haven authorization was revoked.")
 
     @haven.command(name="inspect")
     async def haven_inspect(self, ctx: commands.Context):
@@ -106,11 +164,12 @@ class Haven(commands.Cog):
             f"**Haven preview for {discord.utils.escape_markdown(guild.name)}**\n"
             f"Channels/categories to update: **{len(independent)}**\n"
             f"Permission overwrites to save: **{grants}**\n"
-            f"Administrator roles (will remain able to view channels): "
+            f"Administrator roles (will retain Administrator privileges): "
             f"**{admin_list}**\n"
-            "This will hide channels from non-admins, not remove members or roles. "
-            "Category-synced channels are covered through their category. "
-            "Member/role changes after a seal may complicate restoration."
+            "This will make channels read-only for non-administrators, while "
+            "preserving channel visibility and private channel access. "
+            "Discord Administrators bypass channel overwrites and remain able to post. "
+            "Category-synced channels are covered through their category."
         )
 
     @haven.command(name="status")
@@ -130,7 +189,7 @@ class Haven(commands.Cog):
 
     @haven.command(name="seal")
     async def haven_seal(self, ctx: commands.Context):
-        """Hide all channels from non-administrators, with a recovery snapshot."""
+        """Make channels read-only for non-administrators with a recovery snapshot."""
         guild = ctx.guild
         me = guild.me
         if me is None or not me.guild_permissions.administrator:
@@ -146,11 +205,11 @@ class Haven(commands.Cog):
                 return
 
             await ctx.send(
-                f"**CONFIRM SERVER LOCKDOWN** for `{guild.name}`.\n"
-                f"Reply with `SEAL {guild.id}` within 45 seconds. This hides "
-                "channels from ordinary members; **it does not remove other "
-                "administrators**, who bypass channel permissions. "
-                "Nothing is deleted."
+                f"**CONFIRM READ-ONLY LOCKDOWN** for `{guild.name}`.\n"
+                f"Reply with `SEAL {guild.id}` within 45 seconds. "
+                "Non-administrators will be unable to post or react, but will "
+                "keep their current channel visibility. Administrators bypass "
+                "the restrictions. No roles or server contents are deleted."
             )
 
             def check(message: discord.Message) -> bool:
@@ -186,14 +245,11 @@ class Haven(commands.Cog):
             errors = []
             for channel, targets in plan:
                 for target, original, _ in targets:
-                    new = discord.PermissionOverwrite.from_pair(*original.pair())
-                    new.view_channel = False
-                    new.send_messages = False
-                    new.connect = False
+                    new = self._read_only_overwrite(target, original, guild.default_role)
                     try:
                         await channel.set_permissions(
                             target, overwrite=new,
-                            reason=f"Haven lockdown initiated by guild owner {ctx.author.id}",
+                            reason=f"Haven read-only lockdown initiated by {ctx.author.id}",
                         )
                         changed += 1
                     except (discord.Forbidden, discord.HTTPException) as exc:
@@ -270,7 +326,7 @@ class Haven(commands.Cog):
                     try:
                         await channel.set_permissions(
                             target, overwrite=original,
-                            reason=f"Haven permissions restored by guild owner {ctx.author.id}",
+                            reason=f"Haven permissions restored by {ctx.author.id}",
                         )
                         restored += 1
                     except (discord.Forbidden, discord.HTTPException) as exc:
