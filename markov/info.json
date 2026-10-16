@@ -5,8 +5,8 @@
         "ill-will-iam"
     ],
     "name": "Markov",
-    "short": "Per-user Markov text models, chain stats, and admin user controls",
-    "description": "ZanCogs-compatible Markov with chain statistics, opt-out-respecting server admin enrollment and data deletion.",
+    "short": "Per-user Markov models, chain stats, admin controls, and channel-wide auto-modeling",
+    "description": "ZanCogs-compatible Markov with chain statistics, opt-out-respecting administrator enrollment, channel-wide auto-modeling for future messages, and data deletion.",
     "requirements": [],
     "min_bot_version": "3.5.0",
     "tags": [
@@ -15,5 +15,5 @@
         "statistics"
     ],
     "type": "COG",
-    "end_user_data_statement": "Stores user message-derived Markov models (across guilds), opt-in/opt-out flags, user model settings, and per-server admin-enabled user IDs. Guild administrator enrollment is announced and optionally DM-notified. Users can opt out with markov disable and delete models with markov reset. The cog supports Red's user data deletion."
+    "end_user_data_statement": "Stores per-user message-derived Markov models (which can combine messages across guilds), opt-in/opt-out flags, user model settings, per-server manually enabled user IDs, and per-server channel IDs enabled for all non-bot members. Admins can enable learning for all members in specified channels without asking each user to opt in. No message history is imported. Explicit user opt-outs are respected; users can opt out with markov disable and delete existing models with markov reset. Administrator enrollment can send a DM. The cog implements Red's user data deletion."
 }
