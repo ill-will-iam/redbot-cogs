@@ -27,7 +27,9 @@ class Markov(commands.Cog):
         self.conf.register_user(
             chains={}, chain_depth=1, mode="word", enabled=False, opted_out=False
         )
-        self.conf.register_guild(channels=[], admin_enabled_users=[])
+        self.conf.register_guild(
+            channels=[], admin_enabled_users=[], everyone_channels=[]
+        )
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -41,11 +43,19 @@ class Markov(commands.Cog):
             return
 
         if message.guild is not None:
-            enabled_channels = await self.conf.guild(message.guild).channels()
-            if enabled_channels and message.channel.id not in enabled_channels:
+            guild_settings = self.conf.guild(message.guild)
+            enabled_channels = await guild_settings.channels()
+            everyone_channels = await guild_settings.everyone_channels()
+            if (
+                enabled_channels
+                and message.channel.id not in enabled_channels
+                and message.channel.id not in everyone_channels
+            ):
                 return
 
-        enabled, chains, depth, mode = await self.get_user_config(message.author, guild=message.guild)
+        enabled, chains, depth, mode = await self.get_user_config(
+            message.author, guild=message.guild, channel_id=message.channel.id
+        )
                                                             
         if not enabled:
             return
@@ -283,6 +293,53 @@ class Markov(commands.Cog):
             "\n".join(display)[:1750]
         )
 
+    @checks.admin_or_permissions(manage_guild=True)
+    @commands.guild_only()
+    @markov.command(name="everyone")
+    async def everyone(
+        self, ctx: commands.Context, channel: discord.TextChannel, state: str = "on"
+    ):
+        """Enable modeling of every non-opted-out member in one channel.
+
+        Usage:
+        - [p]markov everyone #channel
+        - [p]markov everyone #channel off
+
+        Does not fetch old messages, enroll bots, or override an explicit opt-out.
+        This setting is saved per server and applies to future members.
+        """
+        state = state.lower()
+        if state not in ("on", "off", "enable", "disable"):
+            await ctx.send(
+                f"Use `{ctx.clean_prefix}markov everyone #channel [on|off]`."
+            )
+            return
+
+        enable = state in ("on", "enable")
+        async with self.conf.guild(ctx.guild).everyone_channels() as channel_ids:
+            already_enabled = channel.id in channel_ids
+            if enable and not already_enabled:
+                channel_ids.append(channel.id)
+            elif not enable and already_enabled:
+                channel_ids.remove(channel.id)
+
+        if enable:
+            status = "already enabled" if already_enabled else "now enabled"
+            await ctx.send(
+                f"Automatic Markov modeling is **{status}** for all non-bot "
+                f"members posting in {channel.mention}. Only future messages "
+                "are collected. Members who explicitly opted out remain excluded; "
+                f"any member can opt out with `{ctx.clean_prefix}markov disable`."
+            )
+        else:
+            status = "now disabled" if already_enabled else "already disabled"
+            await ctx.send(
+                f"Automatic Markov modeling for all members in "
+                f"{channel.mention} is **{status}**. Users who were individually "
+                "enabled may still be modeled under the existing settings. "
+                "No stored models were deleted."
+            )
+
     @staticmethod
     def _human_bytes(size: int) -> str:
         value = float(size)
@@ -430,26 +487,47 @@ class Markov(commands.Cog):
     async def channelstatus(self, ctx: commands.Context):
         """Display the status of all channels in terms of modeling."""
         enabled_channel_ids = set(await self.conf.guild(ctx.guild).channels())
-        enabled_lines = [f"{ch.name}: On" for ch in ctx.guild.text_channels if ch.id in enabled_channel_ids]
-
-        status_output = "\n".join(enabled_lines) if enabled_lines else "(none)"
-        await ctx.send(f"Modeling Status - Enabled:\n```{status_output}```")
+        everyone_channel_ids = set(await self.conf.guild(ctx.guild).everyone_channels())
+        enabled_lines = [
+            ch.mention for ch in ctx.guild.text_channels if ch.id in enabled_channel_ids
+        ]
+        everyone_lines = [
+            ch.mention for ch in ctx.guild.text_channels if ch.id in everyone_channel_ids
+        ]
+        standard = ", ".join(enabled_lines) if enabled_lines else "All channels (for individually enabled users)"
+        everyone = ", ".join(everyone_lines) if everyone_lines else "(none)"
+        await ctx.send(
+            (f"**Markov channel status**\\n"
+             f"Enabled users: {standard}\\n"
+             f"Everyone (except opt-outs): {everyone}")[:1900]
+        )
 
     async def get_user_config(
         self,
         user: discord.abc.User,
         lazy: bool = True,
         guild: Optional[discord.Guild] = None,
+        channel_id: Optional[int] = None,
     ) -> Tuple[bool, AllUserChains, int, str]:
-        """Read user data; effective enabled includes guild admin overrides.
+        """Read user data, including guild admin and channel-wide enables.
 
-        An explicit user opt-out always wins. Admin enable never applies to DMs.
+        An explicit opt-out always wins. Guild settings never apply to DMs.
+        For guild commands without a channel_id, any everyone-enabled channel
+        permits generating from existing models.
         """
         user_config = self.conf.user(user)
         opted_out = await user_config.opted_out()
         enabled = (await user_config.enabled()) and not opted_out
         if not enabled and not opted_out and guild is not None:
-            enabled = user.id in await self.conf.guild(guild).admin_enabled_users()
+            guild_settings = self.conf.guild(guild)
+            enabled = user.id in await guild_settings.admin_enabled_users()
+            if not enabled:
+                everyone_channels = await guild_settings.everyone_channels()
+                enabled = (
+                    channel_id in everyone_channels
+                    if channel_id is not None
+                    else bool(everyone_channels)
+                )
         if lazy and not enabled:
             return (False, {}, 1, "word")
 
