@@ -497,8 +497,8 @@ class Markov(commands.Cog):
         standard = ", ".join(enabled_lines) if enabled_lines else "All channels (for individually enabled users)"
         everyone = ", ".join(everyone_lines) if everyone_lines else "(none)"
         await ctx.send(
-            (f"**Markov channel status**\\n"
-             f"Enabled users: {standard}\\n"
+            (f"**Markov channel status**\n"
+             f"Enabled users: {standard}\n"
              f"Everyone (except opt-outs): {everyone}")[:1900]
         )
 
