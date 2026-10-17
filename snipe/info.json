@@ -1,0 +1,21 @@
+{
+  "name": "Snipe",
+  "short": "Show recently deleted messages in a Discord channel.",
+  "description": "A moderator-only, channel-specific deleted-message viewer. Use [p]snipe for the latest deletion, [p]snipe <count> to browse up to 50, [p]snipe clear to erase all cached deletions in the server, or [p]snipe clear here to erase only the current channel. Includes cached bulk deletions. Content must have been in the bot's Discord message cache before deletion.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "moderation",
+    "snipe",
+    "deleted messages",
+    "utilities"
+  ],
+  "min_bot_version": "3.5.0",
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Keeps up to 50 recently deleted cached messages per guild channel in volatile memory for at most 24 hours. Stored data includes author ID and display name, deleted text, attachment names and URLs, sticker names, message ID and deletion time. Nothing is written to disk. Administrators can clear the server cache with [p]snipe clear; Red's end-user deletion requests are honored. Restarting or reloading the cog discards the cache.",
+  "install_msg": "Snipe installed. Run [p]load snipe. Moderators can use [p]snipe or [p]snipe 5; administrators can use [p]snipe clear. Message Content Intent must be enabled for text capture."
+}
