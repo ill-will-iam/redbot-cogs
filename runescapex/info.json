@@ -1,0 +1,10 @@
+{
+  "name": "RuneScapeX",
+  "short": "Detailed RuneScape 3 and OSRS public hiscores, PvM, clues, and OSRS GE data.",
+  "description": "A non-conflicting companion for existing RuneScape cogs. Public Jagex hiscores and OSRS Wiki real-time Grand Exchange API, persistent gain snapshots, skills, bosses, clues, comparisons, and item search. No API key required.",
+  "author": ["ill-will-iam"],
+  "requirements": [],
+  "tags": ["runescape", "osrs", "rs3", "hiscores", "grand exchange"],
+  "min_bot_version": "3.5.0",
+  "install_msg": "Load with [p]load runescapex, then use [p]rsx. This installs alongside your existing runescape cog without replacing it."
+}
