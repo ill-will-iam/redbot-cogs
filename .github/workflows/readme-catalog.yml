@@ -1,0 +1,28 @@
+name: README cog catalog
+
+on:
+  push:
+    paths:
+      - "README.md"
+      - "*/info.json"
+      - "*/__init__.py"
+      - "tests/test_readme_catalog.py"
+      - ".github/workflows/readme-catalog.yml"
+  pull_request:
+    paths:
+      - "README.md"
+      - "*/info.json"
+      - "*/__init__.py"
+      - "tests/test_readme_catalog.py"
+      - ".github/workflows/readme-catalog.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify all cog packages appear in the README
+        run: python3 -m unittest discover -s tests -p test_readme_catalog.py -v
