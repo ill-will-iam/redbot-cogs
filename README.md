@@ -1,57 +1,45 @@
 # Redbot Cogs
 
-A starter repository for custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs.
+Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy. This repository includes games, moderation, backups, an economy, and utility tools. The catalog below tracks the cog packages on the `main` branch.
 
 | Cog | Command | Purpose |
 | --- | --- | --- |
-| `hellocog` | `[p]coghello` | Confirms the repository's sample cog is installed and loaded. |
-| `acrogame` | `[p]acro start` | Starts an acronym game using **3–5 random letters**, chat submissions, anonymous voting, and points. |
-| `pp` | `$pp` | Sends `:pp1:`, 0–7 copies of `:pp2:`, and `:pp3:` without spaces or line breaks. |
-| `adminlog` | `$adminlog channel #admin-logs` | Logs member, message, voice, channel, role, and server changes. |
-| `frogpond` | `$frog` | Race to unscramble pond words, catch golden flies and help a frog hop home. |
-| `ribbit` | `$ribbit` | **The Royal Ribbit Reserve:** Ribbucks, catch/sell marsh critters, daily jobs, market and wallet/vault banking. |
-| `frogcrib` | `$crib` / `$ribbit crib` | Two-player 121-point cribbage with private hands and capped Ribbucks rewards. |
-| `dailydrawings` | `$draw channel #daily-drawings` | Daily paper drawing topics, a 15-minute drawing window and community voting. |
-| `sanity` | `$sanity` | Random 0–100% sanity reading, a mini meter, and 30 silly quips. |
-| `markov` | `$markov stats` | Markov text modeling with chain size statistics and administrator-managed guild enrollment. |
+| [`hellocog`](hellocog/) | `$coghello` | Simple installation smoke test. |
+| [`acrogame`](acrogame/) | `$acro start` | Acronym game with private submissions, voting, and leaderboard. |
+| [`adminlog`](adminlog/) | `$adminlog status` | Logs server, member, message, role, channel and voice changes. |
+| [`dailydrawings`](dailydrawings/) | `$draw status` | Scheduled physical-paper drawing prompts, entries and voting. |
+| [`frogcrib`](frogcrib/) | `$crib challenge @member` | Two-player 121-point cribbage with optional Ribbucks rewards. |
+| [`frogpond`](frogpond/) | `$frog` | Timed word unscrambling with frog-themed points and challenges. |
+| [`haven`](haven/) | `$haven inspect` | Reversible read-only lockdown while preserving channel visibility. |
+| [`markov`](markov/) | `$markov stats` | Markov models, size reports, admin enrollment and channel modeling. |
+| [`pp`](pp/) | `$pp` | Random-length custom emoji chain. |
+| [`redbackup`](redbackup/) | `$backup` | VPS-local live backup snapshots, integrity checks and retention. |
+| [`ribbit`](ribbit/) | `$ribbit` | Royal Ribbit Reserve frog economy using Ribbucks. |
+| [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
+| [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
+| [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
 
-## Put this repository on GitHub
+## Install a cog
 
-1. Sign in and open [GitHub's new repository page](https://github.com/new).
-2. Name the repository `redbot-cogs` and add the description `Custom cogs for Red-DiscordBot.`
-3. Choose **Public** if you want easy installation through Red's Downloader without Git authentication. Public repositories expose their files to everyone. A private repository needs Git authentication configured on the machine running Red.
-4. Turn **Add README** on so the repository is initialized. Leave **Add .gitignore** set to **None**; a starter ignore file is included here.
-5. Choose a license if you are ready to allow others to use your code under it. For an open source project, **MIT** is one common option. You can also leave the license unset and decide later.
-6. Click **Create repository**.
-7. Extract `redbot-cogs-starter.zip`. In the repository, choose **Add file → Upload files**.
-8. Drag the **contents** of the extracted `redbot-cogs` folder into the uploader. Keep the `hellocog` folder intact. Upload `.gitignore`, `README.md`, and the root `info.json` beside that folder. Do not upload the ZIP or place everything inside another `redbot-cogs` folder.
-9. If the uploader reports that `README.md` will be replaced, that is expected: this README replaces the initial generated one.
-10. Enter the commit message `Add starter Red cog repository`, choose to commit directly to the default branch for this initial setup, and save the commit.
-11. Confirm that the main repository page lists `hellocog`, `info.json`, and `README.md` at its top level. If `.gitignore` was skipped by your file picker, use **Add file → Create new file** to add it.
-12. Edit the `author` list in each `info.json` if you prefer another author name.
-
-A **commit** is a saved change in the repository's history.
-
-## Install the sample cog
-
-As the bot owner, run these commands in Discord. Replace `YOUR_USERNAME` with your GitHub username and `[p]` with your bot's prefix:
+For an existing Fatboy installation using the `$` prefix, Red's Downloader should already have this repository registered. To add a cog such as Snipe:
 
 ```text
-[p]load downloader
-[p]repo add redbot-cogs https://github.com/YOUR_USERNAME/redbot-cogs
-[p]cog list redbot-cogs
-[p]cog install redbot-cogs hellocog
-[p]load hellocog
-[p]coghello
+$load downloader
+$repo update redbot-cogs
+$cog install redbot-cogs snipe
+$load snipe
+$help snipe
 ```
 
-The final command should reply:
+If the repository isn't registered yet, first run:
 
-> Your Red cog repository is working!
+```text
+$repo add redbot-cogs https://github.com/ill-will-iam/redbot-cogs
+```
 
-If Downloader requests confirmation, read its prompt and confirm to continue.
+Replace `snipe` with any cog package name in the catalog. Cog commands require the relevant roles, permissions and Discord intents described in their docs. Always review a cog's `info.json` and `README.md` before installing.
 
 ## Repository layout
 
@@ -104,9 +92,11 @@ Follow Red's reload prompt if it appears. If you need to reload manually, run `[
 
 Commit cog source files and documentation. Keep bot tokens, API keys, passwords, and Red's live data directory outside the repository. Git's ignore rules do not prevent you from manually uploading a file through GitHub's website.
 
-## Validation
+## Validation and documentation
 
-This starter's Python syntax, JSON metadata, package structure, and ZIP integrity were checked. It has not been run against a live Red instance; the `coghello` command above provides that check on your bot.
+Each cog has a `info.json` manifest. Some cogs also have their own `README.md` with full setup, security and data-handling details. Tests under `tests/` cover selected modules, but a successful GitHub commit does not guarantee live Redbot integration. Test new or updated cogs on your running bot.
+
+**Documentation maintenance:** GitHub does not regenerate this file when a cog is created or modified. Add new cogs to the catalog and update their command descriptions in the same commit as code changes; the README catalog check in CI catches unlisted cog packages.
 
 ## References
 
@@ -269,3 +259,80 @@ Each `$sanity` run randomly generates a new score. Scores of 0–33 get a low-sa
 ## Markov chain statistics and manual enrollment
 
 This repository includes a compatibility fork of ZanCogs Markov. See [markov/README.md](markov/README.md) for behavior, opt-out safeguards, and important backup/switching instructions before replacing the installed ZanCogs package. New commands: `$markov stats`, `$markov stats @member`, `$markov statsall`, `$markov userenable @member`, `$markov userdisable @member`, and `$markov userlist`. Existing stored models use the unchanged Red Config identifier and `Markov` class.
+
+## Frog Cribbage
+
+Play traditional two-player cribbage using `$crib challenge @member`. Full rules, configurable rewards, match stats and safeguards are documented in [frogcrib/README.md](frogcrib/README.md). If `ribbit` is loaded and configured, completed matches can award Ribbucks. Hands are sent privately by DM.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs frogcrib
+$load frogcrib
+$crib challenge @member
+```
+
+## Haven
+
+Haven provides a **reversible, read-only server mode** with saved channel permission overwrites and an explicit restore path. It never deletes channels, members, or roles and does **not** revoke Administrator permissions (Discord administrators bypass channel overwrites). The Discord server owner can authorize trusted administrators to operate it.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs haven
+$load haven
+$haven inspect
+$haven seal
+$haven restore
+```
+
+Read [haven/README.md](haven/README.md) for the required permissions, confirmation flow, limitations, and safe recovery procedure before activating a lockdown.
+
+## RedBackup
+
+RedBackup creates verified, timestamped, local VPS ZIP snapshots of Red's instance data and registered cog paths. It is **bot-owner-only** and does not send backups to Discord or off-server storage.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs redbackup
+$load redbackup
+$backup
+$backup list
+$backup verify
+$backup path
+```
+
+**Important:** live snapshots are not guaranteed to be atomic. Protect the backups because they can contain tokens and user data. For a critical restoration point, read the offline backup and restoration guidance in [redbackup/README.md](redbackup/README.md).
+
+## RuneScapeX — Old School RuneScape only
+
+RuneScapeX uses public Old School RuneScape hiscores and OSRS Wiki Grand Exchange data. It supports skill ranks, levels and XP, boss/clue rankings, player comparison, price lookup and gains since the last snapshot. It has no RS3 commands and needs no API key.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs runescapex
+$load runescapex
+$rsx help
+$rsx profile Zezima
+$rsx price Abyssal whip
+```
+
+See [runescapex/README.md](runescapex/README.md) for the command catalog, aliases, caching and API caveats.
+
+## Snipe — recently deleted messages
+
+Moderators can view the most recently deleted **cached** message in the current channel. Supplying a number displays a paginated viewer for up to 50 messages. A server administrator can clear the stored history.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs snipe
+$load snipe
+$snipe
+$snipe 5
+$snipe clear
+$snipe clear here
+```
+
+- History is isolated by server and channel, kept in RAM, capped at 50 entries per channel, and expires after 24 hours.
+- `$snipe` requires moderator privileges or Manage Messages. `$snipe clear` and `$snipe clear here` require administrator privileges or Manage Server.
+- Text is recoverable only for messages that were in the running bot's Discord message cache. Deleted attachments are shown as links that might expire; missing/uncached messages cannot be reconstructed. Enable Message Content Intent and allow the bot to read channels and send embeds.
+- Cache history disappears on a bot restart or cog reload; clearing deletes entries immediately from the in-memory store.
+
