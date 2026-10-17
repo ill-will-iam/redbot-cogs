@@ -1,4 +1,4 @@
-"""Pure RuneScape hiscores/GE helpers. Kept free of Discord imports for testing."""
+"""Pure OSRS hiscores/GE helpers. Kept free of Discord imports for testing."""
 import math
 import re
 from datetime import datetime, timezone
@@ -9,14 +9,6 @@ OSRS_SKILL_ORDER = (
     'Firemaking', 'Crafting', 'Smithing', 'Mining', 'Herblore', 'Agility',
     'Thieving', 'Slayer', 'Farming', 'Runecraft', 'Hunter', 'Construction',
     'Sailing',
-)
-RS3_SKILL_ORDER = (
-    'Overall', 'Attack', 'Defence', 'Strength', 'Constitution', 'Ranged',
-    'Prayer', 'Magic', 'Cooking', 'Woodcutting', 'Fletching', 'Fishing',
-    'Firemaking', 'Crafting', 'Smithing', 'Mining', 'Herblore', 'Agility',
-    'Thieving', 'Slayer', 'Farming', 'Runecrafting', 'Hunter', 'Construction',
-    'Summoning', 'Dungeoneering', 'Divination', 'Invention', 'Archaeology',
-    'Necromancy',
 )
 # Explicit list prevents minigame scores from being mislabelled as boss kills.
 BOSS_NAMES = frozenset('''
@@ -74,19 +66,6 @@ def to_int(n):
         return int(float(n))
     except (ValueError, TypeError, OverflowError):
         return -1
-
-
-def parse_rs3(payload):
-    lines = [ln.strip() for ln in payload.splitlines() if ln.strip()]
-    if len(lines) < len(RS3_SKILL_ORDER):
-        raise ValueError('RS3 hiscores response is incomplete')
-    skills = {}
-    for skill, line in zip(RS3_SKILL_ORDER, lines):
-        parts = line.split(',')
-        if len(parts) < 3:
-            raise ValueError('Unexpected RS3 hiscores row')
-        skills[skill] = {'rank': to_int(parts[0]), 'level': to_int(parts[1]), 'xp': to_int(parts[2])}
-    return {'skills': skills, 'activities': {}}
 
 
 def xp_for_level(level):
@@ -147,10 +126,6 @@ def match_items(mapping, needle, max_results=8):
     prefix = [m for m in mapping if str(m.get('name','')).casefold().startswith(target) and m not in exact]
     other = [m for m in mapping if target in str(m.get('name','')).casefold() and m not in exact and m not in prefix]
     return (exact + prefix + other)[:max_results]
-
-
-def percent_change(new, old):
-    return None if not old or new < 0 or old < 0 else (new-old)/old*100
 
 
 def age(ts):

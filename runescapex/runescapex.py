@@ -1,4 +1,4 @@
-"""Detailed public RuneScape data for Red-DiscordBot 3.5+."""
+"""Detailed Old School RuneScape (OSRS) data for Red-DiscordBot 3.5+."""
 import asyncio
 import time
 from collections import OrderedDict
@@ -11,12 +11,11 @@ from redbot.core import Config, commands
 
 from .engine import (
     age, boss_entries, clue_entries, format_number, match_items, maxed_count,
-    osrs_combat, parse_osrs, parse_rs3, percent_change, validate_name,
+    osrs_combat, parse_osrs, validate_name,
     virtual_level, xp_until_next,
 )
 
 OSRS_HISCORES = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json'
-RS3_HISCORES = 'https://secure.runescape.com/m=hiscore/index_lite.ws'
 GE_API = 'https://prices.runescape.wiki/api/v1/osrs'
 UA = 'Fatboy-RunescapeX/1.0 (+https://github.com/ill-will-iam/redbot-cogs)'
 
@@ -26,7 +25,7 @@ class APIError(Exception):
 
 
 class RuneScapeX(commands.Cog):
-    """Extended OSRS and RuneScape 3 stats, bosses, clues and Grand Exchange."""
+    """OSRS player stats, bosses, clues, progress and Grand Exchange prices."""
 
     def __init__(self, bot):
         self.bot = bot
@@ -46,7 +45,7 @@ class RuneScapeX(commands.Cog):
         if self._session is not None and not self._session.closed:
             asyncio.create_task(self._session.close())
 
-    async def _fetch(self, url, params=None, ttl=90, json=True):
+    async def _fetch(self, url, params=None, ttl=90):
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 headers={'User-Agent': UA, 'Accept': 'application/json, text/plain'},
@@ -67,7 +66,7 @@ class RuneScapeX(commands.Cog):
                 if response.status >= 400:
                     raise APIError(f'The data service returned HTTP {response.status}.')
                 try:
-                    value = await (response.json(content_type=None) if json else response.text())
+                    value = await response.json(content_type=None)
                 except (ValueError, UnicodeDecodeError) as exc:
                     raise APIError('The data service returned an unreadable response.') from exc
         except (aiohttp.ClientError, asyncio.TimeoutError) as exc:
@@ -78,23 +77,19 @@ class RuneScapeX(commands.Cog):
             self._cache.popitem(last=False)
         return value
 
-    async def _stats(self, game, player):
-        game = game.casefold()
-        if game not in ('osrs', 'rs3'):
-            raise APIError('Choose `osrs` or `rs3`.')
+    async def _stats(self, player):
+        """Fetch an OSRS hiscores entry (including any new named skills)."""
         if not validate_name(player):
             raise APIError('Player names must have 1–12 characters: letters, numbers, spaces, `_` or `-`.')
-        url = OSRS_HISCORES if game == 'osrs' else RS3_HISCORES
-        raw = await self._fetch(url, {'player': player.strip()}, json=(game == 'osrs'))
+        raw = await self._fetch(OSRS_HISCORES, {'player': player.strip()})
         try:
-            return parse_osrs(raw) if game == 'osrs' else parse_rs3(raw)
+            return parse_osrs(raw)
         except (ValueError, TypeError) as exc:
-            raise APIError('The hiscores format changed or the returned record was incomplete.') from exc
+            raise APIError('The OSRS hiscores format changed or the record is incomplete.') from exc
 
     @staticmethod
-    def _source(game, player):
-        component = 'hiscore_oldschool' if game == 'osrs' else 'hiscore'
-        return f'https://secure.runescape.com/m={component}/hiscorepersonal?user1={quote(player)}'
+    def _source(player):
+        return f'https://secure.runescape.com/m=hiscore_oldschool/hiscorepersonal?user1={quote(player)}'
 
     async def _send(self, ctx, embed):
         if ctx.channel.permissions_for(ctx.me).embed_links:
@@ -116,46 +111,53 @@ class RuneScapeX(commands.Cog):
 
     @commands.group(name='rsx', invoke_without_command=True)
     @commands.cooldown(4, 20, commands.BucketType.user)
-    async def rsx(self, ctx):
-        """Detailed RuneScape commands. Use `rsx help` to list them."""
-        await ctx.send('Run `$rsx help` for RuneScapeX commands and examples.')
+    async def rsx(self, ctx, *, player: str = None):
+        """OSRS lookup: [p]rsx <player> or [p]rsx help."""
+        if not player:
+            await self._show_help(ctx)
+            return
+        try:
+            await self._profile(ctx, player)
+        except APIError as exc:
+            await self._error(ctx, exc)
 
     @rsx.command(name='help')
     async def rsx_help(self, ctx):
-        """List available commands."""
-        emb = self._embed(ctx, 'RuneScapeX • commands',
-            'Use your normal `$` prefix (or whichever prefix your bot uses).')
+        """Show simple OSRS commands."""
+        await self._show_help(ctx)
+
+    async def _show_help(self, ctx):
+        prefix = ctx.clean_prefix
+        emb = self._embed(ctx, 'OSRS • commands', 'Player names can contain spaces. All commands are OSRS only.')
         commands_text = [
-            ('Profiles', '`$rsx osrs <player>` / `$rsx rs3 <player>`'),
-            ('All skills', '`$rsx skills <osrs|rs3> <player>`'),
-            ('Skill breakdown', '`$rsx skill <osrs|rs3> <skill> <player>`'),
-            ('PvM boss KC', '`$rsx bosses <osrs player>`'),
-            ('Clue completions', '`$rsx clues <osrs player>`'),
-            ('Compare players', '`$rsx compare <osrs|rs3> <player one> | <player two>`'),
-            ('Track gains', '`$rsx gains <osrs|rs3> <player>` (first run saves baseline)'),
-            ('OSRS item', '`$rsx price <item name>`'),
-            ('Find item', '`$rsx items <partial item name>`'),
+            ('Profile', f'`{prefix}rsx Zezima` (or `{prefix}rsx profile Zezima`)'),
+            ('Skills', f'`{prefix}rsx skills Zezima`'),
+            ('One skill', f'`{prefix}rsx skill Attack Zezima`'),
+            ('Boss kill counts', f'`{prefix}rsx bosses Zezima`'),
+            ('Clue scrolls', f'`{prefix}rsx clues Zezima`'),
+            ('Compare players', f'`{prefix}rsx compare Zezima | Lynx Titan`'),
+            ('Track XP and boss gains', f'`{prefix}rsx gains Zezima` (first call saves a baseline)'),
+            ('GE prices', f'`{prefix}rsx price Abyssal whip` (or `{prefix}rsx ge Abyssal whip`)'),
+            ('Item search', f'`{prefix}rsx items dragon`'),
         ]
         for title, value in commands_text:
             emb.add_field(name=title, value=value, inline=False)
         await self._send(ctx, emb)
 
-    async def _profile(self, ctx, game, player):
-        data = await self._stats(game, player)
+    async def _profile(self, ctx, player):
+        data = await self._stats(player)
         skills, activities = data['skills'], data['activities']
         overall = skills['Overall']
         total_skills = len(skills) - 1
-        emb = self._embed(ctx, f'{player} • {game.upper()} player profile',
-                          url=self._source(game, player))
+        emb = self._embed(ctx, f'{player} • OSRS profile', url=self._source(player))
         emb.add_field(name='Overall rank', value=format_number(overall['rank']))
         emb.add_field(name='Total level', value=format_number(overall['level']))
         emb.add_field(name='Total XP', value=format_number(overall['xp']))
         emb.add_field(name='99s / skills', value=f'{maxed_count(skills)} / {total_skills}')
-        if game == 'osrs':
-            combat = osrs_combat(skills)
-            emb.add_field(name='Combat level (calculated)', value=str(combat) if combat is not None else '—')
-            emb.add_field(name='Boss records', value=str(len(boss_entries(activities))))
-            emb.add_field(name='Clue records', value=str(len(clue_entries(activities))))
+        combat = osrs_combat(skills)
+        emb.add_field(name='Combat level (calculated)', value=str(combat) if combat is not None else '—')
+        emb.add_field(name='Boss records', value=str(len(boss_entries(activities))))
+        emb.add_field(name='Clue records', value=str(len(clue_entries(activities))))
         top = sorted(((name, val) for name, val in skills.items() if name != 'Overall'),
                      key=lambda it: (-it[1]['level'], -it[1]['xp'], it[0]))[:8]
         emb.add_field(name='Highest skills',
@@ -163,32 +165,24 @@ class RuneScapeX(commands.Cog):
             inline=False)
         await self._send(ctx, emb)
 
-    @rsx.command(name='osrs')
-    async def rsx_osrs(self, ctx, *, player: str):
-        """Show an OSRS profile."""
+    @rsx.command(name='profile', aliases=['p', 'stats'])
+    async def rsx_profile(self, ctx, *, player: str):
+        """Show an OSRS player's full profile. Shortcut: [p]rsx <player>."""
         try:
-            await self._profile(ctx, 'osrs', player)
+            await self._profile(ctx, player)
         except APIError as exc:
             await self._error(ctx, exc)
 
-    @rsx.command(name='rs3')
-    async def rsx_rs3(self, ctx, *, player: str):
-        """Show a RuneScape 3 profile."""
-        try:
-            await self._profile(ctx, 'rs3', player)
-        except APIError as exc:
-            await self._error(ctx, exc)
-
-    @rsx.command(name='skills')
-    async def rsx_skills(self, ctx, game: str, *, player: str):
+    @rsx.command(name='skills', aliases=['levels'])
+    async def rsx_skills(self, ctx, *, player: str):
         """All skill levels, ranks and XP, in pages."""
         try:
-            data = await self._stats(game, player)
+            data = await self._stats(player)
             rows = [(name, item) for name, item in data['skills'].items() if name != 'Overall']
             for start in range(0, len(rows), 12):
-                emb = self._embed(ctx, f'{player} • {game.upper()} skills',
+                emb = self._embed(ctx, f'{player} • OSRS skills',
                                   f'Page {start//12+1}/{(len(rows)+11)//12}',
-                                  self._source(game, player))
+                                  self._source(player))
                 for name, value in rows[start:start+12]:
                     emb.add_field(name=name, value=(f'Lvl **{format_number(value["level"])}** • '
                                       f'{format_number(value["xp"])} XP\nRank {format_number(value["rank"])}'), inline=True)
@@ -197,37 +191,32 @@ class RuneScapeX(commands.Cog):
             await self._error(ctx, exc)
 
     @rsx.command(name='skill')
-    async def rsx_skill(self, ctx, game: str, skill: str, *, player: str):
+    async def rsx_skill(self, ctx, skill: str, *, player: str):
         """Detailed skill with XP remaining to level up and virtual level."""
         try:
-            data = await self._stats(game, player)
+            data = await self._stats(player)
             item = next(((n, v) for n,v in data['skills'].items() if n.casefold() == skill.casefold()), None)
             if item is None:
-                raise APIError('Unknown skill; run `$rsx skills <game> <player>` for valid names.')
+                raise APIError('Unknown skill; run `$rsx skills <player>` for available skills.')
             name, stat = item
-            emb = self._embed(ctx, f'{player} • {name} ({game.upper()})', url=self._source(game, player))
+            emb = self._embed(ctx, f'{player} • {name} (OSRS)', url=self._source(player))
             emb.add_field(name='Level', value=format_number(stat['level']))
             emb.add_field(name='Experience', value=format_number(stat['xp']))
             emb.add_field(name='Global rank', value=format_number(stat['rank']))
             if name != 'Overall':
-                max_level = 120 if game == 'rs3' else 99
-                if name == 'Invention' and game == 'rs3':
-                    max_level = 120  # Invention's XP curve differs; no generic XP-to-next.
-                else:
-                    remaining = xp_until_next(stat['xp'], stat['level'], max_level)
-                    if remaining is not None:
-                        emb.add_field(name='XP to next level', value=format_number(remaining))
-                emb.add_field(name='Virtual level (standard XP curve)',
-                    value=str(virtual_level(stat['xp'])) if name != 'Invention' else 'Special curve')
+                remaining = xp_until_next(stat['xp'], stat['level'], 99)
+                if remaining is not None:
+                    emb.add_field(name='XP to next level', value=format_number(remaining))
+                emb.add_field(name='Virtual level', value=str(virtual_level(stat['xp'])))
             await self._send(ctx, emb)
         except APIError as exc:
             await self._error(ctx, exc)
 
-    @rsx.command(name='bosses')
+    @rsx.command(name='bosses', aliases=['boss'])
     async def rsx_bosses(self, ctx, *, player: str):
         """OSRS boss kill counts returned by public hiscores."""
         try:
-            data = await self._stats('osrs', player)
+            data = await self._stats(player)
             rows = boss_entries(data['activities'])
             if not rows:
                 raise APIError('No ranked boss/activity records were available for that player.')
@@ -240,11 +229,11 @@ class RuneScapeX(commands.Cog):
         except APIError as exc:
             await self._error(ctx, exc)
 
-    @rsx.command(name='clues')
+    @rsx.command(name='clues', aliases=['clue'])
     async def rsx_clues(self, ctx, *, player: str):
         """OSRS clue scroll hiscores by category."""
         try:
-            rows = clue_entries((await self._stats('osrs', player))['activities'])
+            rows = clue_entries((await self._stats(player))['activities'])
             if not rows:
                 raise APIError('No ranked clue scroll records were available for that player.')
             emb = self._embed(ctx, f'{player} • OSRS clue scrolls')
@@ -254,17 +243,17 @@ class RuneScapeX(commands.Cog):
         except APIError as exc:
             await self._error(ctx, exc)
 
-    @rsx.command(name='compare')
-    async def rsx_compare(self, ctx, game: str, *, players: str):
-        """Compare two players: $rsx compare osrs Zezima | Lynx Titan"""
+    @rsx.command(name='compare', aliases=['vs'])
+    async def rsx_compare(self, ctx, *, players: str):
+        """Compare OSRS players: [p]rsx compare Zezima | Lynx Titan"""
         if '|' not in players:
-            await ctx.send('Use `$rsx compare osrs Player One | Player Two` (or `rs3`).')
+            await ctx.send(f'Use `{ctx.clean_prefix}rsx compare Player One | Player Two`.')
             return
         first, second = (p.strip() for p in players.split('|', 1))
         try:
-            a, b = await asyncio.gather(self._stats(game, first), self._stats(game, second))
+            a, b = await asyncio.gather(self._stats(first), self._stats(second))
             ea, eb = a['skills']['Overall'], b['skills']['Overall']
-            emb = self._embed(ctx, f'{first} vs {second} • {game.upper()}')
+            emb = self._embed(ctx, f'{first} vs {second} • OSRS')
             emb.add_field(name='Total level', value=f'{first}: **{format_number(ea["level"])}**\n{second}: **{format_number(eb["level"])}**', inline=False)
             emb.add_field(name='Total XP', value=f'{first}: **{format_number(ea["xp"])}**\n{second}: **{format_number(eb["xp"])}**', inline=False)
             emb.add_field(name='Overall rank', value=f'{first}: {format_number(ea["rank"])}\n{second}: {format_number(eb["rank"])}', inline=False)
@@ -278,12 +267,12 @@ class RuneScapeX(commands.Cog):
         except APIError as exc:
             await self._error(ctx, exc)
 
-    @rsx.command(name='gains')
-    async def rsx_gains(self, ctx, game: str, *, player: str):
-        """Track hiscores XP/levels and (for OSRS) boss KC since last scan."""
+    @rsx.command(name='gains', aliases=['progress'])
+    async def rsx_gains(self, ctx, *, player: str):
+        """Track OSRS XP, levels and boss KC since last scan."""
         try:
-            data = await self._stats(game, player)
-            key = f'{game.casefold()}:{player.casefold().strip()}'
+            data = await self._stats(player)
+            key = f'osrs:{player.casefold().strip()}'  # Preserve OSRS baselines from prior releases.
             async with self._lock:
                 history = await self.config.snapshots()
                 previous = history.get(key)
@@ -293,7 +282,7 @@ class RuneScapeX(commands.Cog):
                     oldest = min(history, key=lambda k: history[k].get('time', 0))
                     history.pop(oldest)
                 await self.config.snapshots.set(history)
-            emb = self._embed(ctx, f'{player} • {game.upper()} gains')
+            emb = self._embed(ctx, f'{player} • OSRS gains')
             if previous is None:
                 emb.description = 'Baseline saved. Run this again after playing to see XP, level and boss KC gains.'
             else:
@@ -311,14 +300,13 @@ class RuneScapeX(commands.Cog):
                 emb.add_field(name='Skill gains', value='\n'.join(
                     f'**{n}:** +{format_number(x)} XP' + (f' (+{lv} lvl)' if lv else '')
                     for n,x,lv in gained[:12]) or 'No new XP recorded', inline=False)
-                if game.casefold() == 'osrs':
-                    old_bosses = previous.get('activities', {})
-                    bosses = [(name, row['score'] - old_bosses[name]['score'])
-                              for name,row in boss_entries(data['activities']) if name in old_bosses
-                              and old_bosses[name]['score'] >= 0 and row['score'] > old_bosses[name]['score']]
-                    emb.add_field(name='Boss KC gains', value='\n'.join(
-                        f'{n}: +{format_number(kc)}' for n,kc in sorted(bosses, key=lambda r:-r[1])[:10])
-                        or 'No tracked boss kills', inline=False)
+                old_bosses = previous.get('activities', {})
+                bosses = [(name, row['score'] - old_bosses[name]['score'])
+                          for name,row in boss_entries(data['activities']) if name in old_bosses
+                          and old_bosses[name]['score'] >= 0 and row['score'] > old_bosses[name]['score']]
+                emb.add_field(name='Boss KC gains', value='\n'.join(
+                    f'{n}: +{format_number(kc)}' for n,kc in sorted(bosses, key=lambda r:-r[1])[:10])
+                    or 'No tracked boss kills', inline=False)
             await self._send(ctx, emb)
         except APIError as exc:
             await self._error(ctx, exc)
@@ -329,7 +317,7 @@ class RuneScapeX(commands.Cog):
             raise APIError('The Grand Exchange item catalogue format changed.')
         return match_items(raw, item)
 
-    @rsx.command(name='items')
+    @rsx.command(name='items', aliases=['search'])
     async def rsx_items(self, ctx, *, item: str):
         """Search the OSRS Grand Exchange item catalogue."""
         try:
@@ -343,7 +331,7 @@ class RuneScapeX(commands.Cog):
         except APIError as exc:
             await self._error(ctx, exc)
 
-    @rsx.command(name='price')
+    @rsx.command(name='price', aliases=['ge'])
     async def rsx_price(self, ctx, *, item: str):
         """Real-time OSRS GE high/low quotes, 1-hour averages and volumes."""
         try:

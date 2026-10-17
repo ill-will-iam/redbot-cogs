@@ -1,50 +1,66 @@
-# RuneScapeX — detailed OSRS / RS3 cog for Red-DiscordBot
+# RuneScapeX — OSRS-only cog for Red-DiscordBot
 
-A **separate**, safe-to-install companion to a pre-existing `runescape` cog. It is
-named `runescapex` to avoid overwriting an unknown third-party cog or conflicting
-with its existing commands. Uses public Jagex hiscores and OSRS Wiki GE prices;
-**no API token or pip requirement** beyond Red's existing aiohttp/discord.py.
+A dedicated **Old School RuneScape** companion cog. Includes detailed player
+stats, skill breakdowns, boss and clue hiscores, comparisons, XP/KC gain tracking,
+and OSRS Grand Exchange prices. No RuneScape 3 features or game-selection args.
 
-## Installation / testing on Fatboy
+The cog is intentionally named `runescapex` and uses the `$rsx` command group
+to coexist with a separately installed `runescape` cog.
 
-In Discord (with Downloader loaded):
+## Update Fatboy (already installed)
+
+In Discord (adjust `$` if your bot uses another prefix):
 
 ```text
 $backup
 $repo update redbot-cogs
-$cog install redbot-cogs runescapex
-$load runescapex
+$cog update runescapex
+$reload runescapex
 $rsx help
-$rsx osrs Zezima
-$rsx rs3 Zezima
-$rsx skills osrs Zezima
-$rsx skill osrs Attack Zezima
-$rsx bosses Zezima
-$rsx clues Zezima
-$rsx compare osrs Zezima | Lynx Titan
-$rsx gains osrs Zezima
-$rsx price Abyssal whip
-$rsx items dragon
 ```
 
-`$rsx gains` takes a first baseline; subsequent calls report differences since
-that baseline, then update it. At most 200 player snapshots are retained.
+For a **first installation** instead of an update, use:
 
-## Boundaries
+```text
+$cog install redbot-cogs runescapex
+$load runescapex
+```
 
-- OSRS hiscores are read through Jagex's **named JSON** endpoint, so new skills
-  (including Sailing) and activities remain aligned when Jagex changes the roster.
-- Boss and clue pages display **ranked public records only**; unranked records
-  are not evidence of zero kills. The boss roster is deliberately curated so
-  arbitrary minigame scores are not incorrectly labelled kills.
-- RS3 uses its public lite hiscores CSV. RS3 boss kill counts, quests,
-  equipment, account bank, and unranked activity data are **not** exposed here.
-- `skill` XP-to-next uses the standard XP curve, not RS3 Invention's special curve.
-- GE high/low values are last-trade quotes; apparent spread isn't profit.
-  Market samples can be stale. Queries are cached to protect upstream services.
-- API outages, rate limiting and deleted/unranked players are handled as
-  readable Discord errors. Public hiscores may lag in-game progression.
-- To replace your original cog later, first identify its source and commands.
-  This separate cog can coexist without disrupting it.
+## Commands — OSRS only
 
-Data attribution: Jagex RuneScape hiscores; OSRS Wiki real-time prices.
+| Command | Description |
+| --- | --- |
+| `$rsx Zezima` | Player profile (shortcut for `profile`) |
+| `$rsx profile Zezima` | Total level, XP, rank, combat, 99s, top skills |
+| `$rsx skills Zezima` | All skills, XP, and ranks, paginated |
+| `$rsx skill Attack Zezima` | Specific skill level, XP, rank, XP to next, virtual level |
+| `$rsx bosses Zezima` | Ranked boss kill counts and ranks |
+| `$rsx clues Zezima` | Clue completions and ranks |
+| `$rsx compare Zezima | Lynx Titan` | Compare two players (separate with `|`) |
+| `$rsx gains Zezima` | XP, level and boss KC gained since previous snapshot |
+| `$rsx price Abyssal whip` | GE quotes, spread, 1h volume, limit |
+| `$rsx items dragon` | Search the OSRS item catalogue |
+| `$rsx help` | Show command list in Discord |
+
+Short aliases: `p`/`stats` for `profile`, `levels` for `skills`, `boss` for
+`bosses`, `clue` for `clues`, `vs` for `compare`, `progress` for `gains`,
+`ge` for `price`, and `search` for `items`.
+
+`$rsx gains` takes a baseline on first use; subsequent calls report differences
+since that baseline and replace it. **Existing OSRS snapshots are preserved** by
+keeping the same storage keys (`osrs:<player>`). Up to 200 total historical
+snapshot entries are retained.
+
+## Data notes
+
+- Only OSRS public Jagex JSON hiscores are used; named skills include Sailing
+  when Jagex supplies it. No third-party account login or API key is required.
+- Boss and clue commands show **public ranked records only**: unranked does not
+  necessarily mean zero kills or completions. Boss records use a curated list.
+- OSRS Wiki price data uses recent player trades; price differences are not
+  guaranteed profit, and quotes or hiscores may lag actual game activity.
+- No private quests, bank, equipment, or unranked activity data is claimed.
+- Errors, HTTP rate limits, and temporary API outages are handled in-chat.
+- The original `runescape` cog is not modified or uninstalled by this update.
+
+Data: Jagex Old School RuneScape hiscores and OSRS Wiki real-time prices API.

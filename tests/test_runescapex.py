@@ -30,17 +30,9 @@ def test_named_osrs_hiscores_and_new_activity():
     assert engine.clue_entries(data['activities']) == []
 
 
-def test_rs3_lite_csv():
-    csv = '\n'.join(f'{i},99,13034431' for i in range(len(engine.RS3_SKILL_ORDER)))
-    data = engine.parse_rs3(csv)
-    assert data['skills']['Necromancy']['level'] == 99
-    assert data['skills']['Overall']['rank'] == 0
-
-
-def test_names_items_gaps():
+def test_names_and_items():
     assert engine.validate_name('Lynx Titan')
     assert not engine.validate_name('x'*13)
-    assert engine.percent_change(12, 10) == 20
     rows = [{'name':'Dragon claws','id':1}, {'name':'Dragon bones','id':2}, {'name':'Abyssal whip','id':3}]
     assert engine.match_items(rows, 'dragon bones')[0]['id'] == 2
     assert len(engine.match_items(rows,'dragon')) == 2
@@ -55,3 +47,9 @@ def test_unranked_skill_and_errors():
         pass
     else:
         raise AssertionError('Malformed hiscores accepted')
+
+
+def test_osrs_only_engine_exports():
+    assert not hasattr(engine, 'parse_rs3')
+    assert not hasattr(engine, 'RS3_SKILL_ORDER')
+    assert engine.OSRS_SKILL_ORDER[-1] == 'Sailing'
