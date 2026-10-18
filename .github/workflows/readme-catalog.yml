@@ -7,6 +7,8 @@ on:
       - "*/info.json"
       - "*/__init__.py"
       - "serveraudit/*.py"
+      - "sexiness/*.py"
+      - "tests/test_sexiness.py"
       - "tests/test_readme_catalog.py"
       - ".github/workflows/readme-catalog.yml"
   pull_request:
@@ -15,6 +17,8 @@ on:
       - "*/info.json"
       - "*/__init__.py"
       - "serveraudit/*.py"
+      - "sexiness/*.py"
+      - "tests/test_sexiness.py"
       - "tests/test_readme_catalog.py"
       - ".github/workflows/readme-catalog.yml"
 
@@ -26,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check ServerAudit Python syntax
-        run: python3 -m compileall -q serveraudit
+      - name: Check custom cog Python syntax
+        run: python3 -m compileall -q serveraudit sexiness
       - name: Verify all cog packages appear in the README
         run: python3 -m unittest discover -s tests -p test_readme_catalog.py -v

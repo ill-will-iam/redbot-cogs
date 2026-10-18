@@ -18,6 +18,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`ribbit`](ribbit/) | `$ribbit` | Royal Ribbit Reserve frog economy using Ribbucks. |
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
+| [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.

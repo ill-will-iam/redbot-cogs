@@ -1,0 +1,26 @@
+{
+  "name": "Sexiness",
+  "short": "Random 0–100% sexiness rating for you or a mentioned member.",
+  "description": "Use [p]sexy or [p]sexy @member for a freshly randomized 0–100% sexiness score, 10-segment meter and playful quip. Alias: [p]sexiness. Just for fun; no data storage, cooldowns or external dependencies.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "fun",
+    "random",
+    "novelty",
+    "rating"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "This cog does not collect or store any user data. All scores are randomly generated each time, are not persisted and are not based on user information.",
+  "install_msg": "Sexiness installed! Run [p]load sexiness, then [p]sexy or [p]sexy @member."
+}
