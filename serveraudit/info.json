@@ -1,0 +1,27 @@
+{
+  "name": "ServerAudit",
+  "short": "Read-only Discord server audit of settings, roles, permissions and bots.",
+  "description": "Generates a prioritized report of guild security settings, member and bot permissions, channel overrides, AutoMod and invites. Sends Markdown/JSON privately by DM. No changes are made.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "tags": [
+    "audit",
+    "roles",
+    "bots",
+    "permissions",
+    "moderation"
+  ],
+  "type": "COG",
+  "hidden": false,
+  "disabled": false,
+  "end_user_data_statement": "Stores no persistent user data. On-demand role, channel, member/bot and safety-setting snapshots are generated in memory and sent as Discord direct messages only to the authorized requester. The cog retains no reports.",
+  "install_msg": "Run [p]load serveraudit then [p]audit or [p]audit export. Reports are privately DM'd to the server owner or users with Manage Server; no changes made."
+}

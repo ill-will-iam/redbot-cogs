@@ -6,6 +6,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | --- | --- | --- |
 | [`hellocog`](hellocog/) | `$coghello` | Simple installation smoke test. |
 | [`acrogame`](acrogame/) | `$acro start` | Acronym game with private submissions, voting, and leaderboard. |
+| [`serveraudit`](serveraudit/) | `$audit` | Read-only audit of server settings, bots, roles and channel permissions. |
 | [`adminlog`](adminlog/) | `$adminlog status` | Logs server, member, message, role, channel and voice changes. |
 | [`dailydrawings`](dailydrawings/) | `$draw status` | Scheduled physical-paper drawing prompts, entries and voting. |
 | [`frogcrib`](frogcrib/) | `$crib challenge @member` | Two-player 121-point cribbage with optional Ribbucks rewards. |
