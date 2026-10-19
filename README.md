@@ -15,6 +15,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`markov`](markov/) | `$markov stats` | Markov models, size reports, admin enrollment and channel modeling. |
 | [`pp`](pp/) | `$pp` | Random-length custom emoji chain. |
 | [`line`](line/) | `$line` | 45-second group line-up, 3-second countdown and final cheers. |
+| [`notes`](notes/) | `$notes` | Staff-only server management checklists, named boards, priorities, due dates, assignments and memos. |
 | [`redbackup`](redbackup/) | `$backup` | VPS-local live backup snapshots, integrity checks and retention. |
 | [`ribbit`](ribbit/) | `$ribbit` | Royal Ribbit Reserve frog economy using Ribbucks. |
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
@@ -352,3 +353,18 @@ $line
 ```
 
 See [line/README.md](line/README.md) for usage and data-handling details.
+
+## Notes — staff management checklists
+
+Notes keeps per-server private management task boards and memos using Red's Config persistence. Lists can be created, renamed, viewed and deleted when empty. Managers can add, prioritize, assign, edit, complete, reopen, move and delete tasks; due dates are tracked in UTC but do not trigger reminders. Access is limited to bot admins/owners or members with Manage Server permission. See [notes/README.md](notes/README.md) for the full command reference and privacy notes.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs notes
+$load notes
+$help notes
+$notes
+$notes add Review moderator permissions
+$notes board create moderation
+$notes addto moderation Review ban appeals
+```

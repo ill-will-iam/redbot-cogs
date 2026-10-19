@@ -1,0 +1,14 @@
+{
+  "name": "Notes",
+  "short": "Staff-only server management to-do lists and memos.",
+  "description": "Persistent, per-server named task boards with priorities, UTC due dates, member assignments, completion tracking, and reference memos. All commands require Redbot admin access or Manage Server permission.",
+  "author": ["Will"],
+  "requirements": [],
+  "tags": ["management", "todo", "checklist", "notes", "utility"],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [3, 9, 0],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Stores per-server task and memo text, creator/completer/assignee user IDs, timestamps, priorities and due dates in Red's Config storage. Data is visible to server managers and Redbot admins. User deletion requests disassociate stored user IDs while preserving operational notes and tasks. Do not store secrets, passwords or tokens."
+}
