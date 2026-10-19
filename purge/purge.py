@@ -25,7 +25,7 @@ class Purge(commands.Cog):
     """Delete recent messages in the current channel, optionally using filters."""
 
     __author__ = "Will"
-    __version__ = "1.0.0"
+    __version__ = "1.1.0"
 
     def __init__(self, bot):
         self.bot = bot
@@ -35,42 +35,45 @@ class Purge(commands.Cog):
         """No data is stored by this cog."""
         return
 
-    async def _confirm(self, ctx: commands.Context, count: int, description: str):
-        """Ask before deleting more than 100 messages; return protected message IDs."""
-        prompt = await ctx.send(
-            f"You're about to delete up to **{count}** {description} in "
-            f"{ctx.channel.mention}. Reply with **yes** within 30 seconds to confirm, "
-            "or **no** to cancel."
-        )
-        protected = {prompt.id}
+    async def _reject(self, ctx: commands.Context) -> None:
+        """Signal an invalid, cancelled, or failed purge without sending a message."""
         try:
-            answer = await self.bot.wait_for(
-                "message",
+            await ctx.message.add_reaction("❌")
+        except (discord.Forbidden, discord.HTTPException):
+            pass
+
+    async def _confirm(self, ctx: commands.Context) -> bool:
+        """Require the invoker's reaction for large purges, without chat messages."""
+        try:
+            await ctx.message.add_reaction("✅")
+            await ctx.message.add_reaction("❌")
+        except (discord.Forbidden, discord.HTTPException):
+            # No reaction confirmation means no large deletion.
+            try:
+                await ctx.message.clear_reactions()
+            except (discord.Forbidden, discord.HTTPException):
+                pass
+            return False
+
+        try:
+            reaction = await self.bot.wait_for(
+                "raw_reaction_add",
                 timeout=30,
-                check=lambda m: (
-                    m.author.id == ctx.author.id
-                    and m.channel.id == ctx.channel.id
-                    and m.content.strip().lower() in {"yes", "no"}
+                check=lambda event: (
+                    event.message_id == ctx.message.id
+                    and event.channel_id == ctx.channel.id
+                    and event.user_id == ctx.author.id
+                    and str(event.emoji) in {"✅", "❌"}
                 ),
             )
+            return str(reaction.emoji) == "✅"
         except asyncio.TimeoutError:
-            await ctx.send("Purge cancelled (confirmation timed out).", delete_after=10)
+            return False
+        finally:
             try:
-                await prompt.delete()
-            except discord.HTTPException:
+                await ctx.message.clear_reactions()
+            except (discord.Forbidden, discord.HTTPException):
                 pass
-            return False, protected
-
-        protected.add(answer.id)
-        confirmed = answer.content.strip().lower() == "yes"
-        for message in (prompt, answer):
-            try:
-                await message.delete()
-            except discord.HTTPException:
-                pass
-        if not confirmed:
-            await ctx.send("Purge cancelled.", delete_after=10)
-        return confirmed, protected
 
     async def _run(
         self,
@@ -83,33 +86,21 @@ class Purge(commands.Cog):
         before: Optional[discord.Object] = None,
         after: Optional[discord.Object] = None,
     ):
-        if not 1 <= count <= MAX_DELETE:
-            return await ctx.send(
-                f"Choose **1–{MAX_DELETE}** messages. "
-                "Use multiple purges for larger cleanups.",
-                delete_after=12,
-            )
-        if not 1 <= scan <= MAX_SCAN:
-            return await ctx.send(
-                f"The scan window must be **1–{MAX_SCAN}** messages.",
-                delete_after=12,
-            )
+        if not 1 <= count <= MAX_DELETE or not 1 <= scan <= MAX_SCAN:
+            return await self._reject(ctx)
 
         channel = ctx.channel
         if not isinstance(channel, (discord.TextChannel, discord.Thread)):
-            return await ctx.send("Use this command in a server text channel or thread.")
+            return await self._reject(ctx)
 
         if channel.id in self._active_channels:
-            return await ctx.send("Another purge is already running in this channel.")
+            return await self._reject(ctx)
 
         self._active_channels.add(channel.id)
         try:
             protected = {ctx.message.id}
-            if count > 100:
-                confirmed, excluded_ids = await self._confirm(ctx, count, label)
-                protected.update(excluded_ids)
-                if not confirmed:
-                    return
+            if count > 100 and not await self._confirm(ctx):
+                return await self._reject(ctx)
 
             matched = 0
 
@@ -123,7 +114,7 @@ class Purge(commands.Cog):
                 return True
 
             try:
-                deleted = await channel.purge(
+                await channel.purge(
                     limit=scan + len(protected),
                     check=should_delete,
                     before=before,
@@ -132,28 +123,13 @@ class Purge(commands.Cog):
                     bulk=True,
                     reason=f"Moderator purge ({label}) by {ctx.author} ({ctx.author.id})",
                 )
-            except discord.Forbidden:
-                return await ctx.send(
-                    "I need **Manage Messages** and **Read Message History** here.",
-                    delete_after=15,
-                )
-            except discord.HTTPException as exc:
-                return await ctx.send(
-                    f"Discord could not complete the purge: {type(exc).__name__}. "
-                    "Some messages may already have been deleted.",
-                    delete_after=15,
-                )
+            except (discord.Forbidden, discord.HTTPException):
+                return await self._reject(ctx)
 
             try:
                 await ctx.message.delete()
-            except discord.HTTPException:
+            except (discord.Forbidden, discord.HTTPException):
                 pass
-
-            await ctx.send(
-                f"Deleted **{len(deleted)}** message(s) ({label}) in this channel.",
-                delete_after=10,
-                allowed_mentions=discord.AllowedMentions.none(),
-            )
         finally:
             self._active_channels.discard(channel.id)
 
@@ -168,7 +144,7 @@ class Purge(commands.Cog):
         See [p]help purge for filtered commands.
         """
         if count is None:
-            return await ctx.send_help()
+            return await self._reject(ctx)
         await self._run(
             ctx,
             count=count,
@@ -206,7 +182,7 @@ class Purge(commands.Cog):
     ):
         """Purge by numeric user ID, including members who left the server."""
         if user_id <= 0:
-            return await ctx.send("Provide a valid numeric Discord user ID.")
+            return await self._reject(ctx)
         await self._run(
             ctx,
             count=count,
@@ -288,9 +264,9 @@ class Purge(commands.Cog):
         """
         phrase = phrase.strip()
         if not phrase:
-            return await ctx.send("Provide a word or phrase to search for.")
+            return await self._reject(ctx)
         if len(phrase) > 200:
-            return await ctx.send("The search phrase must be 200 characters or fewer.")
+            return await self._reject(ctx)
         lowered = phrase.casefold()
         await self._run(
             ctx,
@@ -304,7 +280,7 @@ class Purge(commands.Cog):
     async def purge_before(self, ctx: commands.Context, message_id: int, count: int):
         """Delete up to N messages older than a message ID."""
         if message_id <= 0:
-            return await ctx.send("Provide a valid Discord message ID.")
+            return await self._reject(ctx)
         await self._run(
             ctx,
             count=count,
@@ -318,7 +294,7 @@ class Purge(commands.Cog):
     async def purge_after(self, ctx: commands.Context, message_id: int, count: int):
         """Delete up to N messages newer than a message ID."""
         if message_id <= 0:
-            return await ctx.send("Provide a valid Discord message ID.")
+            return await self._reject(ctx)
         await self._run(
             ctx,
             count=count,
