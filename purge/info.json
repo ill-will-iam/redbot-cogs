@@ -1,7 +1,7 @@
 {
   "name": "Purge",
   "short": "Moderator-only message cleanup by amount, user, bots, links, text and media.",
-  "description": "Purge messages in the current text channel or thread by count, member or ID, bots, webhooks, links, attachments, embeds, keyword, and before/after message IDs. Per-command cap of 500 deletions, scanned history cap of 5000, and confirmation when deleting more than 100. Filters default to scanning the last 1000 messages.",
+  "description": "Purge messages in the current text channel or thread by count, member or ID, bots, webhooks, links, attachments, embeds, keyword, and before/after message IDs. Per-command cap of 500 deletions, scanned history cap of 5000, and confirmation when deleting more than 100. Filters default to scanning the last 1000 messages. Successful purges are silent; large purges require invoker reaction confirmation, and invalid or failed purges use a cross reaction rather than a channel reply.",
   "author": [
     "Will"
   ],
@@ -22,5 +22,5 @@
   "disabled": false,
   "hidden": false,
   "end_user_data_statement": "This cog does not retain, log, or persist any end-user data. It reads message history to execute staff-requested deletions and stores only the IDs of channels with active purge operations in volatile memory. Messages are deleted from Discord and cannot be restored by this cog.",
-  "install_msg": "Purge installed. Run [p]load purge, then [p]purge 25, [p]purge user @member 25, or [p]help purge. Only moderators/members with Manage Messages can use the commands. The bot needs Manage Messages and Read Message History."
+  "install_msg": "Purge installed. Run [p]load purge, then [p]purge 25 or [p]purge user @member 25. Successfully completed purges are silent. Over 100 messages require reacting ✅ to the command. The bot needs Manage Messages, Read Message History, and Add Reactions for large purges."
 }
