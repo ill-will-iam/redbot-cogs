@@ -23,7 +23,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
 | [`birthday`](birthday/) | `~birthday 01/01/2000` | Global birthday profiles, countdowns and per-server daily announcements. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
-| [`purge`](purge/) | `~purge 25` | Moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
+| [`purge`](purge/) | `~purge 25` | Silent moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
