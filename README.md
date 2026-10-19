@@ -23,28 +23,29 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
 | [`birthday`](birthday/) | `~birthday 01/01/2000` | Global birthday profiles, countdowns and per-server daily announcements. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
+| [`purge`](purge/) | `~purge 25` | Moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
 ## Install a cog
 
-For an existing Fatboy installation using the `$` prefix, Red's Downloader should already have this repository registered. To add a cog such as Snipe:
+For an existing Fatboy installation using the `~` prefix, Red's Downloader should already have this repository registered. To add a cog such as Purge:
 
 ```text
-$load downloader
-$repo update redbot-cogs
-$cog install redbot-cogs snipe
-$load snipe
-$help snipe
+~load downloader
+~repo update redbot-cogs
+~cog install redbot-cogs purge
+~load purge
+~help purge
 ```
 
 If the repository isn't registered yet, first run:
 
 ```text
-$repo add redbot-cogs https://github.com/ill-will-iam/redbot-cogs
+~repo add redbot-cogs https://github.com/ill-will-iam/redbot-cogs
 ```
 
-Replace `snipe` with any cog package name in the catalog. Cog commands require the relevant roles, permissions and Discord intents described in their docs. Always review a cog's `info.json` and `README.md` before installing.
+Replace `purge` with any cog package name in the catalog. Cog commands require the relevant roles, permissions and Discord intents described in their docs. Always review a cog's `info.json` and `README.md` before installing.
 
 ## Repository layout
 
