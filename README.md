@@ -21,6 +21,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
+| [`birthday`](birthday/) | `$birthday 07/27/1985` | Birthday tracking, countdowns, lists and optional daily announcements. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 
 `[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
@@ -368,3 +369,8 @@ $notes add Review moderator permissions
 $notes board create moderation
 $notes addto moderation Review ban appeals
 ```
+
+
+## Birthday — member celebrations
+
+Members set their birth date with `$birthday 07/27/1985` or omit the year with `$birthday 07/27`. `$birthday today` and `$birthday upcoming` show celebrations; `$birthday remove` deletes the saved date. Admins may enable daily announcements with `$birthday channel #birthdays`, then set `$birthday timezone America/Vancouver` and `$birthday time 09:00`. Ages are hidden unless members explicitly enable them with `$birthday age on`. See [birthday/README.md](birthday/README.md) for usage and privacy notes.

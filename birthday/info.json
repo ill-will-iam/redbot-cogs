@@ -1,0 +1,15 @@
+{
+  "name": "Birthday",
+  "short": "Birthdays, upcoming birthday lists, and optional daily announcements.",
+  "description": "Per-server birthday tracking for Red-DiscordBot. Members can set their birthday using [p]birthday 07/27/1985 or [p]birthday set 07/27/1985, optionally omitting the year, view upcoming birthdays, and remove their date. Admins can enable an announcement channel and set local timezone/time. Years and ages are not shown to others by default.",
+  "author": ["Will"],
+  "requirements": [],
+  "tags": ["birthdays", "community", "reminders", "celebration"],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [3, 9, 0],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Stores month, day, optional birth year, and an age-visibility preference associated with each Discord user ID per server. Other members can view month/day, and age only when explicitly enabled. Members can erase their saved data with [p]birthday remove. Guild configuration stores announcement settings and the date of the last announcement. Supports Red's user-data deletion/export hooks.",
+  "install_msg": "Birthday installed! Run [p]load birthday, then [p]birthday 07/27/1985. An admin can enable announcements with [p]birthday channel #birthdays."
+}
