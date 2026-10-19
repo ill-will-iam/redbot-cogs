@@ -1,0 +1,26 @@
+{
+  "name": "AutoRole",
+  "short": "Silently grant selected roles to each new human member.",
+  "description": "Per-server automatic join roles. Manage with [p]autorole add, remove, list, on, off, and clear. Honors Discord Membership Screening, checks role hierarchy, and refuses staff-permission roles.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "roles",
+    "moderation",
+    "onboarding",
+    "utility"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Stores only server-specific automatic role IDs and enabled status. Does not store any personal information, member IDs, or join records.",
+  "install_msg": "AutoRole installed! Run [p]load autorole, then [p]autorole add @Member. Ensure Fatboy has Manage Roles, Server Members Intent, and a higher role than the role to assign."
+}

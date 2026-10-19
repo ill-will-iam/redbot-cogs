@@ -21,11 +21,16 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
+| [`autorole`](autorole/) | `~autorole add @Member` | Silent per-server join roles, multiple roles, and screening-aware assignment. |
 | [`birthday`](birthday/) | `~birthday 01/01/2000` | Global birthday profiles, countdowns and per-server daily announcements. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 | [`purge`](purge/) | `~purge 25` | Silent moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
+
+## AutoRole join assignments
+
+Use `~repo update redbot-cogs`, `~cog install redbot-cogs autorole`, `~load autorole`, then `~autorole add @Member`. Give Fatboy **Manage Roles**, position its highest role above the assigned role, and enable **Server Members Intent**. The cog waits for Membership Screening completion if necessary, and does not post a message for joins. See [autorole/README.md](autorole/README.md) for all commands.
 
 ## Install a cog
 
