@@ -1,9 +1,9 @@
-"""Simple, per-server birthday reminders for Red-DiscordBot 3.5+."""
+"""Global user birthdays and per-server celebrations for Red-DiscordBot 3.5+."""
 
 import io
 import json
 import logging
-from datetime import datetime, time, date
+from datetime import datetime, time, date, timezone
 from typing import Literal, Optional
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -17,11 +17,13 @@ log = logging.getLogger("red.birthday")
 
 
 class Birthday(commands.Cog):
-    """Remember birthdays and celebrate them in a chosen channel."""
+    """Save a birthday once for all servers using this bot."""
 
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=7407271985, force_registration=True)
+        self.config.register_user(birthday=None, show_age=False)
+        # Retain the old MEMBER schema solely for explicit migration/deletion.
         self.config.register_member(birthday=None, show_age=False)
         self.config.register_guild(channel_id=None, timezone="UTC", announce_at="09:00", last_announced=None)
         self.check_birthdays.start()
@@ -30,39 +32,56 @@ class Birthday(commands.Cog):
         self.check_birthdays.cancel()
 
     @staticmethod
-    def _clean_name(member: discord.Member) -> str:
+    def _clean_name(member: discord.abc.User) -> str:
         return discord.utils.escape_mentions(discord.utils.escape_markdown(member.display_name))
 
-    async def _read_birthday(self, member: discord.Member):
-        return await self.config.member(member).birthday()
+    async def _today_for_ctx(self, ctx: commands.Context) -> date:
+        """Use the current server's timezone, or UTC in a DM."""
+        if ctx.guild is None:
+            return datetime.now(timezone.utc).date()
+        return datetime.now(ZoneInfo(await self.config.guild(ctx.guild).timezone())).date()
+
+    async def _read_birthday(self, user: discord.abc.User):
+        return await self.config.user(user).birthday()
+
+    async def _clear_legacy_user(self, user_id: int):
+        """Erase this user's obsolete per-guild birthday records."""
+        all_members = await self.config.all_members()
+        for guild_id, users in all_members.items():
+            if user_id in users or str(user_id) in users:
+                await self.config.member_from_ids(int(guild_id), user_id).clear()
 
     async def _set_birthday(self, ctx: commands.Context, raw: str):
         try:
-            today = datetime.now(ZoneInfo(await self.config.guild(ctx.guild).timezone())).date()
-            birthday = parse_birthday(raw, today=today)
+            birthday = parse_birthday(raw, today=await self._today_for_ctx(ctx))
         except ValueError as exc:
             await ctx.send(str(exc))
             return
-        await self.config.member(ctx.author).birthday.set(birthday)
+        await self.config.user(ctx.author).birthday.set(birthday)
+        # A changed birthday cannot inherit a previous age-disclosure opt-in.
+        await self.config.user(ctx.author).show_age.set(False)
+        await self._clear_legacy_user(ctx.author.id)
         readable = display_day(birthday["month"], birthday["day"])
-        year_saved = " Your birth year was saved but is hidden from other members by default." if birthday["year"] else ""
-        await ctx.send(f"🎂 {ctx.author.mention}, your birthday is set to **{readable}**!{year_saved}", allowed_mentions=discord.AllowedMentions.none())
+        year_saved = " Your birth year is private; your age is hidden by default." if birthday["year"] else ""
+        await ctx.send(f"🎂 Birthday saved globally as **{readable}**! I'll remember it in every server where I'm present.{year_saved}", allowed_mentions=discord.AllowedMentions.none())
 
-    @commands.guild_only()
     @commands.group(name="birthday", invoke_without_command=True)
     async def birthday(self, ctx: commands.Context, *, input_text: Optional[str] = None):
         """Show your birthday, set one directly, or check another member.
 
-        Examples: [p]birthday 07/27/1985 or [p]birthday @member
+        Examples: [p]birthday 01/01/2000 or [p]birthday @member
         """
         if input_text:
             if "/" in input_text:
                 await self._set_birthday(ctx, input_text)
                 return
+            if ctx.guild is None:
+                await ctx.send("In DMs you can view or set your own birthday. To check another member, use this command in a server.")
+                return
             try:
                 member = await commands.MemberConverter().convert(ctx, input_text)
             except commands.BadArgument:
-                await ctx.send("Use `[p]birthday 07/27/1985`, `[p]birthday set 07/27/1985`, or `[p]birthday @member`.".replace("[p]", ctx.clean_prefix))
+                await ctx.send("Use `[p]birthday 01/01/2000`, `[p]birthday set 01/01/2000`, or `[p]birthday @member`.".replace("[p]", ctx.clean_prefix))
                 return
         else:
             member = ctx.author
@@ -70,18 +89,18 @@ class Birthday(commands.Cog):
         data = await self._read_birthday(member)
         if not data:
             if member.id == ctx.author.id:
-                await ctx.send(f"You haven't set your birthday yet! Try `{ctx.clean_prefix}birthday 07/27/1985`.")
+                await ctx.send(f"You haven't set your global birthday yet! Try `{ctx.clean_prefix}birthday 01/01/2000` or `{ctx.clean_prefix}birthday import` in the server where you previously saved it.")
             else:
-                await ctx.send(f"{self._clean_name(member)} hasn't set a birthday here.")
+                await ctx.send(f"{self._clean_name(member)} hasn't set a global birthday.")
             return
 
         day_text = display_day(data["month"], data["day"])
-        today = datetime.now(ZoneInfo(await self.config.guild(ctx.guild).timezone())).date()
+        today = await self._today_for_ctx(ctx)
         next_day = next_birthday(today, data["month"], data["day"])
         remaining = (next_day - today).days
         suffix = "today! 🎉" if remaining == 0 else ("tomorrow!" if remaining == 1 else f"in **{remaining} days**.")
         age_note = ""
-        if data["year"] is not None and await self.config.member(member).show_age():
+        if data["year"] is not None and await self.config.user(member).show_age():
             age_note = f" Turning **{age_on(next_day, data['year'])}**."
         await ctx.send(f"🎂 **{self._clean_name(member)}**'s birthday is **{day_text}** — {suffix}{age_note}", allowed_mentions=discord.AllowedMentions.none())
 
@@ -90,11 +109,37 @@ class Birthday(commands.Cog):
         """Set your birthday: MM/DD/YYYY or MM/DD (year optional)."""
         await self._set_birthday(ctx, birthday)
 
+    @birthday.command(name="import")
+    @commands.guild_only()
+    async def birthday_import(self, ctx: commands.Context):
+        """Opt in to importing your own birthday previously saved in this server."""
+        if await self._read_birthday(ctx.author):
+            await ctx.send("You already have a global birthday. To change it, use the birthday set command.")
+            return
+        legacy = await self.config.member(ctx.author).birthday()
+        if not legacy:
+            await ctx.send("No old birthday was found for you in this server. You can set a global birthday directly instead.")
+            return
+        try:
+            next_birthday(await self._today_for_ctx(ctx), legacy["month"], legacy["day"])
+        except (KeyError, ValueError, TypeError):
+            await ctx.send("Your old birthday isn't valid. Please set a new birthday manually.")
+            return
+        await self.config.user(ctx.author).birthday.set(legacy)
+        # An opt-in from one guild is not consent to expose age in every guild.
+        await self.config.user(ctx.author).show_age.set(False)
+        await self._clear_legacy_user(ctx.author.id)
+        await ctx.send(
+            f"🎂 Your birthday **{display_day(legacy['month'], legacy['day'])}** is now saved globally. "
+            "Age sharing remains off, and your old server-specific records were cleared."
+        )
+
     @birthday.command(name="remove", aliases=["delete", "clear"])
     async def birthday_remove(self, ctx: commands.Context):
-        """Remove your saved birthday and age visibility setting."""
-        await self.config.member(ctx.author).clear()
-        await ctx.send("Your birthday has been removed from this server.")
+        """Remove your global birthday and any old per-server data."""
+        await self.config.user(ctx.author).clear()
+        await self._clear_legacy_user(ctx.author.id)
+        await ctx.send("Your birthday has been removed globally, including any old server-specific records.")
 
     @birthday.command(name="age")
     async def birthday_age(self, ctx: commands.Context, setting: Literal["on", "off"]):
@@ -103,7 +148,7 @@ class Birthday(commands.Cog):
         if not data or data["year"] is None:
             await ctx.send("Set a birthday with a four-digit year first.")
             return
-        await self.config.member(ctx.author).show_age.set(setting == "on")
+        await self.config.user(ctx.author).show_age.set(setting == "on")
         await ctx.send(f"Showing your age to other members is now **{setting}**.")
 
     async def _resolve_member(self, guild: discord.Guild, user_id: int):
@@ -117,7 +162,7 @@ class Birthday(commands.Cog):
 
     async def _birthdays_in(self, guild: discord.Guild, today: date):
         """Return present members with configured birthdays, sorted by next observed date."""
-        records = await self.config.all_members(guild)
+        records = await self.config.all_users()
         entries = []
         for user_id, values in records.items():
             data = values.get("birthday")
@@ -132,6 +177,7 @@ class Birthday(commands.Cog):
         return entries
 
     @birthday.command(name="upcoming", aliases=["list", "next"])
+    @commands.guild_only()
     async def birthday_upcoming(self, ctx: commands.Context, count: int = 10):
         """Show the next 1–20 member birthdays (10 by default)."""
         if not 1 <= count <= 20:
@@ -156,6 +202,7 @@ class Birthday(commands.Cog):
         await ctx.send("🎂 **Upcoming birthdays**\n" + "\n".join(lines), allowed_mentions=discord.AllowedMentions.none())
 
     @birthday.command(name="today")
+    @commands.guild_only()
     async def birthday_today(self, ctx: commands.Context):
         """See who's celebrating today (according to the server timezone)."""
         today = datetime.now(ZoneInfo(await self.config.guild(ctx.guild).timezone())).date()
@@ -171,6 +218,7 @@ class Birthday(commands.Cog):
 
     @birthday.command(name="channel")
     @commands.admin_or_permissions(manage_guild=True)
+    @commands.guild_only()
     async def birthday_channel(self, ctx: commands.Context, *, channel: Optional[str] = None):
         """Set a birthday announcement channel, show it, or disable with 'off'."""
         if channel is None:
@@ -195,6 +243,7 @@ class Birthday(commands.Cog):
 
     @birthday.command(name="timezone", aliases=["tz"])
     @commands.admin_or_permissions(manage_guild=True)
+    @commands.guild_only()
     async def birthday_timezone(self, ctx: commands.Context, *, name: Optional[str] = None):
         """Set an IANA timezone, e.g. America/Vancouver or America/New_York."""
         if name is None:
@@ -210,6 +259,7 @@ class Birthday(commands.Cog):
 
     @birthday.command(name="time")
     @commands.admin_or_permissions(manage_guild=True)
+    @commands.guild_only()
     async def birthday_time(self, ctx: commands.Context, hhmm: Optional[str] = None):
         """Set daily announcement time HH:MM, 24-hour format in server timezone."""
         if hhmm is None:
@@ -274,20 +324,24 @@ class Birthday(commands.Cog):
         requester: Literal["discord_deleted_user", "owner", "user", "user_strict"],
         user_id: int,
     ):
-        """Remove birthday information for a user in every guild."""
-        all_data = await self.config.all_members()
-        for guild_id, member_data in all_data.items():
-            if user_id in member_data or str(user_id) in member_data:
-                await self.config.member_from_ids(int(guild_id), user_id).clear()
+        """Remove both global and legacy birthday information for a user."""
+        await self.config.user_from_id(user_id).clear()
+        await self._clear_legacy_user(user_id)
 
     async def red_get_data_for_user(self, *, user_id: int):
-        """Provide a portable JSON copy of stored birthday data."""
-        all_data = await self.config.all_members()
+        """Provide a portable JSON copy of global and obsolete local records."""
         owned = {}
-        for guild_id, member_data in all_data.items():
-            info = member_data.get(user_id, member_data.get(str(user_id)))
-            if info and info.get("birthday"):
-                owned[str(guild_id)] = info
+        global_record = await self.config.user_from_id(user_id).all()
+        if global_record.get("birthday"):
+            owned["global"] = global_record
+        all_members = await self.config.all_members()
+        legacy = {}
+        for guild_id, members in all_members.items():
+            old = members.get(user_id, members.get(str(user_id)))
+            if old and old.get("birthday"):
+                legacy[str(guild_id)] = old
+        if legacy:
+            owned["legacy_per_server"] = legacy
         if not owned:
             return {}
         return {"birthday.json": io.BytesIO(json.dumps(owned, indent=2).encode("utf-8"))}

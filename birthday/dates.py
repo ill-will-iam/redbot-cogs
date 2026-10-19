@@ -13,7 +13,7 @@ def parse_birthday(value: str, today: Optional[date] = None) -> Dict[str, Option
     today = today or date.today()
     match = _DATE_RE.fullmatch(value.strip())
     if not match:
-        raise ValueError("Use MM/DD/YYYY (e.g. 07/27/1985) or MM/DD.")
+        raise ValueError("Use MM/DD/YYYY (e.g. 01/01/2000) or MM/DD.")
 
     month, day = int(match.group(1)), int(match.group(2))
     year = int(match.group(3)) if match.group(3) else None

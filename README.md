@@ -21,10 +21,10 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
-| [`birthday`](birthday/) | `$birthday 07/27/1985` | Birthday tracking, countdowns, lists and optional daily announcements. |
+| [`birthday`](birthday/) | `~birthday 01/01/2000` | Global birthday profiles, countdowns and per-server daily announcements. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 
-`[p]` means your bot's command prefix. If your prefix is `$`, use `$coghello`.
+`[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
 ## Install a cog
 
@@ -371,6 +371,6 @@ $notes addto moderation Review ban appeals
 ```
 
 
-## Birthday — member celebrations
+## Birthday — global user profiles
 
-Members set their birth date with `$birthday 07/27/1985` or omit the year with `$birthday 07/27`. `$birthday today` and `$birthday upcoming` show celebrations; `$birthday remove` deletes the saved date. Admins may enable daily announcements with `$birthday channel #birthdays`, then set `$birthday timezone America/Vancouver` and `$birthday time 09:00`. Ages are hidden unless members explicitly enable them with `$birthday age on`. See [birthday/README.md](birthday/README.md) for usage and privacy notes.
+Set a birthday **once** with `~birthday 01/01/2000` or `~birthday 01/01` (year optional); it follows the user to **every server using the same Fatboy instance**. `~birthday today` and `~birthday upcoming` list only members of the current server. Admins can configure announcements per server using `~birthday channel #birthdays`, `~birthday timezone America/Vancouver`, and `~birthday time 09:00`. Dates can also be registered privately in DMs. Previous per-server records require explicit `~birthday import` by their owners. See [birthday/README.md](birthday/README.md) for full commands and privacy details.

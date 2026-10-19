@@ -1,52 +1,66 @@
 # Birthday — Red-DiscordBot cog
 
-A lightweight birthday cog with per-server saved birthdays and optional birthday announcements. No external API keys or third-party Python dependencies beyond Red-DiscordBot.
+**Set your birthday once, across every server using the same Redbot instance.** Birthdays and age preferences are stored as global user data. Each server independently configures its own daily birthday announcement channel and timezone. No external API keys or third-party Python packages are needed.
 
 ## Member commands
 
 | Command | Action |
 | --- | --- |
-| $birthday 07/27/1985 | Set your birthday immediately. |
-| $birthday set 07/27/1985 | Alternate syntax to set it. |
-| $birthday set 07/27 | Set it without sharing a birth year. |
-| $birthday | View your own birthday and countdown. |
-| $birthday @member | View another member's birthday (month/day). |
-| $birthday today | Today's birthdays in the server's timezone. |
-| $birthday upcoming | The next ten birthdays. |
-| $birthday upcoming 20 | The next twenty birthdays (max 20). |
-| $birthday age on | Opt into displaying your age. |
-| $birthday age off | Keep your age hidden (default). |
-| $birthday remove | Erase your saved birthday in this server. |
+| `~birthday 01/01/2000` | Save your global birthday once (example only). |
+| `~birthday set 01/01/2000` | Alternative save command. |
+| `~birthday 01/01` | Save month/day without a birth year. |
+| `~birthday` | Check your own birthday and countdown. |
+| `~birthday @member` | Check another member's global birthday in a shared server. |
+| `~birthday today` | Show today's birthdays of users in this server. |
+| `~birthday upcoming` | Show the next ten birthdays in this server. |
+| `~birthday upcoming 20` | Show the next twenty birthdays. |
+| `~birthday age on` | Opt in to showing your age globally. |
+| `~birthday age off` | Hide your age globally (default). |
+| `~birthday import` | Import your own old per-server birthday from the current server. |
+| `~birthday remove` | Delete your global birthday plus old local records. |
+
+**You can set, view, or remove your own global birthday in a direct message to Fatboy.** Viewing someone else's birthday, lists, imports, and admin settings are server-only.
 
 ## Server administrator commands
 
 | Command | Action |
 | --- | --- |
-| $birthday channel #birthdays | Enable birthday announcements in the named channel. |
-| $birthday channel off | Turn announcements off. |
-| $birthday timezone America/Vancouver | Set server timezone (default UTC). |
-| $birthday time 09:00 | Set 24-hour local announcement time (default 09:00). |
+| `~birthday channel #birthdays` | Enable announcements in this server's selected text channel. |
+| `~birthday channel off` | Disable announcements in this server. |
+| `~birthday timezone America/Vancouver` | Set this server's timezone (default UTC). |
+| `~birthday time 09:00` | Set the local announcement time (default 09:00). |
 
-**Important:** Announcement messages appear at or after the configured local time if the bot is available; they are checked every five minutes and sent at most once per calendar day per server. They never ping anyone. Multiple birthdays are combined into one message. February 29 birthdays are observed on February 28 in non-leap years.
+Announcements are checked every five minutes and sent at most once a day per server after the specified local time, when the bot is available. They do **not** ping anyone; multiple birthdays are combined into one announcement. February 29 birthdays are observed on February 28 in non-leap years.
 
-A user's birthday is **not imported from Discord**; they must set it manually. Birthday month/day is viewable by members of the server. Birth year is not publicly displayed by the cog by default, but typing $birthday 07/27/1985 in a public channel **does expose the full date in the original command message**, potentially also to logging bots. For privacy, users may prefer omitting the year, or using a restricted channel to set their birthday. Announcements are disabled until an administrator sets a channel.
+## Updating from the older per-server version
 
-## Installation
+Existing per-server birthday records are **not automatically published globally**. A member who already registered under the old version should run `~birthday import` in a server where that date was saved. This imports the existing date to their global profile, disables age visibility as a privacy precaution, and erases that user's old per-server birthday records. Alternatively, run `~birthday set MM/DD/YYYY` to replace old data and start fresh. Deleting a birthday with `~birthday remove` also removes old local records.
 
-To install via Red's Downloader:
+## Privacy
 
-~~~text
-$load downloader
-$repo update redbot-cogs
-$cog install redbot-cogs birthday
-$load birthday
-$help birthday
-~~~
+Month/day is visible to anyone who shares a server where the cog can be used; age is only shown if its owner opts in. Year is stored when provided and isn't printed by birthday lookups or announcements, though members could infer the year if age is visible. A full birthdate typed in a **public command message can still be read there** and may be logged by other bots; to keep the birth year private, DM Fatboy or omit the year entirely. The global data belongs to **this bot instance only**, not all Discord bots. Birthday announcements require each server's admin to opt in.
 
-If the repository isn't added yet, run:
+## Installation/update
 
-~~~text
-$repo add redbot-cogs https://github.com/ill-will-iam/redbot-cogs
-~~~
+```text
+~load downloader
+~repo update redbot-cogs
+~cog install redbot-cogs birthday
+~load birthday
+```
 
-The bot needs permission to **Send Messages** in the configured birthday channel. Member lookup works best with the **Server Members Intent** enabled.
+For an already installed cog:
+
+```text
+~repo update redbot-cogs
+~cog update birthday
+~reload birthday
+```
+
+If not previously added:
+
+```text
+~repo add redbot-cogs https://github.com/ill-will-iam/redbot-cogs
+```
+
+The bot needs permission to send messages in its configured birthday channel. Enabling the Server Members Intent improves member lookup.
