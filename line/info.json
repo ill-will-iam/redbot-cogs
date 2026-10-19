@@ -1,0 +1,15 @@
+{
+  "name": "Line",
+  "short": "Join a 45-second line, then count down and cheer.",
+  "description": "Use [p]line to start or join a social round in the current text channel. Everyone gets a personalized reply; after 45 seconds the bot counts down 3, 2, 1 and ends with a cheers message. Duplicate joins and overlapping rounds are prevented.",
+  "author": ["Will"],
+  "requirements": [],
+  "tags": ["fun", "social", "party", "timed"],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [3, 9, 0],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Only Discord user IDs participating in active line rounds are held in memory during the round. No messages, names, or other user data are saved to disk. Data is discarded when rounds finish or the cog is unloaded. Active participant IDs can be removed on a Red user-data deletion request.",
+  "install_msg": "Line installed! Run [p]load line, then [p]line in a server text channel. Users have 45 seconds to join before a 3-second countdown and cheers."
+}
