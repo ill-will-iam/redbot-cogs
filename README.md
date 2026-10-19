@@ -14,6 +14,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`haven`](haven/) | `$haven inspect` | Reversible read-only lockdown while preserving channel visibility. |
 | [`markov`](markov/) | `$markov stats` | Markov models, size reports, admin enrollment and channel modeling. |
 | [`pp`](pp/) | `$pp` | Random-length custom emoji chain. |
+| [`line`](line/) | `$line` | 45-second group line-up, 3-second countdown and final cheers. |
 | [`redbackup`](redbackup/) | `$backup` | VPS-local live backup snapshots, integrity checks and retention. |
 | [`ribbit`](ribbit/) | `$ribbit` | Royal Ribbit Reserve frog economy using Ribbucks. |
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
@@ -338,3 +339,16 @@ $snipe clear here
 - Text is recoverable only for messages that were in the running bot's Discord message cache. Deleted attachments are shown as links that might expire; missing/uncached messages cannot be reconstructed. Enable Message Content Intent and allow the bot to read channels and send embeds.
 - Cache history disappears on a bot restart or cog reload; clearing deletes entries immediately from the in-memory store.
 
+
+## Install Line
+
+Start or join a timed group line-up in any server text channel. Each member who types `$line` during the 45-second window receives a personalized response. The bot then counts down `3...`, `2...`, `1...` (one second each) and posts `🥂 Cheers, enjoy! 🥂`. One round runs per channel; repeat attempts and late joining are handled without creating a second round.
+
+```text
+$repo update redbot-cogs
+$cog install redbot-cogs line
+$load line
+$line
+```
+
+See [line/README.md](line/README.md) for usage and data-handling details.
