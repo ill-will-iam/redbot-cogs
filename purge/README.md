@@ -28,9 +28,10 @@ For user, bots, webhooks, links, files, embeds and me, you can add a **scan limi
 
 - Maximum **500 matching messages deleted** per invocation.
 - Maximum **5,000 messages scanned** per invocation.
-- Purging **more than 100** messages requires the invoker to reply `yes` within 30 seconds.
+- Purging **more than 100** messages requires the invoker to react **✅** to their command within 30 seconds; **❌** cancels. Fatboy never posts a confirmation message. The bot needs **Add Reactions** for this safeguard.
 - Commands require a Red moderator or the **Manage Messages** permission, and the bot needs **Manage Messages** and **Read Message History**.
-- The command itself is excluded from matching and is removed after a successful purge. A temporary results summary disappears after 10 seconds.
+- **Silent mode:** successful purges post no replies, notices, or completion messages. Fatboy removes the invocation after deleting messages.
+- Invalid, cancelled, or failed purges leave a **❌** reaction on the invocation, rather than posting a message. Use `~help purge` to review syntax.
 - Discord bulk deletion cannot include messages over 14 days old. discord.py falls back to slower individual deletes for older messages.
 - Deleted messages cannot be restored by this cog. Other cogs (such as Snipe or AdminLog) may independently record deletion events.
 - No persistent user data is created.
