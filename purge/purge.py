@@ -174,14 +174,14 @@ class Purge(commands.Cog):
             count=count,
             label="recent messages",
             matcher=lambda m: True,
-            scan=count,
+            scan=count + 1,
         )
 
     @purge_group.command(name="all")
     async def purge_all(self, ctx: commands.Context, count: int):
         """Delete N recent messages in this channel. Example: [p]purge all 50."""
         await self._run(
-            ctx, count=count, label="recent messages", matcher=lambda m: True, scan=count
+            ctx, count=count, label="recent messages", matcher=lambda m: True, scan=count + 1
         )
 
     @purge_group.command(name="user")
@@ -310,7 +310,7 @@ class Purge(commands.Cog):
             count=count,
             label=f"messages before {message_id}",
             matcher=lambda m: True,
-            scan=count,
+            scan=count + 1,
             before=discord.Object(id=message_id),
         )
 
@@ -324,6 +324,6 @@ class Purge(commands.Cog):
             count=count,
             label=f"messages after {message_id}",
             matcher=lambda m: True,
-            scan=count,
+            scan=count + 1,
             after=discord.Object(id=message_id),
         )
