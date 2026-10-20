@@ -1,0 +1,27 @@
+{
+  "name": "Truth or Dare",
+  "short": "R-rated 18+ Discord Truth or Dare game with optional turn-taking.",
+  "description": "175 original, adult-flirty, chat-friendly truth and dare prompts with 25-prompt recent-history protection per channel/category. Shortcuts: [p]truth and [p]dare; [p]tod for random, join, leave, players, next, rules, and [p]todset on/off for administrators. Targeting other members requires explicit opt-in. Prompts run only in Discord age-restricted NSFW channels, with voluntary participation and no dangerous or explicit-image dares.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "fun",
+    "games",
+    "adult",
+    "18+",
+    "truth-or-dare"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "This cog retains participating Discord user IDs and the last-picked user ID only in running memory per channel, for opt-in target selection. No participant data or responses are saved persistently. Prompt history is kept as ephemeral numeric prompt indices. Only the server-level enabled/disabled setting is persisted. Players can leave any time, and Red's data-deletion hook removes affected user IDs from memory.",
+  "install_msg": "Truth or Dare installed. Run [p]load truthordare, mark a text channel age-restricted (NSFW), and use [p]tod, [p]truth, or [p]dare. Players may opt in to being targeted with [p]tod join. Admins: [p]todset on/off."
+}
