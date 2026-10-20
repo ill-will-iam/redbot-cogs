@@ -23,6 +23,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |
 | [`autorole`](autorole/) | `~autorole add @Member` | Silent per-server join roles, multiple roles, and screening-aware assignment. |
 | [`birthday`](birthday/) | `~birthday 01/01/2000` | Global birthday profiles, countdowns and per-server daily announcements. |
+| [`truthordare`](truthordare/) | `~tod` / `~truth` / `~dare` | 175 R-rated truth/dare prompts for age-restricted channels, voluntary turn-taking and admin controls. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 | [`purge`](purge/) | `~purge 25` | Silent moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
 
