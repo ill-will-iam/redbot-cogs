@@ -28,6 +28,10 @@ class TruthOrDare(commands.Cog):
             1, 5, commands.BucketType.user
         )
 
+    async def cog_check(self, ctx: commands.Context) -> bool:
+        """All commands belong in a server, including grouped subcommands."""
+        return ctx.guild is not None
+
     @staticmethod
     def _safe_name(member: discord.Member) -> str:
         return discord.utils.escape_markdown(
@@ -108,6 +112,7 @@ class TruthOrDare(commands.Cog):
             "*18+ • Play voluntarily • You can always pass.*",
             allowed_mentions=discord.AllowedMentions.none(),
         )
+        return True
 
     @commands.group(name="tod", invoke_without_command=True)
     @commands.guild_only()
@@ -172,6 +177,7 @@ class TruthOrDare(commands.Cog):
             members.discard(ctx.author.id)
             if not members:
                 self._players.pop(key, None)
+            if self._last_player.get(key) == ctx.author.id or not members:
                 self._last_player.pop(key, None)
         await ctx.send("✅ You've left this channel's Truth or Dare player pool.")
 
@@ -192,8 +198,8 @@ class TruthOrDare(commands.Cog):
             return
         names = [self._safe_name(member) for member in sorted(members, key=lambda m: m.id)]
         await ctx.send(
-            f"🎲 **Players ({len(names)}):** " + ", ".join(names[:40])
-            + (f" and {len(names) - 40} more." if len(names) > 40 else ""),
+            f"🎲 **Players ({len(names)}):** " + ", ".join(names[:20])
+            + (f" and {len(names) - 20} more." if len(names) > 20 else ""),
             allowed_mentions=discord.AllowedMentions.none(),
         )
 
@@ -218,24 +224,20 @@ class TruthOrDare(commands.Cog):
         previous = self._last_player.get(key)
         possible = [member for member in members if member.id != previous] or members
         target = secrets.choice(possible)
-        # Don't advance the turn if the cooldown prevents a prompt.
-        bucket = self._cooldowns.get_bucket(ctx.message)
-        remaining = bucket.get_tokens()
-        if remaining <= 0:
-            await ctx.send("Easy, troublemaker. Try again in a few seconds.")
-            return
-        self._last_player[key] = target.id
-        await self._prompt(ctx, kind, target)
+        # Only advance the turn when a prompt was actually sent.
+        if await self._prompt(ctx, kind, target):
+            self._last_player[key] = target.id
 
     @tod.command(name="rules")
     async def tod_rules(self, ctx: commands.Context):
         """Explain the game and its boundaries."""
+        prefix = ctx.clean_prefix
         await ctx.send(
             "🎲 **Rated-R Truth or Dare — 18+**\n"
             "• Play only in a Discord age-restricted channel.\n"
-            "• Use ~tod, ~truth, or ~dare for yourself.\n"
-            "• Use ~tod join to volunteer for ~tod next or another player's mention.\n"
-            "• Use ~tod leave whenever you want, no explanation needed.\n"
+            f"• Use {prefix}tod, {prefix}truth, or {prefix}dare for yourself.\n"
+            f"• Use {prefix}tod join to volunteer for {prefix}tod next or being targeted.\n"
+            f"• Use {prefix}tod leave whenever you want, no explanation needed.\n"
             "• Anyone can pass. No pressure, harassment, unwanted DMs, "
             "nudity, explicit images, or dangerous dares.\n"
             "• Keep things consensual and respect each server's rules."
