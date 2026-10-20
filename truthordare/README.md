@@ -45,7 +45,7 @@ For future changes, use ~cog update truthordare and reload if prompted.
 
 ## Implementation notes
 
-- 87 truths and 88 dares, 175 prompts total.
+- 120 truths and 113 dares, 233 prompts total.
 - Avoids the most recently used 25 prompts **per category per channel**.
 - Five-second per-user prompt throttle.
 - Up to 100 opted-in players per channel; tries not to select the same person twice in a row when multiple volunteers are present.
