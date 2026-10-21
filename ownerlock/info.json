@@ -1,0 +1,27 @@
+{
+  "name": "OwnerLock",
+  "short": "Choose which cog commands only bot owners may use, across all servers.",
+  "description": "Global owner-only command gate for selected Red cogs. Use [p]olock protect <CogName> to restrict every command and subcommand of a loaded cog to Red bot owners in all guilds and DMs. Persists policies through reloads and offers inspect/list commands. OwnerLock detects and warns about listener-based cogs, whose automatic event handlers and background tasks require separate enforcement.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "permissions",
+    "security",
+    "owner-only",
+    "access-control",
+    "global"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Only a globally shared list of protected cog names is stored; no user IDs, guild IDs, user messages, or user-generated content are persisted.",
+  "install_msg": "Use [p]load ownerlock and then [p]olock cogs or [p]olock protect CogName. Only Red bot owners can manage the lock. Event listeners/background tasks inside other cogs are not generically blocked."
+}

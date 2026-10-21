@@ -366,6 +366,10 @@ class BannedWords(commands.Cog):
         # A disabled cog cannot silently continue scoring messages.
         if await self.bot.cog_disabled_in_guild(self, message.guild):
             return
+        # OwnerLock protects this listener too, when this cog is locked.
+        ownerlock = self.bot.get_cog("OwnerLock")
+        if ownerlock is not None and not await ownerlock.allows_event(self.qualified_name, message.author):
+            return
         # Commands themselves cannot trigger strikes, including `bwg add`.
         ctx = await self.bot.get_context(message)
         if ctx.valid:

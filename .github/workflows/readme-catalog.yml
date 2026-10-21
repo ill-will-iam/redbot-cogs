@@ -12,6 +12,9 @@ on:
       - "tests/test_sexiness.py"
       - "tests/test_readme_catalog.py"
       - "autoresponder/*.py"
+      - "ownerlock/*.py"
+      - "bannedwords/*.py"
+      - "tests/test_ownerlock.py"
       - "tests/test_autoresponder.py"
       - ".github/workflows/readme-catalog.yml"
   pull_request:
@@ -25,6 +28,9 @@ on:
       - "tests/test_sexiness.py"
       - "tests/test_readme_catalog.py"
       - "autoresponder/*.py"
+      - "ownerlock/*.py"
+      - "bannedwords/*.py"
+      - "tests/test_ownerlock.py"
       - "tests/test_autoresponder.py"
       - ".github/workflows/readme-catalog.yml"
 
@@ -37,7 +43,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Check custom cog Python syntax
-        run: python3 -m compileall -q serveraudit sexiness purge autoresponder
+        run: python3 -m compileall -q serveraudit sexiness purge autoresponder bannedwords ownerlock
+      - name: Test OwnerLock access policy and listener integrations
+        run: python3 -m unittest discover -s tests -p test_ownerlock.py -v
       - name: Test AutoResponder global matching and permissions
         run: python3 -m unittest discover -s tests -p test_autoresponder.py -v
       - name: Verify all cog packages appear in the README

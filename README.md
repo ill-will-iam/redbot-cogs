@@ -28,8 +28,13 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`purge`](purge/) | `~purge 25` | Silent moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
 | [`bannedwords`](bannedwords/) | `~bwg start` | Continuous server-wide opt-in game, seeded with a random common banned word; players add words and collect strikes until manually ended. |
 | [`autoresponder`](autoresponder/) | `~ar add hello \| Hey there!` | One bot-global trigger list: owner-managed autoresponses in every server, with independent channel cooldowns. |
+| [`ownerlock`](ownerlock/) | `~olock protect Purge` | Selectively restrict cog commands to Red bot owners, with event-listener inspection. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
+
+## OwnerLock — selectively owner-only cogs
+
+Install with `~repo update redbot-cogs`, `~cog install redbot-cogs ownerlock`, and `~load ownerlock`. Run `~olock cogs` to see available cog names and `~olock protect Purge` to restrict that cog's commands to Red bot owners in **every server** and DMs. Use `~olock unprotect Purge` to restore normal access, and `~olock inspect CogName` to check for event listeners. Command checks do not automatically prevent background events or slash commands; AutoResponder and BannedWords now cooperate with OwnerLock for message listeners. See [ownerlock/README.md](ownerlock/README.md) for details.
 
 ## AutoResponder — global word triggers in every Fatboy server
 

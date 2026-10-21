@@ -271,6 +271,10 @@ class AutoResponder(commands.Cog):
             return
         if await self.bot.cog_disabled_in_guild(self, message.guild):
             return
+        # OwnerLock protects this listener too, when this cog is locked.
+        ownerlock = self.bot.get_cog("OwnerLock")
+        if ownerlock is not None and not await ownerlock.allows_event(self.qualified_name, message.author):
+            return
         # Ignore configured command-prefix messages, even unrecognized commands.
         ctx = await self.bot.get_context(message)
         if ctx.prefix is not None:
