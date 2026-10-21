@@ -50,3 +50,27 @@ def parse_rule_input(raw: str) -> Tuple[str, str]:
     if not response or len(response) > MAX_RESPONSE_LENGTH:
         raise ValueError("Response must be 1–1000 characters.")
     return trigger, response
+
+
+def merge_legacy_rules(
+    current: Dict[str, str], legacy_guilds: Dict[int, dict]
+) -> Dict[str, str]:
+    """Merge old guild-scoped rules into one shared map without overwriting globals.
+
+    Conflicting legacy triggers are won by the lowest guild ID; no existing
+    guild settings are deleted as part of the migration.
+    """
+    merged = dict(current)
+    for guild_id in sorted(legacy_guilds, key=int):
+        old_rules = legacy_guilds[guild_id].get("rules") or {}
+        for old_trigger, reply in sorted(old_rules.items()):
+            trigger = normalize_trigger(old_trigger)
+            if (
+                trigger not in merged
+                and len(merged) < MAX_RULES
+                and valid_trigger(trigger)
+                and isinstance(reply, str)
+                and 1 <= len(reply) <= MAX_RESPONSE_LENGTH
+            ):
+                merged[trigger] = reply
+    return merged

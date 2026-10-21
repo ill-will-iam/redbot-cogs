@@ -1,7 +1,7 @@
 {
   "name": "AutoResponder",
-  "short": "Server-wide automatic replies triggered by configured words or phrases.",
-  "description": "Moderators configure triggers and replies; Fatboy automatically responds when someone says a matching word or phrase anywhere in the Discord server, including threads. Case-insensitive whole-word matching, only one reply per message, configurable cooldown, persistent per-server rules, and no-mention replies.",
+  "short": "Bot-global automatic replies triggered by words or phrases in any server.",
+  "description": "Bot owners manage a single global list of word/phrase triggers and responses. Fatboy automatically replies whenever a human uses a matching trigger in any server the bot has joined, including text threads. Includes a one-time migration of previous per-server rules, whole-word matching, no-mention replies, independent channel cooldowns, and globally persistent settings.",
   "author": [
     "Will"
   ],
@@ -11,7 +11,9 @@
     "fun",
     "utility",
     "chat",
-    "server"
+    "server",
+    "global",
+    "cross-server"
   ],
   "min_bot_version": "3.5.0",
   "min_python_version": [
@@ -22,6 +24,6 @@
   "type": "COG",
   "disabled": false,
   "hidden": false,
-  "end_user_data_statement": "Stores server-specific trigger strings, moderator-provided response text, enabled status, and cooldown settings. No Discord user IDs or raw messages are saved. Temporary per-channel cooldowns are held in memory only.",
-  "install_msg": "AutoResponder installed. Load with [p]load autoresponder and configure a response using [p]ar add hello | Hey there! Manage Server permission required. Enable Message Content Intent."
+  "end_user_data_statement": "Stores one bot-global list of owner-configured trigger strings and responses, global enabled/cooldown settings, and a one-time legacy migration flag. Prior guild-scoped rules are merged on the first upgrade and retained as an unmodified backup. No Discord user IDs or message history are saved; transient channel cooldown records reside only in memory.",
+  "install_msg": "AutoResponder installed. Load with [p]load autoresponder. Bot owners configure one global response shared across all guilds using [p]ar add hello | Hey there! Enable Message Content Intent."
 }

@@ -39,6 +39,41 @@ class AutoResponderMatchingTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     matching.parse_rule_input(sample)
 
+    def test_global_rule_migration_preserves_existing_and_resolves_conflicts(self):
+        legacy = {
+            20: {"rules": {"hello": "twenty", "cat": "mew"}},
+            10: {"rules": {" HELLO ": "ten", "hi": "greetings"}},
+        }
+        merged = matching.merge_legacy_rules({"hi": "already global"}, legacy)
+        self.assertEqual(merged["hi"], "already global")
+        self.assertEqual(merged["hello"], "ten")
+        self.assertEqual(merged["cat"], "mew")
+        self.assertEqual(legacy[20]["rules"]["hello"], "twenty")
+
+    def test_global_migration_rejects_invalid_or_oversized_rules(self):
+        legacy = {1: {"rules": {
+            "@everyone": "unsafe trigger",
+            "good": "",
+            "long": "X" * 1001,
+            "acceptable": "okay",
+        }}}
+        merged = matching.merge_legacy_rules({}, legacy)
+        self.assertEqual(merged, {"acceptable": "okay"})
+
+    def test_global_management_commands_require_bot_owner(self):
+        import ast
+        cog = Path(__file__).resolve().parents[1] / "autoresponder" / "autoresponder.py"
+        source = cog.read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        self.assertIn("self.config.register_global(", source)
+        self.assertNotIn("self.config.guild(", source)
+        protected = {"ar_add", "ar_edit", "ar_remove",
+                     "ar_enable", "ar_disable", "ar_cooldown"}
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name in protected:
+                decorator_names = {ast.unparse(dec) for dec in node.decorator_list}
+                self.assertIn("commands.is_owner()", decorator_names, node.name)
+
     def test_apostrophes_and_unicode(self):
         self.assertEqual(matching.find_response("It's here!", matching.compile_rules({"it's": "yes"})), "it's")
         self.assertTrue(matching.valid_trigger("café"))

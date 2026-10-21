@@ -27,13 +27,13 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 | [`purge`](purge/) | `~purge 25` | Silent moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
 | [`bannedwords`](bannedwords/) | `~bwg start` | Continuous server-wide opt-in game, seeded with a random common banned word; players add words and collect strikes until manually ended. |
-| [`autoresponder`](autoresponder/) | `~ar add hello \| Hey there!` | Server-wide automatic word/phrase replies with moderator-managed triggers and cooldowns. |
+| [`autoresponder`](autoresponder/) | `~ar add hello \| Hey there!` | One bot-global trigger list: owner-managed autoresponses in every server, with independent channel cooldowns. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
-## AutoResponder — server-wide word triggers
+## AutoResponder — global word triggers in every Fatboy server
 
-To install: `~repo update redbot-cogs`, `~cog install redbot-cogs autoresponder`, `~load autoresponder`. A moderator can configure `~ar add hello | Hey there!` to make Fatboy respond automatically when someone says **hello** in any server text channel or thread. Use `~ar edit`, `~ar remove`, `~ar list`, `~ar test`, `~ar cooldown`, and `~ar enable` / `~ar disable` to manage rules. Responses ignore bots and commands, never ping members, and persist across restarts. See [autoresponder/README.md](autoresponder/README.md) for the full command list.
+To install: `~repo update redbot-cogs`, `~cog install redbot-cogs autoresponder`, `~load autoresponder`. A bot owner can configure `~ar add hello | Hey there!` once to make Fatboy respond to **hello** in all servers where the bot is present, including threads. Old per-server triggers are merged into the global rule list on the first v2 load. Use `~ar edit`, `~ar remove`, `~ar list`, `~ar test`, `~ar cooldown`, and `~ar enable` / `~ar disable` to manage rules. Responses ignore bots and commands, never ping members, and persist across restarts. See [autoresponder/README.md](autoresponder/README.md) for the full command list.
 
 ## BannedWords server-wide game
 

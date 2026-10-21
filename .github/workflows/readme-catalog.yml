@@ -11,6 +11,8 @@ on:
       - "purge/*.py"
       - "tests/test_sexiness.py"
       - "tests/test_readme_catalog.py"
+      - "autoresponder/*.py"
+      - "tests/test_autoresponder.py"
       - ".github/workflows/readme-catalog.yml"
   pull_request:
     paths:
@@ -22,6 +24,8 @@ on:
       - "purge/*.py"
       - "tests/test_sexiness.py"
       - "tests/test_readme_catalog.py"
+      - "autoresponder/*.py"
+      - "tests/test_autoresponder.py"
       - ".github/workflows/readme-catalog.yml"
 
 permissions:
@@ -33,6 +37,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Check custom cog Python syntax
-        run: python3 -m compileall -q serveraudit sexiness purge
+        run: python3 -m compileall -q serveraudit sexiness purge autoresponder
+      - name: Test AutoResponder global matching and permissions
+        run: python3 -m unittest discover -s tests -p test_autoresponder.py -v
       - name: Verify all cog packages appear in the README
         run: python3 -m unittest discover -s tests -p test_readme_catalog.py -v
