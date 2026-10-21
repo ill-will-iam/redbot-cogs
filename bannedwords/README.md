@@ -4,14 +4,14 @@ One **continuous, server-wide** game per Discord guild. No per-channel rounds, t
 
 ## How it works
 
-1. A moderator enters `~bwg start` once for the whole server.
+1. A moderator enters `~bwg start` once for the whole server. The bot immediately chooses and announces **one random common banned word** (such as `I`, `it`, `what`, `me`, or `you`). This word is added to the server-wide banned list; moderators can remove it with `~bwg remove <word>`.
 2. Each player opts in with `~bwg join`. Only opted-in users can earn strikes and submit banned words.
 3. Players add a word with `~bwg add pineapple` or a short phrase with `~bwg add rubber duck`.
 4. Any message sent **by an opted-in player** that contains a banned word in **any server text channel or thread** earns **one strike per message**, even if it contains multiple banned words. A strike announcement appears in the offending channel unless staff disable announcements.
 5. Members can opt out with `~bwg leave` (their prior strikes remain visible), or rejoin at any time.
 6. The starter or a moderator enters `~bwg end` to publish the final leaderboard and wipe the active game.
 
-Banned words apply immediately and retroactively **do not** score messages sent before the word was added. Matching is case-insensitive, limited to whole words or phrases, and only inspects normal message text (not images or message edits). Discord bot commands are ignored. The best score is the **fewest strikes**.
+The starter word is selected fresh for each newly started game and is tracked exactly like a player-added word. One-letter words like `I` and `a` are accepted and matched as whole words. Banned words apply immediately and retroactively **do not** score messages sent before the word was added. Matching is case-insensitive, limited to whole words or phrases, and only inspects normal message text (not images or message edits). Discord bot commands are ignored. The best score is the **fewest strikes**.
 
 ## Commands
 
@@ -21,7 +21,7 @@ Banned words apply immediately and retroactively **do not** score messages sent 
 | `~bwg start` | Begin the server-wide game | Manage Server permission |
 | `~bwg join` | Opt in | Everyone |
 | `~bwg leave` | Opt out (keep previous strikes) | Players |
-| `~bwg add <word>` | Ban a word / phrase (2–48 characters, up to 3 tokens) | Active players |
+| `~bwg add <word>` | Ban a word / phrase (1–48 characters, up to 3 tokens) | Active players |
 | `~bwg remove <word>` | Unban a word | Contributor or moderator |
 | `~bwg words` | View all banned words | Everyone |
 | `~bwg score` | Current standings | Everyone |

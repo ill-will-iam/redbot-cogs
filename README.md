@@ -26,13 +26,13 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`truthordare`](truthordare/) | `~tod` / `~truth` / `~dare` | 233 R-rated truth/dare prompts for age-restricted channels, voluntary turn-taking and admin controls. |
 | [`snipe`](snipe/) | `$snipe` | Review recent deleted messages; admin history clearing. |
 | [`purge`](purge/) | `~purge 25` | Silent moderator-only message cleanup by count, member/ID, links, bots, keywords, attachments and message range. |
-| [`bannedwords`](bannedwords/) | `~bwg start` | Continuous server-wide opt-in banned-word game; players add words, strikes are tracked until manually ended. |
+| [`bannedwords`](bannedwords/) | `~bwg start` | Continuous server-wide opt-in game, seeded with a random common banned word; players add words and collect strikes until manually ended. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
 ## BannedWords server-wide game
 
-Run `~repo update redbot-cogs`, `~cog install redbot-cogs bannedwords`, then `~load bannedwords`. A moderator starts a game with `~bwg start`. Players opt in with `~bwg join` and add banned words with `~bwg add <word>`. Words apply to opted-in players across all server channels and threads, one strike per offending message. The game persists across restarts and continues until `~bwg end`. See [bannedwords/README.md](bannedwords/README.md) for the complete command list.
+Run `~repo update redbot-cogs`, `~cog install redbot-cogs bannedwords`, then `~load bannedwords`. A moderator starts a game with `~bwg start`, which chooses and announces one random common banned word. Players opt in with `~bwg join` and add banned words with `~bwg add <word>`. Words apply to opted-in players across all server channels and threads, one strike per offending message. The game persists across restarts and continues until `~bwg end`. See [bannedwords/README.md](bannedwords/README.md) for the complete command list.
 
 ## AutoRole join assignments
 

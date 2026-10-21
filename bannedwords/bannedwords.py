@@ -1,6 +1,7 @@
 """Persistent, server-wide opt-in banned-word game for Red-DiscordBot 3.5+."""
 
 import asyncio
+import random
 import re
 import time
 from typing import Dict, List, Optional
@@ -11,6 +12,13 @@ from redbot.core.utils.chat_formatting import pagify
 
 MAX_WORDS = 300
 MAX_WORD_LENGTH = 48
+# A random, common starter word makes each new game immediately playable.
+# The uppercase "I" is stored as "i" for case-insensitive matching.
+STARTER_WORDS = (
+    "i", "it", "what", "me", "you", "we", "they", "us", "the", "a",
+    "and", "but", "to", "in", "on", "at", "is", "are", "was",
+    "that", "this", "not", "my", "your", "have", "do", "so",
+)
 # Up to three plain word tokens, including apostrophes and hyphens inside words.
 WORD_FORMAT = re.compile(r"[^\W_]+(?:['’\-][^\W_]+)*(?:\s+[^\W_]+(?:['’\-][^\W_]+)*){0,2}", re.UNICODE)
 
@@ -39,7 +47,7 @@ class BannedWords(commands.Cog):
     """One non-expiring banned-word game per guild, across all server channels."""
 
     __author__ = "Will"
-    __version__ = "1.0.0"
+    __version__ = "1.1.0"
 
     def __init__(self, bot):
         self.bot = bot
@@ -108,7 +116,7 @@ class BannedWords(commands.Cog):
         p = ctx.clean_prefix
         await ctx.send(
             f"**Banned Word Game commands**\n"
-            f"`{p}bwg start` — mod starts the server-wide game\n"
+            f"`{p}bwg start` — mod starts the server-wide game with one random common banned word\n"
             f"`{p}bwg join` — opt in to being monitored\n"
             f"`{p}bwg leave` — opt out; keep your accumulated strikes\n"
             f"`{p}bwg add <word>` — participating player adds a banned word (up to 3 words)\n"
@@ -135,11 +143,18 @@ class BannedWords(commands.Cog):
                 await ctx.send("A server-wide Banned Word Game is already running. Use `bwg status`.")
                 return
             game = _new_game(ctx.author.id)
+            starter_word = random.choice(STARTER_WORDS)
+            game["words"][starter_word] = {
+                "added_by": 0,  # Starter word belongs to the game, not a player.
+                "added_at": int(time.time()),
+            }
             await self._save(ctx.guild, game)
             self._active_guilds.add(ctx.guild.id)
             self._set_pattern(ctx.guild.id, game)
         await ctx.send(
             f"**Banned Word Game has started for the entire server!**\n"
+            f"**First banned word: {_safe(starter_word.upper() if starter_word == 'i' else starter_word)}** "
+            "(randomly selected).\n"
             f"Join with `{ctx.clean_prefix}bwg join`. Once joined, add banned words with "
             f"`{ctx.clean_prefix}bwg add <word>`. Each message containing a banned word "
             "earns its author one strike, anywhere in the server. "
@@ -192,8 +207,8 @@ class BannedWords(commands.Cog):
     async def add(self, ctx: commands.Context, *, word: str):
         """Add a banned word or short phrase while opted in."""
         normalized = _normalise(word)
-        if not 2 <= len(normalized) <= MAX_WORD_LENGTH or not WORD_FORMAT.fullmatch(normalized) or not any(c.isalpha() for c in normalized):
-            await ctx.send("Use 2–48 characters, up to three ordinary words (letters/numbers, optional apostrophes or hyphens).")
+        if not 1 <= len(normalized) <= MAX_WORD_LENGTH or not WORD_FORMAT.fullmatch(normalized) or not any(c.isalpha() for c in normalized):
+            await ctx.send("Use 1–48 characters, up to three ordinary words (letters/numbers, optional apostrophes or hyphens).")
             return
         async with self._lock(ctx.guild.id):
             game = await self._game(ctx.guild)

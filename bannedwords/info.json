@@ -1,7 +1,7 @@
 {
   "name": "BannedWords",
   "short": "Continuous server-wide opt-in banned-word game.",
-  "description": "An opt-in game spanning every text channel and thread of one Discord server. Participating users can add banned words or short phrases. Each message containing a banned word earns one strike, with a low-strike leaderboard and optional notifications. Games persist across bot reloads and restarts, and only end via an explicit host/mod command.",
+  "description": "An opt-in game spanning every text channel and thread of one Discord server. Each new game starts with a random common banned word, including single-letter words like I or a. Participating users can add more banned words or short phrases. Each message containing a banned word earns one strike, with a low-strike leaderboard and optional notifications. Games persist across bot reloads and restarts, and only end via an explicit host/mod command.",
   "author": [
     "Will"
   ],
@@ -22,5 +22,5 @@
   "disabled": false,
   "hidden": false,
   "end_user_data_statement": "Stores opted-in players' Discord user IDs, join timestamps, opt-in status and strike totals, and banned words with contributor IDs and timestamps in each server with an active game. The cog never stores full message content or deletes messages. Data is cleared when the game is ended; Red user-data deletion requests remove a user's player record and contributed words from any live games.",
-  "install_msg": "Load with [p]load bannedwords. A moderator starts the server-wide game with [p]bwg start. Players opt in with [p]bwg join, add words with [p]bwg add <word>, and the host/mod ends it with [p]bwg end."
+  "install_msg": "Load with [p]load bannedwords. A moderator starts the server-wide game with [p]bwg start, which randomly seeds a common banned word. Players opt in with [p]bwg join, add words with [p]bwg add <word>, and the host/mod ends it with [p]bwg end."
 }
