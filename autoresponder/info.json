@@ -1,0 +1,27 @@
+{
+  "name": "AutoResponder",
+  "short": "Server-wide automatic replies triggered by configured words or phrases.",
+  "description": "Moderators configure triggers and replies; Fatboy automatically responds when someone says a matching word or phrase anywhere in the Discord server, including threads. Case-insensitive whole-word matching, only one reply per message, configurable cooldown, persistent per-server rules, and no-mention replies.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [],
+  "tags": [
+    "autoresponder",
+    "fun",
+    "utility",
+    "chat",
+    "server"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Stores server-specific trigger strings, moderator-provided response text, enabled status, and cooldown settings. No Discord user IDs or raw messages are saved. Temporary per-channel cooldowns are held in memory only.",
+  "install_msg": "AutoResponder installed. Load with [p]load autoresponder and configure a response using [p]ar add hello | Hey there! Manage Server permission required. Enable Message Content Intent."
+}
