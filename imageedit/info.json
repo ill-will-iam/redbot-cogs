@@ -1,0 +1,29 @@
+{
+  "name": "ImageEdit",
+  "short": "Resize, crop, caption, filter and export images from Discord attachments.",
+  "description": "Offline Pillow image editing for attached or replied-to images. Resize, center crop, square, rotate, mirror, grayscale, invert, blur, sharpen, brightness, contrast, saturation, pixelate, caption and 320x320 sticker-sized PNG export.",
+  "author": [
+    "Will"
+  ],
+  "requirements": [
+    "Pillow>=10.0.0,<13.0.0"
+  ],
+  "tags": [
+    "images",
+    "image-editor",
+    "utilities",
+    "memes",
+    "stickers"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "ImageEdit processes attached or replied-to images in memory and returns edited images. It does not persist originals, edits or personal data. Discord retains the user's original attachment and the bot's output messages under the server's normal message policies.",
+  "install_msg": "ImageEdit installed. Run [p]load imageedit, then attach an image with [p]img grayscale or reply to an image with [p]img caption Hello. See [p]help image. Requires Pillow and Attach Files permission."
+}
