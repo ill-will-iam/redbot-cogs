@@ -29,6 +29,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`bannedwords`](bannedwords/) | `~bwg start` | Continuous server-wide opt-in game, seeded with a random common banned word; players add words and collect strikes until manually ended. |
 | [`autoresponder`](autoresponder/) | `~ar add hello \| Hey there!` | One bot-global trigger list: owner-managed autoresponses in every server, with independent channel cooldowns. |
 | [`ownerlock`](ownerlock/) | `~olock protect Purge` | Selectively restrict cog commands to Red bot owners, with event-listener inspection. |
+| [`imageedit`](imageedit/) | `~img grayscale` | Offline image edits for attachments/replies: crop, resize, rotate, filters, captions, and sticker-sized PNGs. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
