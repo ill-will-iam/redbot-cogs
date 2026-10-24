@@ -148,9 +148,14 @@ async def request_image_edit(
                     raise AIEditError("OpenAI is temporarily unavailable. Try again later.")
                 if response.status != 200:
                     raise AIEditError(f"Image edit failed (HTTP {response.status}).")
-                payload = await response.content.read(MAX_API_RESPONSE + 1)
-                if len(payload) > MAX_API_RESPONSE:
-                    raise AIEditError("The provider response exceeded the size limit.")
+                chunks = []
+                total = 0
+                async for chunk in response.content.iter_chunked(65536):
+                    total += len(chunk)
+                    if total > MAX_API_RESPONSE:
+                        raise AIEditError("The provider response exceeded the size limit.")
+                    chunks.append(chunk)
+                payload = b"".join(chunks)
     except asyncio.TimeoutError as exc:
         raise AIEditError("The image edit request timed out.") from exc
     except aiohttp.ClientError as exc:
