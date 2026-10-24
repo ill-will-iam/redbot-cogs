@@ -38,8 +38,8 @@ class ImageEdit(commands.Cog):
         self.config.register_guild(ai_access="owner")
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
-        """This cog does not persist any personal data."""
-        return
+        """Remove this user's transient AI cooldown entry, if present."""
+        self._ai_last_used.pop(user_id, None)
 
     @staticmethod
     def _pick_attachment(message: Optional[discord.Message]):
