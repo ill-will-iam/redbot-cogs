@@ -1,7 +1,7 @@
 {
   "name": "ImageEdit",
-  "short": "Resize, crop, caption, filter and export images from Discord attachments.",
-  "description": "Offline Pillow image editing for attached or replied-to images. Resize, center crop, square, rotate, mirror, grayscale, invert, blur, sharpen, brightness, contrast, saturation, pixelate, caption and 320x320 sticker-sized PNG export.",
+  "short": "Offline image editing plus optional AI edits with OpenAI image models.",
+  "description": "Edit Discord image attachments/replies with local resize, crop, rotate, filters, captions and sticker export, or use optional OpenAI Images API prompt-based edits. AI is owner-only by default, configurable per server, rate limited to one concurrent operation and one edit per user per 120 seconds.",
   "author": [
     "Will"
   ],
@@ -13,7 +13,9 @@
     "image-editor",
     "utilities",
     "memes",
-    "stickers"
+    "stickers",
+    "ai",
+    "openai"
   ],
   "min_bot_version": "3.5.0",
   "min_python_version": [
@@ -24,6 +26,6 @@
   "type": "COG",
   "disabled": false,
   "hidden": false,
-  "end_user_data_statement": "ImageEdit processes attached or replied-to images in memory and returns edited images. It does not persist originals, edits or personal data. Discord retains the user's original attachment and the bot's output messages under the server's normal message policies.",
-  "install_msg": "ImageEdit installed. Run [p]load imageedit, then attach an image with [p]img grayscale or reply to an image with [p]img caption Hello. See [p]help image. Requires Pillow and Attach Files permission."
+  "end_user_data_statement": "The cog processes user-supplied images temporarily in memory and sends edited images back to Discord. For explicit AI edits only, it sends the image and prompt to OpenAI's image editing API. It does not store prompts, original images, or generated images persistently. The cog retains bot-wide model preference and per-guild AI access preference in Red Config; API credentials are held in Red's shared API token storage.",
+  "install_msg": "ImageEdit installed. Load with [p]load imageedit. Local edits need no key. Optional AI edits: securely configure OpenAI service api_key via [p]set api (owner-only), then reply to an image with [p]img ai Replace background with a haunted forest. AI is owner-only by default. See [p]help image ai."
 }
