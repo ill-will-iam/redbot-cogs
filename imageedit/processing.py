@@ -53,7 +53,10 @@ def _font(size: int):
     for name in FONT_PATHS:
         if Path(name).is_file():
             return ImageFont.truetype(name, size)
-    return ImageFont.load_default(size=size)
+    try:
+        return ImageFont.load_default(size=size)
+    except TypeError:  # Older Pillow versions do not accept size.
+        return ImageFont.load_default()
 
 
 def _wrap(draw: ImageDraw.ImageDraw, text: str, font, max_width: int) -> list[str]:
@@ -91,6 +94,8 @@ def _caption(image: Image.Image, text: str) -> Image.Image:
         raise ValueError("Caption must contain 1–200 characters.")
     layer = image.convert("RGBA")
     width, height = layer.size
+    if width < 96 or height < 72:
+        raise ValueError("Image is too small for a caption (minimum 96×72).")
     margin = max(8, min(width, height) // 30)
     draw = ImageDraw.Draw(layer)
     available = width - 2 * margin
