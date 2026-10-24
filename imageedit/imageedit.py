@@ -4,12 +4,20 @@ from __future__ import annotations
 
 import asyncio
 import io
+import time
 from typing import Optional
 
 import discord
-from redbot.core import commands
+from redbot.core import Config, commands
 
 from .processing import MAX_INPUT_BYTES, edit_image
+from .ai import (
+    AIEditError,
+    SUPPORTED_MODELS,
+    prepare_input,
+    prepare_output,
+    request_image_edit,
+)
 
 _IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg", ".gif", ".webp")
 
@@ -18,11 +26,16 @@ class ImageEdit(commands.Cog):
     """Simple offline image edits for attached or replied-to images."""
 
     __author__ = "Will"
-    __version__ = "1.0.0"
+    __version__ = "1.1.0"
 
     def __init__(self, bot):
         self.bot = bot
         self._worker_slots = asyncio.Semaphore(2)
+        self._ai_lock = asyncio.Lock()
+        self._ai_last_used = {}
+        self.config = Config.get_conf(self, identifier=847309215, force_registration=True)
+        self.config.register_global(ai_model="gpt-image-2.5-sunburst")
+        self.config.register_guild(ai_access="owner")
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         """This cog does not persist any personal data."""
@@ -192,3 +205,139 @@ class ImageEdit(commands.Cog):
         This is sizing, not automatic background removal.
         """
         await self._run_edit(ctx, "sticker")
+
+    async def _ai_allowed(self, ctx: commands.Context) -> bool:
+        """AI access is owner-only unless the owner changes a guild's policy."""
+        if await self.bot.is_owner(ctx.author):
+            return True
+        if ctx.guild is None:
+            return False
+        mode = await self.config.guild(ctx.guild).ai_access()
+        if mode == "everyone":
+            return True
+        if mode == "admin":
+            perms = ctx.author.guild_permissions
+            return bool(perms.administrator or perms.manage_guild)
+        return False
+
+    @image_group.group(name="ai", invoke_without_command=True)
+    async def image_ai_group(self, ctx: commands.Context, *, prompt: str = ""):
+        """AI-edit the image attached to this command or a replied-to message.
+
+        Example: [p]img ai Replace the background with a haunted forest
+        The source image is sent to OpenAI. AI requests may incur charges.
+        """
+        if not await self._ai_allowed(ctx):
+            await ctx.send(
+                "AI editing is restricted here. A bot owner can configure access "
+                f"with {ctx.clean_prefix}img ai access owner|admin|everyone."
+            )
+            return
+        prompt = prompt.strip()
+        if not 1 <= len(prompt) <= 2000:
+            await ctx.send(
+                f"Usage: {ctx.clean_prefix}img ai <editing instructions> "
+                "(1–2,000 characters). Attach an image or reply to one."
+            )
+            return
+        keys = await self.bot.get_shared_api_tokens("openai")
+        api_key = keys.get("api_key")
+        if not api_key:
+            await ctx.send(
+                "No OpenAI API key is configured. The bot owner must run "
+                f"{ctx.clean_prefix}set api to open the secure key-entry form "
+                "(service openai, key name api_key). "
+                "Do not post API keys publicly."
+            )
+            return
+        attachment = await self._get_attachment(ctx)
+        if attachment is None:
+            await ctx.send(
+                "Attach an image with this command or reply to an image attachment."
+            )
+            return
+        if attachment.size > MAX_INPUT_BYTES:
+            await ctx.send("The input image must be 8 MiB or smaller.")
+            return
+
+        now = time.monotonic()
+        previous = self._ai_last_used.get(ctx.author.id, 0.0)
+        if now - previous < 120:
+            await ctx.send(
+                f"AI editing has a two-minute per-user cooldown. "
+                f"Try again in {int(121 - (now - previous))} seconds."
+            )
+            return
+        if self._ai_lock.locked():
+            await ctx.send("FATBOY is already processing another AI image edit.")
+            return
+
+        try:
+            async with self._ai_lock:
+                self._ai_last_used[ctx.author.id] = time.monotonic()
+                async with ctx.typing():
+                    raw = await attachment.read()
+                    async with self._worker_slots:
+                        prepared, filename = await asyncio.to_thread(prepare_input, raw)
+                    model = await self.config.ai_model()
+                    edited = await request_image_edit(
+                        api_key, model, prepared, filename, prompt
+                    )
+                    async with self._worker_slots:
+                        output, ext = await asyncio.to_thread(prepare_output, edited)
+                    await ctx.send(
+                        file=discord.File(
+                            io.BytesIO(output), filename=f"fatboy-ai-edit.{ext}"
+                        ),
+                        allowed_mentions=discord.AllowedMentions.none(),
+                    )
+        except AIEditError as exc:
+            await ctx.send(str(exc), allowed_mentions=discord.AllowedMentions.none())
+        except (discord.Forbidden, discord.HTTPException):
+            await ctx.send(
+                "Unable to read the attachment or upload the AI result. "
+                "Check FATBOY's file permissions and upload limits."
+            )
+
+    @image_ai_group.command(name="status")
+    async def ai_status(self, ctx: commands.Context):
+        """Show current model, availability and this server's AI access policy."""
+        configured = bool((await self.bot.get_shared_api_tokens("openai")).get("api_key"))
+        model = await self.config.ai_model()
+        access = (
+            await self.config.guild(ctx.guild).ai_access()
+            if ctx.guild else "owner"
+        )
+        await ctx.send(
+            f"ImageEdit AI: model {model}, key {'configured' if configured else 'missing'}, "
+            f"access {access}, user cooldown 120s, max 1 concurrent edit."
+        )
+
+    @image_ai_group.command(name="model")
+    @commands.is_owner()
+    async def ai_model(self, ctx: commands.Context, model: str):
+        """Set image model (owner only).
+
+        Models: gpt-image-2.5-sunburst, gpt-image-2.5-flare, gpt-image-2,
+        gpt-image-1.5, gpt-image-1-mini.
+        """
+        if model not in SUPPORTED_MODELS:
+            await ctx.send("Choose one: " + ", ".join(SUPPORTED_MODELS))
+            return
+        await self.config.ai_model.set(model)
+        await ctx.send(f"AI image model set to {model}.")
+
+    @image_ai_group.command(name="access")
+    @commands.is_owner()
+    @commands.guild_only()
+    async def ai_access(self, ctx: commands.Context, access: str):
+        """Set AI access for THIS server (owner only): owner, admin, everyone."""
+        mode = access.lower().strip()
+        if mode not in ("owner", "admin", "everyone"):
+            await ctx.send("Use owner, admin, or everyone.")
+            return
+        await self.config.guild(ctx.guild).ai_access.set(mode)
+        await ctx.send(
+            f"AI image editing access in this server is now {mode}. "
+            "Paid API requests use the bot owner's OpenAI key."
+        )
