@@ -1,0 +1,20 @@
+{
+  "name": "RoleControl",
+  "short": "Owner-only self-service role assignment and removal for FATBOY.",
+  "description": "Provides roleme/giverole, unroleme/removemyrole and myroles. Only Red bot owners can run these commands; respects Discord's Manage Roles permission and role hierarchy.",
+  "author": [
+    "Will",
+    "North"
+  ],
+  "requirements": [],
+  "tags": [
+    "roles",
+    "owner",
+    "utility"
+  ],
+  "min_bot_version": "3.5.0",
+  "type": "COG",
+  "hidden": false,
+  "disabled": false,
+  "end_user_data_statement": "This cog does not store or collect personal data. It only changes the invoking bot owner's roles within the server at their request; Discord retains its own audit logs."
+}
