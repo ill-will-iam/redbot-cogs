@@ -1,17 +1,16 @@
-"""Haven: owner-only, reversible Discord server visibility lockdown.
-
-Deliberately does not delete channels, remove users, alter roles, or grant
-privileges. This cog is intended for administrators of their own servers.
-"""
+"""Haven: reversible lockdown plus a separately confirmed owner-only reset."""
 
 from __future__ import annotations
 
 import asyncio
+import secrets
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple, Union
 
 import discord
 from redbot.core import Config, commands
+
+from .reset import ResetBlocked, ServerReset, fingerprint
 
 
 OverwriteTarget = Union[discord.Role, discord.Member]
@@ -25,7 +24,7 @@ class Haven(commands.Cog):
         self.config = Config.get_conf(
             self, identifier=8481726062026, force_registration=True
         )
-        self.config.register_guild(snapshot=None, sealed=False, delegates=[])
+        self.config.register_guild(snapshot=None, sealed=False, delegates=[], reset_last=None)
         self._locks: Dict[int, asyncio.Lock] = {}
 
     def _lock(self, guild_id: int) -> asyncio.Lock:
@@ -117,9 +116,73 @@ class Haven(commands.Cog):
         await ctx.send(
             "**Haven** — reversible read-only server mode: "
             "`haven inspect`, `haven seal`, `haven restore`, `haven status`. "
+            "Destructive reset (server owner AND bot owner only): `haven nuke` "
+            "or `haven nuke preview`. "
             "Owner-only delegation: `haven authorize @member` and "
-            "`haven revoke @member`. No roles, channels, members, or messages are deleted."
+            "`haven revoke @member`. The separate nuke command permanently deletes channels and messages."
         )
+
+    @haven.command(name="nuke")
+    @commands.is_owner()
+    @commands.guild_only()
+    async def haven_nuke(self, ctx: commands.Context, mode: str = "confirm"):
+        """Server AND bot owner: preview, confirm, and permanently reset this server."""
+        # Explicit check as well as decorators: delegates never gain reset access.
+        if ctx.guild is None or ctx.author.id != ctx.guild.owner_id or not await self.bot.is_owner(ctx.author):
+            await ctx.send("Only the server owner who is also a bot owner may reset this server.")
+            return
+        if mode not in ("confirm", "preview"):
+            await ctx.send("Use `haven nuke preview` for a dry run or `haven nuke` to start confirmation.")
+            return
+        lock = self._lock(ctx.guild.id)
+        if lock.locked():
+            await ctx.send("Another Haven operation is running. Wait for it to finish.")
+            return
+        async with lock:
+            reset = ServerReset(self, ctx)
+            try:
+                plan = await reset.plan()
+                await ctx.send(
+                    f"**PERMANENT SERVER RESET — {ctx.guild.id}**\n"
+                    f"Delete {len(plan['channels'])} channels/categories and their messages; "
+                    f"remove {sum(len(m['roles']) for m in plan['members'])} role assignments "
+                    "from everyone except the server owner and this bot; clear @everyone permissions; "
+                    "pause invites; leave one private owner channel.\n"
+                    f"{len(plan['retained_managed'])} harmless managed role assignments cannot be removed. "
+                    "Role definitions remain. Members are not kicked. **Deleted messages and channels "
+                    "cannot be restored.** The audit file is not a content backup."
+                )
+                if mode == "preview":
+                    return
+                token = secrets.token_hex(4)
+                phrase = f"DELETE {ctx.guild.id} {token}"
+                await ctx.send(f"To confirm this exact plan, type `{phrase}` here within 60 seconds.")
+
+                def check(message):
+                    return (message.author.id == ctx.author.id and message.channel.id == ctx.channel.id
+                            and message.guild is not None and message.guild.id == ctx.guild.id
+                            and message.content.strip() == phrase)
+
+                try:
+                    await self.bot.wait_for("message", check=check, timeout=60)
+                except asyncio.TimeoutError:
+                    await ctx.send("Reset cancelled. No changes made.")
+                    return
+                fresh = await reset.plan()
+                if fingerprint(fresh) != fingerprint(plan):
+                    await ctx.send("Server state changed. Nothing changed by Haven; run a fresh preview.")
+                    return
+                await reset.execute(fresh)
+            except (ResetBlocked, discord.HTTPException, OSError, TypeError) as exc:
+                # The command channel may already be gone; prefer the owner room,
+                # then DM. Never report success on a partially completed reset.
+                detail = str(exc) if isinstance(exc, ResetBlocked) else type(exc).__name__
+                message = f"Haven reset stopped: {detail}. No further actions will run. Check `haven status` and the local reset audit; changes already applied remain."
+                destination = reset.room or ctx.author
+                try:
+                    await destination.send(message)
+                except discord.HTTPException:
+                    pass
 
     @haven.command(name="authorize")
     async def haven_authorize(self, ctx: commands.Context, member: discord.Member):
@@ -175,6 +238,11 @@ class Haven(commands.Cog):
     @haven.command(name="status")
     async def haven_status(self, ctx: commands.Context):
         """Show whether a restorable permission snapshot is present."""
+        reset = await self.config.guild(ctx.guild).reset_last()
+        if reset and ctx.author.id == ctx.guild.owner_id:
+            await ctx.send(f"Last destructive reset: **{reset['state']}**. Run: `{reset['run']}`. "
+                           f"Local audit: `{reset['audit']}`. Channel: {reset.get('channel', 'not created')}. "
+                           "`haven restore` does not undo a destructive reset.")
         data = await self.config.guild(ctx.guild).snapshot()
         sealed = await self.config.guild(ctx.guild).sealed()
         if not data:

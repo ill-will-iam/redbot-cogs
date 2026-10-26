@@ -1,9 +1,9 @@
 {
   "name": "Haven",
-  "short": "Reversible read-only lockdown with owner-delegated Administrator access",
-  "description": "Temporarily restricts posting and reactions while preserving private-channel visibility, with a snapshot to restore original overwrites. No role removal or deletion.",
-  "end_user_data_statement": "Stores guild permission-overwrite snapshots and IDs of owner-delegated administrator accounts to enable recovery and access checks.",
-  "install_msg": "Owner can allow a trusted Administrator using [p]haven authorize @member, then [p]haven inspect, [p]haven seal and [p]haven restore.",
+  "short": "Reversible lockdown and separately confirmed owner-only destructive reset",
+  "description": "Seal/restore provides reversible read-only mode. Nuke requires both guild and bot ownership, pauses invites, removes other members' assignable roles, and permanently deletes old channels, leaving a private owner channel.",
+  "end_user_data_statement": "Stores overwrite snapshots, delegate IDs, and local reset audit files containing actor/member/role/channel IDs, channel names, role assignments, and operation results. Reset logs persist in the Haven cog data directory until the operator removes them. No message contents or invite codes are stored.",
+  "install_msg": "Read haven/README.md. [p]haven nuke preview is read-only. [p]haven nuke requires explicit confirmation and permanently deletes channels/messages; haven restore cannot undo it. Both guild and bot ownership are required.",
   "author": [
     "ChatGPT"
   ],

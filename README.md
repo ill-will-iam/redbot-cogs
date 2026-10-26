@@ -11,7 +11,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`dailydrawings`](dailydrawings/) | `$draw status` | Scheduled physical-paper drawing prompts, entries and voting. |
 | [`frogcrib`](frogcrib/) | `$crib challenge @member` | Two-player 121-point cribbage with optional Ribbucks rewards. |
 | [`frogpond`](frogpond/) | `$frog` | Timed word unscrambling with frog-themed points and challenges. |
-| [`haven`](haven/) | `$haven inspect` | Reversible read-only lockdown while preserving channel visibility. |
+| [`haven`](haven/) | `$haven nuke preview` | Reversible lockdown or separately confirmed owner-only destructive server reset. |
 | [`markov`](markov/) | `$markov stats` | Markov models, size reports, admin enrollment and channel modeling. |
 | [`pp`](pp/) | `$pp` | Random-length custom emoji chain. |
 | [`line`](line/) | `$line` | 45-second group line-up, 3-second countdown and final cheers. |
@@ -302,7 +302,7 @@ $crib challenge @member
 
 ## Haven
 
-Haven provides a **reversible, read-only server mode** with saved channel permission overwrites and an explicit restore path. It never deletes channels, members, or roles and does **not** revoke Administrator permissions (Discord administrators bypass channel overwrites). The Discord server owner can authorize trusted administrators to operate it.
+Haven provides a **reversible, read-only server mode** through `seal`/`restore`, and a separate **destructive reset** through `nuke`. Reset requires the caller to own both the bot and server: it pauses invites, removes assignable roles from other members, clears @everyone permissions, and permanently deletes old channels/messages, leaving a private owner channel. Use `haven nuke preview` before confirmation. Managed roles cannot be removed; privileged managed roles block the reset. Delegates can operate reversible lockdown only. Deleted content cannot be restored.
 
 ```text
 $repo update redbot-cogs
