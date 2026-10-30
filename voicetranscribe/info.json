@@ -1,0 +1,24 @@
+{
+  "author": [
+    "North"
+  ],
+  "name": "VoiceTranscribe",
+  "short": "Automatically reply to native Discord voice notes with text.",
+  "description": "Uses local faster-whisper speech recognition (no paid API) to transcribe native Discord voice messages and reply in text. A server admin enables it with [p]vt on. It never joins voice channels.",
+  "install_msg": "Local faster-whisper is installed with the cog. Enable it using [p]vt on. On first use, the base model downloads to the VPS. Requires outbound access for model download and Message Content Intent.",
+  "requirements": [
+    "faster-whisper>=1.1.0,<2"
+  ],
+  "min_python_version": [
+    3,
+    10,
+    0
+  ],
+  "tags": [
+    "voice",
+    "transcription",
+    "whisper",
+    "utility"
+  ],
+  "end_user_data_statement": "No end-user audio or transcript history is stored in Red configuration. Voice note audio is briefly copied to a temporary file and deleted after processing; the transcription is posted to Discord and retained according to Discord/server policies. The speech model runs locally, and model weights are downloaded on first use."
+}
