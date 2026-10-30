@@ -3,9 +3,9 @@
     "North"
   ],
   "name": "VoiceTranscribe",
-  "short": "Automatically reply to native Discord voice notes with text.",
-  "description": "Uses local faster-whisper speech recognition (no paid API) to transcribe native Discord voice messages and reply in text. A server admin enables it with [p]vt on. It never joins voice channels.",
-  "install_msg": "Local faster-whisper is installed with the cog. Enable it using [p]vt on. On first use, the base model downloads to the VPS. Requires outbound access for model download and Message Content Intent.",
+  "short": "Automatic multilingual Discord voice note transcription and optional English translation.",
+  "description": "Automatically replies to native Discord voice notes with original-language transcription and, for non-English audio, an optional English translation. Uses multilingual faster-whisper and optionally local Argos text-translation models; no paid API. Per-server opt-in and controls, owner-adjustable recognition model and decoding speed.",
+  "install_msg": "Update or load this cog, then use [p]vt on and [p]vt translate on. It uses the offline multilingual Whisper base model by default, downloaded once on first use. For speed try [p]vt speed fast; owners may use [p]vt model tiny or small. Optional Argos translation packs are documented in the cog README. Requires Message Content Intent.",
   "requirements": [
     "faster-whisper>=1.1.0,<2"
   ],
@@ -16,9 +16,10 @@
   ],
   "tags": [
     "voice",
-    "transcription",
-    "whisper",
-    "utility"
+    "speech-to-text",
+    "multilingual",
+    "translation",
+    "whisper"
   ],
-  "end_user_data_statement": "No end-user audio or transcript history is stored in Red configuration. Voice note audio is briefly copied to a temporary file and deleted after processing; the transcription is posted to Discord and retained according to Discord/server policies. The speech model runs locally, and model weights are downloaded on first use."
+  "end_user_data_statement": "No end-user audio or transcript history is stored persistently by the cog. Voice-note audio is saved to a temporary file and deleted after processing; the original and translated text are posted in Discord and retained according to Discord/server policies. Speech recognition and translation run locally. Whisper model weights are downloaded from a provider on first use; optional Argos language packs require separate manual installation."
 }
