@@ -12,13 +12,16 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`frogcrib`](frogcrib/) | `$crib challenge @member` | Two-player 121-point cribbage with optional Ribbucks rewards. |
 | [`frogpond`](frogpond/) | `$frog` | Timed word unscrambling with frog-themed points and challenges. |
 | [`haven`](haven/) | `$haven nuke preview` | Reversible lockdown or separately confirmed owner-only destructive server reset. |
+| [`revamp`](revamp/) | `~revamp preview` | Preview and apply reusable Discord server layouts; archives existing channels in custom-theme mode. |
 | [`markov`](markov/) | `$markov stats` | Markov models, size reports, admin enrollment and channel modeling. |
 | [`pp`](pp/) | `$pp` | Random-length custom emoji chain. |
 | [`line`](line/) | `$line` | 45-second group line-up, 3-second countdown and final cheers. |
 | [`notes`](notes/) | `$notes` | Staff-only server management checklists, named boards, priorities, due dates, assignments and memos. |
 | [`redbackup`](redbackup/) | `$backup` | VPS-local live backup snapshots, integrity checks and retention. |
+| [`serversnapshot`](serversnapshot/) | `~sbackup save` | Private Discord server snapshots of channels, roles, accessible history and media; controlled restoration. |
 | [`ribbit`](ribbit/) | `$ribbit` | Royal Ribbit Reserve frog economy using Ribbucks. |
 | [`dig`](dig/) | `~d` / `~dig` | Dig 3 times per 10 minutes for valuables and future fishing bait; sell loot for Ribbucks. |
+| [`chaoschat`](chaoschat/) | `~chaoschat` | Random chaotic bot replies with configurable behavior. |
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |

@@ -1,0 +1,11 @@
+{
+  "author": ["ill-will-iam", "North"],
+  "name": "ServerSnapshot",
+  "short": "Private, integrity-checked guild snapshots with historical-message archives and controlled restoration.",
+  "description": "Owner-only server archive and reconstruction: roles, channels, permissions, threads, members, integrations inventory, full accessible message history and Discord CDN media. Restore structure first, optionally replay labelled historical messages, restore assets/member roles/settings with separate confirmation. Never auto-reinstalls apps or forges user authorship.",
+  "install_msg": "Use ~sbackup for commands. Grant Fatboy access to channels/history plus Manage Roles/Channels for restore. Enable Message Content and Server Members intents. Backups are stored locally on the VPS, never in Discord.",
+  "requirements": [],
+  "min_bot_version": "3.5.0",
+  "tags": ["backup", "restore", "guild", "archive", "admin"],
+  "end_user_data_statement": "Archives guild metadata, accessible messages and attachments, usernames, user IDs, member role assignments and app inventories in owner-private files on the VPS. Archives are retained until the operator deletes them."
+}
