@@ -2,7 +2,7 @@
 
 A chat-friendly, adult-oriented Red-DiscordBot 3.5+ game for Fatboy. Designed for server social nights and 18+ communities.
 
-**This is R-rated, not an explicit-content generator.** Prompts are spicy, flirty, funny, embarrassing, and frequently inappropriate, but never require nudity, explicit photos, unwanted contact, harassment, unsafe acts, or real-life proof. Any player can decline any prompt, without explanation.
+**This is R-rated, not an explicit-content generator.** Wild prompts lean harder into adult confessions, hookup stories, risky attraction, jealousy, intense flirting, and chaotic fictional dares. They never require nudity, explicit photos, unwanted contact, harassment, unsafe acts, or real-life proof. Any player can decline any prompt, without explanation. Any player can decline any prompt, without explanation.
 
 ## Install / update
 
@@ -45,8 +45,9 @@ For future changes, use ~cog update truthordare and reload if prompted.
 
 ## Implementation notes
 
-- 120 truths and 113 dares, 233 prompts total.
-- Avoids the most recently used 25 prompts **per category per channel**.
+- 120 classic truths and 113 classic dares, plus 111 new Wild truths and 109 new Wild dares (453 prompts total).
+- By default, 75% of prompts come from the newer, much bolder **Wild** pool; classic prompts still appear the other 25%.
+- Avoids the most recently used 25 prompts **per category per channel**, across both pools.
 - Five-second per-user prompt throttle.
 - Up to 100 opted-in players per channel; tries not to select the same person twice in a row when multiple volunteers are present.
 - No APIs, external dependencies, scheduled posts, message scanning, or privileged intents are needed.
