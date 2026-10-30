@@ -18,6 +18,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`notes`](notes/) | `$notes` | Staff-only server management checklists, named boards, priorities, due dates, assignments and memos. |
 | [`redbackup`](redbackup/) | `$backup` | VPS-local live backup snapshots, integrity checks and retention. |
 | [`ribbit`](ribbit/) | `$ribbit` | Royal Ribbit Reserve frog economy using Ribbucks. |
+| [`dig`](dig/) | `~d` / `~dig` | Dig 3 times per 10 minutes for valuables and future fishing bait; sell loot for Ribbucks. |
 | [`runescapex`](runescapex/) | `$rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `$sanity` | Random sanity meter and humorous response. |
 | [`sexiness`](sexiness/) | `$sexy` | Random sexiness percentage with a playful quip; optional @member target. |

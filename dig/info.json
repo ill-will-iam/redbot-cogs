@@ -1,0 +1,12 @@
+{
+  "author": ["Will", "North"],
+  "name": "Dig",
+  "short": "Dig for gold, diamonds, contraband and fishing worms.",
+  "description": "Use ~d or ~dig three times before a 10-minute cooldown. Uncover 2-5% treasure chests with 2-4 valuables, earthworms and a 2.5%-per-chest golden worm chance. Sell valuables into Ribbit's Royal Ribbit Reserve bank; save worms for a future fishing cog. Includes harmless fictional mishaps and a documented fishing API.",
+  "install_msg": "Load `dig`, then run `~d` to dig, `~dig bag` for your stash, `~dig odds` for rates, and `~dig sell all` to exchange valuables for Ribbucks. Sales require the existing Ribbit cog to be loaded and `~ribbit setup` completed in the server. See README for fishing integration.",
+  "required_cogs": {},
+  "requirements": [],
+  "tags": ["games", "economy", "ribbucks", "treasure", "frogs", "fishing"],
+  "min_bot_version": "3.5.0",
+  "end_user_data_statement": "Stores per-guild member loot inventory, digging-use cooldown, lifetime dig count, treasure chest and mishap counts, and lifetime Ribbucks earned from digging. Does not store chat content. Selling uses Red's native guild bank, separately maintained by Red. Supports Red's data-deletion requests."
+}
