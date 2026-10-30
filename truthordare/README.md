@@ -2,7 +2,7 @@
 
 A chat-friendly, adult-oriented Red-DiscordBot 3.5+ game for Fatboy. Designed for server social nights and 18+ communities.
 
-**This is R-rated, not an explicit-content generator.** Wild prompts lean harder into adult confessions, hookup stories, risky attraction, jealousy, intense flirting, and chaotic fictional dares. They never require nudity, explicit photos, unwanted contact, harassment, unsafe acts, or real-life proof. Any player can decline any prompt, without explanation. Any player can decline any prompt, without explanation.
+**This is R-rated, not an explicit-content generator.** Wild prompts lean harder into adult confessions, hookup stories, risky attraction, jealousy, intense flirting, and chaotic fictional dares. They never require nudity, explicit photos, unwanted contact, harassment, unsafe acts, or real-life proof. Any player can decline any prompt, without explanation.
 
 ## Install / update
 
