@@ -1,0 +1,15 @@
+{
+  "name": "Revamp",
+  "short": "Bootstrap a new server or apply a custom JSON theme with preview",
+  "description": "Red-DiscordBot cog for safe starter layouts and user-created JSON theme deployment with channel archiving and rollback.",
+  "author": [
+    "Will & North"
+  ],
+  "requirements": [],
+  "tags": [
+    "administration",
+    "server",
+    "themes"
+  ],
+  "end_user_data_statement": "Stores selected per-guild JSON templates, starter/custom mode, protected channel IDs and layout change history for rollback."
+}

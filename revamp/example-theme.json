@@ -1,0 +1,94 @@
+{
+  "name": "Example community layout (edit me)",
+  "archive_read_roles": [
+    "Moderators"
+  ],
+  "roles": [
+    {
+      "name": "Members",
+      "color": "#60B9AD",
+      "hoist": false,
+      "mentionable": false,
+      "permissions": {}
+    },
+    {
+      "name": "Moderators",
+      "color": "#656DB8",
+      "hoist": true,
+      "mentionable": false,
+      "permissions": {
+        "manage_messages": true
+      }
+    }
+  ],
+  "categories": [
+    {
+      "name": "START HERE",
+      "overwrites": {
+        "@everyone": {
+          "view_channel": true,
+          "send_messages": false
+        },
+        "Moderators": {
+          "view_channel": true,
+          "send_messages": true
+        }
+      },
+      "channels": [
+        {
+          "name": "rules",
+          "type": "text",
+          "topic": "Our community rules",
+          "messages": [
+            {
+              "content": "Read the rules below before joining the conversation.",
+              "pin": true
+            }
+          ]
+        },
+        {
+          "name": "welcome",
+          "type": "text",
+          "topic": "Welcome to our community",
+          "messages": [
+            "Welcome! Introduce yourself when you feel ready."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "COMMUNITY",
+      "overwrites": {
+        "@everyone": {
+          "view_channel": true,
+          "send_messages": true
+        }
+      },
+      "channels": [
+        {
+          "name": "general",
+          "type": "text",
+          "topic": "Everyday conversation",
+          "slowmode": 0
+        },
+        {
+          "name": "resources",
+          "type": "text",
+          "topic": "Useful information and links"
+        },
+        {
+          "name": "Lounge",
+          "type": "voice",
+          "user_limit": 0
+        }
+      ]
+    }
+  ],
+  "rules_channel": "START HERE/rules",
+  "rules": [
+    "Treat people with respect. No harassment, threats, or discrimination.",
+    "Respect privacy and consent. Do not share private information.",
+    "Follow Discord's Terms of Service and applicable laws.",
+    "Use the appropriate channels and follow moderator guidance."
+  ]
+}

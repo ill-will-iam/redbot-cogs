@@ -1,0 +1,57 @@
+{
+  "name": "Starter Server",
+  "roles": [
+    {"name": "Members", "color": "#64BFAE", "hoist": false, "mentionable": false, "permissions": {}},
+    {"name": "Moderators", "color": "#6777D8", "hoist": true, "mentionable": false,
+     "permissions": {"manage_messages": true, "manage_threads": true}}
+  ],
+  "categories": [
+    {
+      "name": "START HERE",
+      "overwrites": {
+        "@everyone": {"view_channel": true, "send_messages": false},
+        "Moderators": {"view_channel": true, "send_messages": true}
+      },
+      "channels": [
+        {"name": "rules", "type": "text", "topic": "Server rules and expectations"},
+        {"name": "announcements", "type": "text", "topic": "Updates and important news"}
+      ]
+    },
+    {
+      "name": "COMMUNITY",
+      "overwrites": {"@everyone": {"view_channel": true, "send_messages": true}},
+      "channels": [
+        {"name": "general", "type": "text", "topic": "Everyday conversation", "messages": [
+          {"content": "Welcome! This is our general chat. Make yourself at home.", "pin": true}
+        ]},
+        {"name": "introductions", "type": "text", "topic": "Say hello and introduce yourself"},
+        {"name": "off-topic", "type": "text", "topic": "Other conversations and hobbies"}
+      ]
+    },
+    {
+      "name": "VOICE",
+      "channels": [
+        {"name": "General Voice", "type": "voice", "user_limit": 0},
+        {"name": "Gaming", "type": "voice", "user_limit": 0}
+      ]
+    },
+    {
+      "name": "STAFF",
+      "overwrites": {
+        "@everyone": {"view_channel": false},
+        "Moderators": {"view_channel": true, "send_messages": true, "read_message_history": true}
+      },
+      "channels": [
+        {"name": "staff-chat", "type": "text", "topic": "Private staff coordination"}
+      ]
+    }
+  ],
+  "rules_channel": "START HERE/rules",
+  "rules": [
+    "Be respectful. No harassment, threats, hate, or discrimination.",
+    "Respect privacy and consent. Do not share someone else's private information.",
+    "No spam, scams, malicious links, or unwanted advertising.",
+    "Keep content appropriate to the channel and follow Discord's Terms of Service.",
+    "Follow staff direction and raise moderation concerns privately."
+  ]
+}
