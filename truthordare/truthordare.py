@@ -7,14 +7,14 @@ import secrets
 import discord
 from redbot.core import Config, commands
 
-from .prompts import DARES, TRUTHS
+from .prompts import DARES, TRUTHS, WILD_DARES, WILD_TRUTHS
 
 
 class TruthOrDare(commands.Cog):
     """Spicy Truth or Dare with voluntary player pools and no-repeat prompts."""
 
     __author__ = "Will"
-    __version__ = "1.0.1"
+    __version__ = "1.1.0"
 
     def __init__(self, bot):
         self.bot = bot
@@ -52,14 +52,25 @@ class TruthOrDare(commands.Cog):
         return True
 
     def _draw(self, key: Tuple[int, int], kind: str) -> str:
-        prompts = TRUTHS if kind == "truth" else DARES
+        """Favor the bolder Wild pool while avoiding the last 25 prompts."""
+        classic, wild = (TRUTHS, WILD_TRUTHS) if kind == "truth" else (DARES, WILD_DARES)
         history = self._recent[(key[0], key[1], kind)]
-        choices = [index for index in range(len(prompts)) if index not in history]
-        if not choices:
-            history.clear()
-            choices = list(range(len(prompts)))
-        index = secrets.choice(choices)
-        history.append(index)
+
+        # Wild prompts show up three quarters of the time by default.
+        chosen_pool = "wild" if secrets.randbelow(4) != 0 else "classic"
+        for pool_name in (chosen_pool, "classic" if chosen_pool == "wild" else "wild"):
+            prompts = wild if pool_name == "wild" else classic
+            choices = [i for i in range(len(prompts)) if (pool_name, i) not in history]
+            if choices:
+                index = secrets.choice(choices)
+                history.append((pool_name, index))
+                return prompts[index]
+
+        # Extremely small future prompt pools can exhaust both categories.
+        history.clear()
+        prompts = wild if chosen_pool == "wild" else classic
+        index = secrets.randbelow(len(prompts))
+        history.append((chosen_pool, index))
         return prompts[index]
 
     async def _prompt(
