@@ -14,7 +14,7 @@ class TruthOrDare(commands.Cog):
     """Spicy Truth or Dare with voluntary player pools and no-repeat prompts."""
 
     __author__ = "Will"
-    __version__ = "1.0.0"
+    __version__ = "1.0.1"
 
     def __init__(self, bot):
         self.bot = bot
@@ -39,15 +39,6 @@ class TruthOrDare(commands.Cog):
         )
 
     @staticmethod
-    def _channel_is_nsfw(channel) -> bool:
-        checker = getattr(channel, "is_nsfw", None)
-        if callable(checker) and checker():
-            return True
-        parent = getattr(channel, "parent", None)
-        checker = getattr(parent, "is_nsfw", None)
-        return bool(callable(checker) and checker())
-
-    @staticmethod
     def _channel_key(ctx: commands.Context) -> Tuple[int, int]:
         return (ctx.guild.id, ctx.channel.id)
 
@@ -57,13 +48,6 @@ class TruthOrDare(commands.Cog):
             return False
         if not await self.config.guild(ctx.guild).enabled():
             await ctx.send("Truth or Dare is disabled in this server.")
-            return False
-        if not self._channel_is_nsfw(ctx.channel):
-            await ctx.send(
-                "🔞 Rated-R Truth or Dare is only available in Discord "
-                "age-restricted (NSFW) channels. Ask a moderator to use an "
-                "appropriate channel."
-            )
             return False
         return True
 
@@ -234,7 +218,7 @@ class TruthOrDare(commands.Cog):
         prefix = ctx.clean_prefix
         await ctx.send(
             "🎲 **Rated-R Truth or Dare — 18+**\n"
-            "• Play only in a Discord age-restricted channel.\n"
+            "• Play only in channels approved by your server's moderators.\n"
             f"• Use {prefix}tod, {prefix}truth, or {prefix}dare for yourself.\n"
             f"• Use {prefix}tod join to volunteer for {prefix}tod next or being targeted.\n"
             f"• Use {prefix}tod leave whenever you want, no explanation needed.\n"
@@ -251,15 +235,15 @@ class TruthOrDare(commands.Cog):
         enabled = await self.config.guild(ctx.guild).enabled()
         await ctx.send(
             f"Rated-R Truth or Dare is **{'on' if enabled else 'off'}**. "
-            "Prompts always require an age-restricted channel."
+            "No NSFW channel flag is required; follow your server's rules."
         )
 
     @todset.command(name="on")
     @commands.admin_or_permissions(manage_guild=True)
     async def todset_on(self, ctx: commands.Context):
-        """Enable adult Truth or Dare in age-restricted channels."""
+        """Enable Truth or Dare in this server."""
         await self.config.guild(ctx.guild).enabled.set(True)
-        await ctx.send("✅ Rated-R Truth or Dare is enabled for NSFW channels.")
+        await ctx.send("✅ Rated-R Truth or Dare is enabled in this server.")
 
     @todset.command(name="off")
     @commands.admin_or_permissions(manage_guild=True)
