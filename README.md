@@ -35,7 +35,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`ownerlock`](ownerlock/) | `~olock protect Purge` | Selectively restrict cog commands to Red bot owners, with event-listener inspection. |
 | [`rolecontrol`](rolecontrol/) | `~roleme <role>` | Owner-only self-assignment/removal of server roles and a role listing command. |
 | [`imageedit`](imageedit/) | `~img grayscale` | Offline image edits for attachments/replies: crop, resize, rotate, filters, captions, and sticker-sized PNGs. |
-| [`voicetranscribe`](voicetranscribe/) | `~vt on` | Locally transcribe native Discord voice messages into text replies (server opt-in). |
+| [`voicetranscribe`](voicetranscribe/) | `~vt on` / `~vt translate on` | Auto-detect languages, transcribe Discord voice notes and optionally show the original plus English translation; CPU speed/model controls. |
 
 `[p]` means the bot's configured command prefix. Fatboy currently uses `~` (for example, `~coghello`).
 
