@@ -37,11 +37,11 @@ For future changes, use ~cog update truthordare and reload if prompted.
 
 ## Configuration and rules
 
-1. Mark the game text channel **Age-Restricted (NSFW)** in Discord's channel settings. The cog checks this for every challenge (including threads when the parent is age-restricted).
-2. The server's setting defaults to on, but prompts are **always restricted to an age-restricted channel**. Admins can disable the game with ~todset off and turn it back on with ~todset on.
+1. The cog does **not** require Discord's Age-Restricted (NSFW) channel flag. Server moderators decide which channels are appropriate for this 18+ game, and must follow Discord's rules.
+2. The server's setting defaults to on. Admins can disable the game with ~todset off and turn it back on with ~todset on.
 3. Any member can request a truth or dare for **themselves**. Members who want to be randomly selected or tagged by others voluntarily use ~tod join.
 4. Targeting a different member who hasn't opted in is blocked; players can leave any time using ~tod leave.
-5. Allow anyone to pass, and honor Discord's rules and your own community guidelines. **NSFW channel marking alone does not verify a person's age.** Server moderators are responsible for adult-only access controls.
+5. Allow anyone to pass, and honor Discord's rules and your own community guidelines. **Removing the NSFW channel check does not verify a person's age.** Server moderators are responsible for age-appropriate access controls.
 
 ## Implementation notes
 
