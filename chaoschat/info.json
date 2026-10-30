@@ -1,0 +1,31 @@
+{
+  "name": "ChaosChat",
+  "short": "Fatboy blurts unhinged R-rated nonsense, absurd replies, and Slavic-language outbursts.",
+  "description": "Adult-oriented offline surreal chat comedy: original profanity-laced one-liners, deranged questions, playful context-specific answers, optional one-turn follow-ups, randomized Russian/Polish/Ukrainian/Czech/Serbian interjections with adjustable probability, and channel/cooldown controls. No external API or message logs.",
+  "author": [
+    "Will",
+    "North"
+  ],
+  "requirements": [],
+  "tags": [
+    "fun",
+    "chat",
+    "random",
+    "conversation",
+    "chaos",
+    "adult-humor",
+    "multilingual",
+    "slavic"
+  ],
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "type": "COG",
+  "disabled": false,
+  "hidden": false,
+  "end_user_data_statement": "Stores per-server configuration and aggregate reply counts only. User IDs for anti-spam cooldowns and short follow-ups exist in memory and are cleared on cog unload. Message content and user IDs are never persistently saved or sent to third-party services.",
+  "install_msg": "Load with [p]load chaoschat, enable with [p]chaoschat on, and set [p]chaoschat mode feral. Configure Slavic outbursts with [p]chaoschat slavic 25 and [p]chaoschat language random. Adult humour/profanity; only enable it in channels where that is welcome. Message Content Intent is required."
+}
