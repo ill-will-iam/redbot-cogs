@@ -1,0 +1,21 @@
+{
+  "name": "FatboyInfo",
+  "short": "Personalized FATBOY profile, stats, loaded cogs, and reversible ~info override.",
+  "description": "Displays a custom Discord embed with owner, uptime, version, server/member counts, gateway latency, loaded cogs and bot avatar. Replaces Red Core's info command safely, restores it on unload, and provides ~fatboy when another cog owns ~info. Owner-only configuration commands.",
+  "author": [
+    "Will",
+    "North"
+  ],
+  "min_bot_version": "3.5.0",
+  "requirements": [],
+  "tags": [
+    "info",
+    "utility",
+    "status",
+    "profile"
+  ],
+  "type": "COG",
+  "hidden": false,
+  "disabled": false,
+  "end_user_data_statement": "Stores only bot-owner-configured display label, public description, accent color and alias toggle. Does not collect or store Discord end-user data."
+}

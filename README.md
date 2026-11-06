@@ -5,6 +5,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | Cog | Command | Purpose |
 | --- | --- | --- |
 | [`hellocog`](hellocog/) | `~coghello` | Simple installation smoke test. |
+| [`fatboyinfo`](fatboyinfo/) | `~info` / `~fatboy` | Branded bot profile with owner, uptime, version, server count, loaded cogs and customizable embed. |
 | [`acrogame`](acrogame/) | `~acro start` | Acronym game with private submissions, voting, and leaderboard. |
 | [`serveraudit`](serveraudit/) | `~audit` | Read-only audit of server settings, bots, roles and channel permissions. |
 | [`adminlog`](adminlog/) | `~adminlog status` | Logs server, member, message, role, channel and voice changes. |

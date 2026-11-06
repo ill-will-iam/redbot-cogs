@@ -13,6 +13,8 @@ on:
       - "tests/test_readme_catalog.py"
       - "autoresponder/*.py"
       - "ownerlock/*.py"
+      - "fatboyinfo/*.py"
+      - "tests/test_fatboyinfo.py"
       - "bannedwords/*.py"
       - "tests/test_ownerlock.py"
       - "tests/test_autoresponder.py"
@@ -29,6 +31,8 @@ on:
       - "tests/test_readme_catalog.py"
       - "autoresponder/*.py"
       - "ownerlock/*.py"
+      - "fatboyinfo/*.py"
+      - "tests/test_fatboyinfo.py"
       - "bannedwords/*.py"
       - "tests/test_ownerlock.py"
       - "tests/test_autoresponder.py"
@@ -43,10 +47,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Check custom cog Python syntax
-        run: python3 -m compileall -q serveraudit sexiness purge autoresponder bannedwords ownerlock
+        run: python3 -m compileall -q serveraudit sexiness purge autoresponder bannedwords ownerlock fatboyinfo
       - name: Test OwnerLock access policy and listener integrations
         run: python3 -m unittest discover -s tests -p test_ownerlock.py -v
       - name: Test AutoResponder global matching and permissions
         run: python3 -m unittest discover -s tests -p test_autoresponder.py -v
+      - name: Test FatboyInfo profile and Core info restoration
+        run: python3 -m unittest discover -s tests -p test_fatboyinfo.py -v
       - name: Verify all cog packages appear in the README
         run: python3 -m unittest discover -s tests -p test_readme_catalog.py -v
