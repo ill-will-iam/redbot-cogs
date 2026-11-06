@@ -7,37 +7,37 @@ Traditional **two-player cribbage to 121 points**, integrated with the `ribbit` 
 From Discord, as the bot owner:
 
 ```text
-$repo update redbot-cogs
-$cog install redbot-cogs frogcrib
-$load frogcrib
+~repo update redbot-cogs
+~cog install redbot-cogs frogcrib
+~load frogcrib
 ```
 
-To enable Ribbuck rewards, have `ribbit` installed and loaded, with `$ribbit setup` completed. **Do not switch your existing bank from local to global** or load Red's built-in Economy cog to set this up. Card hands are privately DMed; both players must allow bot DMs. The game channel uses prefix commands (`$` shown in examples).
+To enable Ribbuck rewards, have `ribbit` installed and loaded, with `~ribbit setup` completed. **Do not switch your existing bank from local to global** or load Red's built-in Economy cog to set this up. Card hands are privately DMed; both players must allow bot DMs. The game channel uses prefix commands (`$` shown in examples).
 
 ## Commands
 
 | Command | Use |
 | --- | --- |
-| `$crib challenge @member` | Invite a second player; one game per channel, one per player per guild |
-| `$crib accept` / `$crib decline` | Answer invite within 5 minutes |
-| `$crib hand` | Receive a private, numbered copy of your hand |
-| `$crib discard 1 4` | Secretly select 2 of 6 numbered cards for dealer's crib |
-| `$crib play 2` | Play numbered card on your turn (never above 31) |
-| `$crib go` | Declare go **only** when no card fits under 31 |
-| `$crib board` | Scores, dealer, running count, and next turn |
-| `$crib rules` | Cribbage scoring summary |
-| `$crib quit` | Abandon game; neither player earns a result or Ribbucks |
-| `$crib stats [@member]` | Win/loss record and awarded Ribbucks |
-| `$crib top` | Server win leaderboard |
+| `~crib challenge @member` | Invite a second player; one game per channel, one per player per guild |
+| `~crib accept` / `~crib decline` | Answer invite within 5 minutes |
+| `~crib hand` | Receive a private, numbered copy of your hand |
+| `~crib discard 1 4` | Secretly select 2 of 6 numbered cards for dealer's crib |
+| `~crib play 2` | Play numbered card on your turn (never above 31) |
+| `~crib go` | Declare go **only** when no card fits under 31 |
+| `~crib board` | Scores, dealer, running count, and next turn |
+| `~crib rules` | Cribbage scoring summary |
+| `~crib quit` | Abandon game; neither player earns a result or Ribbucks |
+| `~crib stats [@member]` | Win/loss record and awarded Ribbucks |
+| `~crib top` | Server win leaderboard |
 
-`$cribbage` is also a top-level alias for `$crib`. The game shares Ribbit balances without modifying Ribbit's commands or bank configuration.
+`~cribbage` is also a top-level alias for `~crib`. The game shares Ribbit balances without modifying Ribbit's commands or bank configuration.
 
 ### Admin settings
 
-- `$crib config` — view current settings
-- `$crib config rewards 100 25` — winner and other player's match-completion rewards; set both to `0` to disable (maximum 1,000 each; other must be <= winner)
-- `$crib config cap 3` — maximum paid, completed games per player **per UTC day**; 0 disables paid games
-- `$crib config timeout 20` — inactivity timeout in minutes (5–120). Invitations always expire after 5 minutes
+- `~crib config` — view current settings
+- `~crib config rewards 100 25` — winner and other player's match-completion rewards; set both to `0` to disable (maximum 1,000 each; other must be <= winner)
+- `~crib config cap 3` — maximum paid, completed games per player **per UTC day**; 0 disables paid games
+- `~crib config timeout 20` — inactivity timeout in minutes (5–120). Invitations always expire after 5 minutes
 
 **Default:** winner **100 Ribbucks**, other player **25 Ribbucks**, maximum **3 paid games per user per UTC day**. Rewards are granted only for finished 121-point games through `Ribbit.award_for_game()`, which enforces bank limits, local-bank requirement and guild enablement, and writes an audit entry. No payout for quit, declined invitations, aborted games or inactivity. Stored vault balances are untouched. Reaching the bank maximum prevents that player's reward, without affecting their game result.
 
@@ -52,7 +52,7 @@ To enable Ribbuck rewards, have `ribbit` installed and loaded, with `$ribbit set
 
 - Two-player games only, not partnership/team cribbage, manual muggins, or tournaments; scores are automatic.
 - Table state is in RAM. Cog reload, bot restart, or timeout cancels unfinished games without payouts. Stats and daily payout counts are persisted via Red Config.
-- A power loss during the final split bank/config write is not perfectly atomic; use `$ribbit audit` if you need to reconcile a payout. Individual games are not wagerable.
+- A power loss during the final split bank/config write is not perfectly atomic; use `~ribbit audit` if you need to reconcile a payout. Individual games are not wagerable.
 - The bundled automated tests cover scoring and simulated matches. Live Discord/Redbot integration still requires testing on the server.
 
 Rules background: [American Cribbage Congress](https://www.cribbage.org/NewSite/rules/default.asp).

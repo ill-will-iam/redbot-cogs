@@ -8,12 +8,12 @@ props and cheers. No economy rewards, score database, API keys or extra packages
 Create `#daily-drawings` in Discord, then run as the bot owner:
 
 ```text
-$repo update redbot-cogs
-$cog install redbot-cogs dailydrawings
-$load dailydrawings
-$draw channel #daily-drawings
-$draw time 20:00 America/New_York
-$draw status
+~repo update redbot-cogs
+~cog install redbot-cogs dailydrawings
+~load dailydrawings
+~draw channel #daily-drawings
+~draw time 20:00 America/New_York
+~draw status
 ```
 
 The bot needs **View Channel, Send Messages, Embed Links and Read Message
@@ -52,8 +52,8 @@ on the host. Standard Linux timezone packages supply this data.
 
 The image format check establishes that a supported photo attachment was sent;
 it cannot establish whether the art was drawn physically, digitally or with AI.
-This is an honour rule supervised by staff. Use `$draw remove @member` for an
-ineligible entry and `$draw cancel` when a round needs to be stopped. The cog
+This is an honour rule supervised by staff. Use `~draw remove @member` for an
+ineligible entry and `~draw cancel` when a round needs to be stopped. The cog
 does not advertise automated AI detection or anonymous submissions. Original
 posts expose their authors; the gallery uses entry numbers.
 
@@ -62,9 +62,9 @@ posts expose their authors; the gallery uses entry numbers.
 Use 24-hour time:
 
 ```text
-$draw time 19:00
-$draw time 20:00
-$draw time 21:00
+~draw time 19:00
+~draw time 20:00
+~draw time 21:00
 ```
 
 The default timezone is **America/New_York**, meaning Eastern local time with
@@ -72,7 +72,7 @@ daylight-saving changes handled automatically. Thus 20:00 is 8 PM EST in winter
 and 8 PM EDT in summer. Keep that timezone or supply another IANA timezone:
 
 ```text
-$draw time 20:00 America/New_York
+~draw time 20:00 America/New_York
 ```
 
 Changes apply to future rounds. Changing the time does not reset today's
@@ -82,14 +82,14 @@ announcement marker or extend a round already in progress.
 
 | Command | Effect |
 | --- | --- |
-| `$draw` / `$draw status` | Show channel, schedule, active round, intent and permissions. |
-| `$draw channel #daily-drawings` | Set the channel and enable daily announcements. |
-| `$draw time HH:MM [timezone]` | Change the daily time and optionally the timezone. |
-| `$draw start` | Announce today's challenge immediately; uses today's daily slot. |
-| `$draw cancel` | Cancel the current round. Does not schedule a second challenge today. |
-| `$draw off` | Pause the schedule and stop any active round. Set the channel again to resume. |
-| `$draw remove @member` | Remove an entry and votes for it. Original photos remain. |
-| `$help draw` | Show help, creator and version. |
+| `~draw` / `~draw status` | Show channel, schedule, active round, intent and permissions. |
+| `~draw channel #daily-drawings` | Set the channel and enable daily announcements. |
+| `~draw time HH:MM [timezone]` | Change the daily time and optionally the timezone. |
+| `~draw start` | Announce today's challenge immediately; uses today's daily slot. |
+| `~draw cancel` | Cancel the current round. Does not schedule a second challenge today. |
+| `~draw off` | Pause the schedule and stop any active round. Set the channel again to resume. |
+| `~draw remove @member` | Remove an entry and votes for it. Original photos remain. |
+| `~help draw` | Show help, creator and version. |
 
 Configuration, starting, cancellation and entry removal require a Red
 administrator or Manage Server permission. Participants upload photos and click
@@ -160,6 +160,6 @@ check on the running bot.
 Update an installed copy with:
 
 ```text
-$cog update dailydrawings
-$reload dailydrawings
+~cog update dailydrawings
+~reload dailydrawings
 ```

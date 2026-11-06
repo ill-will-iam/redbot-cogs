@@ -137,7 +137,7 @@ class Markov(commands.Cog):
         await self.conf.user(ctx.author).opted_out.set(True)
         await ctx.send("Markov text generation is now disabled for your user.\n"
             "I will stop updating your language models, but they are still stored.\n"
-            "You may want to use `$markov reset` to delete them.\n")
+            "You may want to use `~markov reset` to delete them.\n")
 
     @markov.command()
     async def mode(self, ctx: commands.Context, mode: str):

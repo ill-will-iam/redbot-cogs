@@ -122,7 +122,7 @@ class CribbageGame:
         self.last_player = -1
         self.touch()
         return [f'**Deal {self.round_number}** — <@{self.players[self.dealer]}> has the crib. '
-                'Each player: check your DMs and use `$crib discard <number> <number>`.']
+                'Each player: check your DMs and use `~crib discard <number> <number>`.']
 
     def discard(self, player, first, second):
         if self.phase != 'discard' or player not in (0, 1):
@@ -143,7 +143,7 @@ class CribbageGame:
         self.phase = 'pegging'
         self.turn = 1 - self.dealer
         events = [f'**Starter card:** {display(self.starter)}. '
-                  f'<@{self.players[self.turn]}> pegs first. Play with `$crib play <number>`.']
+                  f'<@{self.players[self.turn]}> pegs first. Play with `~crib play <number>`.']
         if self.starter[0] == 'J':
             events.insert(0, f'**His heels!** Dealer gets 2 points for a starter Jack.')
             self._score(self.dealer, 2, events)
@@ -167,10 +167,10 @@ class CribbageGame:
             raise ValueError('It is not your pegging turn')
         hand = self.hands[player]
         if not 1 <= number <= len(hand):
-            raise ValueError('Invalid card number. Check `$crib hand`.')
+            raise ValueError('Invalid card number. Check `~crib hand`.')
         card = hand[number - 1]
         if self.count + value(card) > 31:
-            raise ValueError('That card would exceed 31. Choose another or use `$crib go`.')
+            raise ValueError('That card would exceed 31. Choose another or use `~crib go`.')
         del hand[number - 1]
         self.segment.append(card)
         self.count += value(card)

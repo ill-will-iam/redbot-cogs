@@ -9,10 +9,10 @@ game channel can guess by typing the answer as an ordinary message.
 As the bot owner, with the repository already added:
 
 ```text
-$repo update redbot-cogs
-$cog install redbot-cogs frogpond
-$load frogpond
-$frog
+~repo update redbot-cogs
+~cog install redbot-cogs frogpond
+~load frogpond
+~frog
 ```
 
 Enable Message Content Intent so the bot can read guesses. The bot needs View
@@ -50,14 +50,14 @@ the individual scores. Earned points are saved immediately per solved puzzle.
 
 | Command | Effect |
 | --- | --- |
-| `$frog` | Start ten puzzles in this channel. |
-| `$frog start [rounds]` | Start 10–20 puzzles; default ten. |
-| `$frog rules` | Explain hints, points and the team goal. |
-| `$frog top` | Show the server's ten highest scorers. |
-| `$frog score` | Show your own points and number of puzzles solved. |
-| `$frog stop` | Stop; permitted for the starter, moderators, members with Manage Server, or bot owner. |
-| `$frog time <seconds>` | Set 10–60 seconds per puzzle for future games; administrator/Manage Server only. |
-| `$help frog` | Show commands, creator and version. |
+| `~frog` | Start ten puzzles in this channel. |
+| `~frog start [rounds]` | Start 10–20 puzzles; default ten. |
+| `~frog rules` | Explain hints, points and the team goal. |
+| `~frog top` | Show the server's ten highest scorers. |
+| `~frog score` | Show your own points and number of puzzles solved. |
+| `~frog stop` | Stop; permitted for the starter, moderators, members with Manage Server, or bot owner. |
+| `~frog time <seconds>` | Set 10–60 seconds per puzzle for future games; administrator/Manage Server only. |
+| `~help frog` | Show commands, creator and version. |
 
 Only one crossing can run per server. Scores and timer settings survive reloads
 and restarts; active crossings do not. Stopping a game preserves points already
@@ -108,8 +108,8 @@ data. Existing Discord messages remain under server administration.
 Update an installed copy with:
 
 ```text
-$cog update frogpond
-$reload frogpond
+~cog update frogpond
+~reload frogpond
 ```
 
 Validation: 32 tests cover gameplay, 10–20-puzzle crossings, two complete deck

@@ -101,7 +101,7 @@ class FrogCrib(commands.Cog):
     async def _get_table(self, ctx):
         table = self.tables.get(self._key(ctx))
         if table is None:
-            await ctx.send('No cribbage table here. Start one with `$crib challenge @member`.')
+            await ctx.send('No cribbage table here. Start one with `~crib challenge @member`.')
             return None
         if ctx.author.id not in table.game.players:
             await ctx.send('You are not playing at this table.')
@@ -122,9 +122,9 @@ class FrogCrib(commands.Cog):
         if game.phase == 'discard':
             instruction = ('Your crib cards are locked. Waiting for your opponent to discard.'
                            if game.kept[player] else
-                           'Choose 2 to place in the crib: `$crib discard 1 4` **in the game channel**.')
+                           'Choose 2 to place in the crib: `~crib discard 1 4` **in the game channel**.')
         elif game.phase == 'pegging':
-            instruction = ('Your turn: `$crib play <number>` in the game channel.'
+            instruction = ('Your turn: `~crib play <number>` in the game channel.'
                            if game.turn == player else 'Your opponent is playing.')
         else:
             instruction = ''
@@ -221,10 +221,10 @@ class FrogCrib(commands.Cog):
     async def crib(self, ctx):
         """Play two-player cribbage for Ribbucks in the Frogonomics pond."""
         await ctx.send('**Frog Cribbage — first to 121!**\n'
-                       '`$crib challenge @member` / `$crib accept` / `$crib decline`\n'
-                       '`$crib hand` (DM), `$crib discard 1 4`, `$crib play 2`, `$crib go`\n'
-                       '`$crib board`, `$crib quit`, `$crib stats [@member]`, `$crib top`\n'
-                       '`$crib rules` | Admin: `$crib config`\n'
+                       '`~crib challenge @member` / `~crib accept` / `~crib decline`\n'
+                       '`~crib hand` (DM), `~crib discard 1 4`, `~crib play 2`, `~crib go`\n'
+                       '`~crib board`, `~crib quit`, `~crib stats [@member]`, `~crib top`\n'
+                       '`~crib rules` | Admin: `~crib config`\n'
                        'No entry fees or betting. Paid games are capped daily.')
 
     @crib.command(name='rules')
@@ -259,8 +259,8 @@ class FrogCrib(commands.Cog):
             self.busy[(ctx.guild.id, ctx.author.id)] = key
             self.busy[(ctx.guild.id, opponent.id)] = key
         await ctx.send(f'<@{opponent.id}>, <@{ctx.author.id}> challenges you to '
-                       '**Frog Cribbage!** Reply `$crib accept` within 5 minutes or '
-                       '`$crib decline`. Enable DMs for private card hands.',
+                       '**Frog Cribbage!** Reply `~crib accept` within 5 minutes or '
+                       '`~crib decline`. Enable DMs for private card hands.',
                        allowed_mentions=discord.AllowedMentions(users=True, roles=False, everyone=False))
 
     @crib.command(name='accept')
@@ -298,7 +298,7 @@ class FrogCrib(commands.Cog):
             return
         async with table.lock:
             if table.game.phase != 'invited':
-                await ctx.send('The game has started. Use `$crib quit` to abandon it.')
+                await ctx.send('The game has started. Use `~crib quit` to abandon it.')
                 return
             async with self._lock:
                 self._remove(table)
@@ -317,7 +317,7 @@ class FrogCrib(commands.Cog):
                 await self._send_hand(table, self._index(table, ctx.author))
                 await ctx.send('Your cards were sent privately.')
             except (discord.Forbidden, discord.HTTPException):
-                await ctx.send('I cannot DM you. Enable server DMs and try `$crib hand` again.')
+                await ctx.send('I cannot DM you. Enable server DMs and try `~crib hand` again.')
 
     @crib.command(name='discard')
     async def discard(self, ctx, first: int, second: int):
@@ -385,8 +385,8 @@ class FrogCrib(commands.Cog):
                        f'Other player: **{data["loss_reward"]} Ribbucks**\n'
                        f'Paid games per player per UTC day: **{data["daily_reward_cap"]}**\n'
                        f'Game inactivity timeout: **{data["turn_timeout"] // 60} minutes**\n'
-                       'Admin: `$crib config rewards <winner> <other>`, '
-                       '`$crib config cap <count>`, `$crib config timeout <minutes>`.')
+                       'Admin: `~crib config rewards <winner> <other>`, '
+                       '`~crib config cap <count>`, `~crib config timeout <minutes>`.')
 
     @config_group.command(name='rewards')
     async def config_rewards(self, ctx, winner: int, other: int):

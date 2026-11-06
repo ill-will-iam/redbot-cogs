@@ -75,9 +75,9 @@ can still post or change permissions.
 ## Installation
 
 ```text
-$repo update redbot-cogs
-$cog install redbot-cogs haven
-$reload haven
+~repo update redbot-cogs
+~cog install redbot-cogs haven
+~reload haven
 ```
 
 ## Access
@@ -86,8 +86,8 @@ The actual Discord guild owner can always operate Haven. For another
 Administrator to run Haven, the guild owner must first authorize the account:
 
 ```text
-$haven authorize @TrustedAdmin
-$haven revoke @TrustedAdmin
+~haven authorize @TrustedAdmin
+~haven revoke @TrustedAdmin
 ```
 
 Authorization applies only while that human member has Administrator.
@@ -95,10 +95,10 @@ Authorization applies only while that human member has Administrator.
 ## Commands
 
 ```text
-$haven inspect
-$haven status
-$haven seal
-$haven restore
+~haven inspect
+~haven status
+~haven seal
+~haven restore
 ```
 
 `seal` and `restore` require a follow-up confirmation with the guild ID.

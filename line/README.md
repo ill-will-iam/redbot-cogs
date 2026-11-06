@@ -1,11 +1,11 @@
 # Line
 
-A simple timed group command for Red-DiscordBot (Fatboy). In a server text channel, the first `$line` starts a **45-second** joining window. Each additional member who types `$line` receives a personalized response. Then joining closes, the bot sends a **3, 2, 1** countdown with one second between messages, and finishes with **🥂 Cheers, enjoy! 🥂**.
+A simple timed group command for Red-DiscordBot (Fatboy). In a server text channel, the first `~line` starts a **45-second** joining window. Each additional member who types `~line` receives a personalized response. Then joining closes, the bot sends a **3, 2, 1** countdown with one second between messages, and finishes with **🥂 Cheers, enjoy! 🥂**.
 
 Example:
 
 ```text
-@LordHelderon is lining up! Join them with `$line` and get lifted.
+@LordHelderon is lining up! Join them with `~line` and get lifted.
 @ʝᥱᥒᥙɩᥒᥱ is lining up a fatty!
 3...
 2...
@@ -18,13 +18,13 @@ Names are shown in bold in Discord. These display-name references are not actual
 ## Install
 
 ```text
-$repo update redbot-cogs
-$cog install redbot-cogs line
-$load line
-$line
+~repo update redbot-cogs
+~cog install redbot-cogs line
+~load line
+~line
 ```
 
-Each channel gets its own independent round. A user may join a round only once. After the 45 seconds, late joiners are informed that the countdown has started; the next `$line` after the cheers starts a fresh round. No admin permissions, API keys, dependencies or configuration required. The bot needs permission to view and send messages in the channel. Unloading or restarting the cog cancels active rounds.
+Each channel gets its own independent round. A user may join a round only once. After the 45 seconds, late joiners are informed that the countdown has started; the next `~line` after the cheers starts a fresh round. No admin permissions, API keys, dependencies or configuration required. The bot needs permission to view and send messages in the channel. Unloading or restarting the cog cancels active rounds.
 
 ## Data handling
 
