@@ -4,20 +4,20 @@ Read-only, on-demand review of a Discord server for Red Discord Bot 3.5+.
 
 ## Commands
 
-- `$audit` — full scan; privately DM Markdown report.
-- `$audit settings` — verification, 2FA, media filtering, AutoMod and invites.
-- `$audit roles` — sensitive role privileges and @everyone permissions.
-- `$audit bots` — detected bots, their roles and effective guild permissions.
-- `$audit channels` — @everyone channel permissions and category synchronization.
-- `$audit export` — full report as Markdown and JSON.
+- `~audit` — full scan; privately DM Markdown report.
+- `~audit settings` — verification, 2FA, media filtering, AutoMod and invites.
+- `~audit roles` — sensitive role privileges and @everyone permissions.
+- `~audit bots` — detected bots, their roles and effective guild permissions.
+- `~audit channels` — @everyone channel permissions and category synchronization.
+- `~audit export` — full report as Markdown and JSON.
 
 ## Install
 
 ```text
-$repo update redbot-cogs
-$cog install redbot-cogs serveraudit
-$load serveraudit
-$audit
+~repo update redbot-cogs
+~cog install redbot-cogs serveraudit
+~load serveraudit
+~audit
 ```
 
 Requires server owner or Manage Server. The command has a 60-second per-guild cooldown. Reports are sent only by DM, not published in server channels.

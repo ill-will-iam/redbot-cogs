@@ -5,7 +5,7 @@
   "name": "Ribbit",
   "short": "The Royal Ribbit Reserve — a frog-themed economy.",
   "description": "Ribbucks, frog-catching, daily and work rewards, shop, collecting, savings, transfers, and admin controls. Uses Red's native bank to share credits with other cogs.",
-  "install_msg": "Run `$load ribbit`, then `$ribbit setup` as a server administrator. Use `$ribbit` to see commands. Unload the stock `economy` cog first to avoid two user-facing economies.",
+  "install_msg": "Run `~load ribbit`, then `~ribbit setup` as a server administrator. Use `~ribbit` to see commands. Unload the stock `economy` cog first to avoid two user-facing economies.",
   "required_cogs": {},
   "requirements": [],
   "tags": [

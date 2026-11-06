@@ -197,7 +197,7 @@ class RuneScapeX(commands.Cog):
             data = await self._stats(player)
             item = next(((n, v) for n,v in data['skills'].items() if n.casefold() == skill.casefold()), None)
             if item is None:
-                raise APIError('Unknown skill; run `$rsx skills <player>` for available skills.')
+                raise APIError('Unknown skill; run `~rsx skills <player>` for available skills.')
             name, stat = item
             emb = self._embed(ctx, f'{player} • {name} (OSRS)', url=self._source(player))
             emb.add_field(name='Level', value=format_number(stat['level']))

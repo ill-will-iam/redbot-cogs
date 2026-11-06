@@ -6,16 +6,16 @@ This cog uses Red's **native bank for wallet balances**, which allows other cogs
 
 ## Installation
 
-Keep your Red installation up-to-date (3.5+). Bot prefix in examples is `$`.
+Keep your Red installation up-to-date (3.5+). Bot prefix in examples is `~`.
 
 ```text
-$unload economy
-$repo update redbot-cogs
-$cog install redbot-cogs ribbit
-$load ribbit
-$bankset showsettings
-$ribbit setup
-$ribbit
+~unload economy
+~repo update redbot-cogs
+~cog install redbot-cogs ribbit
+~load ribbit
+~bankset showsettings
+~ribbit setup
+~ribbit
 ```
 
 **Important:** Setup requires Red's **server-local bank**, not its global bank. The bot owner decides if a mode change is appropriate. Red's global/local switch erases native bank accounts; do not switch after starting gameplay. Setup never resets existing balances. New accounts are set to start at 0 Ribbucks.
@@ -24,33 +24,33 @@ $ribbit
 
 | Command | Effect |
 | --- | --- |
-| `$ribbit catch` | One weighted marsh search every 15 minutes by default; 85% catches, 15% mishaps |
-| `$ribbit rates` | Odds and sell values for catches |
-| `$ribbit bag [@member]` | Inventory (caught creatures and cosmetic collectibles) |
-| `$ribbit sell housefly [qty]` | Sell a specified catch |
-| `$ribbit sell all` | Sell all caught edible creatures |
-| `$ribbit daily` | Daily UTC allowance and consecutive-day bonus |
-| `$ribbit work` | Get a random pond job, hourly by default |
-| `$ribbit balance [@member]` | Wallet, Reserve vault, total |
-| `$ribbit deposit <amount>` | Store wallet Ribbucks in the vault |
-| `$ribbit withdraw <amount>` | Move vault Ribbucks to the wallet |
-| `$ribbit pay @member <amount>` | Transfer wallet Ribbucks |
-| `$ribbit shop` | Market catalogue |
-| `$ribbit buy item_key [qty]` | Buy cosmetic collectible |
-| `$ribbit top` | Guild wealth leaderboard |
+| `~ribbit catch` | One weighted marsh search every 15 minutes by default; 85% catches, 15% mishaps |
+| `~ribbit rates` | Odds and sell values for catches |
+| `~ribbit bag [@member]` | Inventory (caught creatures and cosmetic collectibles) |
+| `~ribbit sell housefly [qty]` | Sell a specified catch |
+| `~ribbit sell all` | Sell all caught edible creatures |
+| `~ribbit daily` | Daily UTC allowance and consecutive-day bonus |
+| `~ribbit work` | Get a random pond job, hourly by default |
+| `~ribbit balance [@member]` | Wallet, Reserve vault, total |
+| `~ribbit deposit <amount>` | Store wallet Ribbucks in the vault |
+| `~ribbit withdraw <amount>` | Move vault Ribbucks to the wallet |
+| `~ribbit pay @member <amount>` | Transfer wallet Ribbucks |
+| `~ribbit shop` | Market catalogue |
+| `~ribbit buy item_key [qty]` | Buy cosmetic collectible |
+| `~ribbit top` | Guild wealth leaderboard |
 
 ## Admin commands
 
 | Command | Effect |
 | --- | --- |
-| `$ribbit setup` | Configure Red's local native bank name/currency and open the Reserve |
-| `$ribbit config` | See reward/cooldown settings |
-| `$ribbit config catch 15` | Set catch cooldown in minutes |
-| `$ribbit config workcooldown 60` | Set work cooldown in minutes |
-| `$ribbit config daily 100` | Set daily base reward |
-| `$ribbit config workreward 20 60` | Set job min and max |
-| `$ribbit grant @member 100` | Give Ribbucks (admin-only, logged) |
-| `$ribbit audit 10` | Show recent transactions managed by this cog |
+| `~ribbit setup` | Configure Red's local native bank name/currency and open the Reserve |
+| `~ribbit config` | See reward/cooldown settings |
+| `~ribbit config catch 15` | Set catch cooldown in minutes |
+| `~ribbit config workcooldown 60` | Set work cooldown in minutes |
+| `~ribbit config daily 100` | Set daily base reward |
+| `~ribbit config workreward 20 60` | Set job min and max |
+| `~ribbit grant @member 100` | Give Ribbucks (admin-only, logged) |
+| `~ribbit audit 10` | Show recent transactions managed by this cog |
 
 The shop items are collectible only: they do not grant Discord roles, special permissions, or extra earnings. There is no interest or gambling in this first release. Each account starts at zero. Default daily reward is 100 plus up to 70 for consecutive days; work is 20–60 every hour.
 
@@ -64,9 +64,9 @@ Positive catches go into inventory and yield credits **only when sold**. The cha
 
 ## Integration with existing cogs
 
-- **AcroGame:** its existing `$acro setcoins <amount>` deposits into Red's native bank, the same Ribbucks wallet.
+- **AcroGame:** its existing `~acro setcoins <amount>` deposits into Red's native bank, the same Ribbucks wallet.
 - **FrogPond / DailyDrawings:** their code currently awards separate points/recognition; no Ribbucks payouts until those cogs are explicitly wired up.
-- **FrogCrib:** standard two-player 121-point cribbage with `$crib challenge @member`. Completed matches pay capped, configurable Ribbuck rewards through `Ribbit.award_for_game`. `$ribbit crib` provides the game entry command; no competing currency.
+- **FrogCrib:** standard two-player 121-point cribbage with `~crib challenge @member`. Completed matches pay capped, configurable Ribbuck rewards through `Ribbit.award_for_game`. `~ribbit crib` provides the game entry command; no competing currency.
 - Other custom cogs may call `await bot.get_cog("Ribbit").award_for_game(member, amount, "game_name")`. This routine enforces the per-server enabled state, shared bank cap, and records the payout. It returns a boolean.
 - The Red stock **Economy** cog should stay unloaded to avoid competing `payday`, `slot` and `bank` interfaces.
 - The new cog registers the `ribbit` group (alias `rrr`), not generic top-level names such as `catch`, `shop`, or `bank`, to minimize command collisions. Short aliases can be made later via Red's Alias cog.

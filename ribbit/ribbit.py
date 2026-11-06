@@ -47,10 +47,10 @@ class Ribbit(commands.Cog):
 
     async def _ready(self, ctx):
         if await bank.is_global():
-            await ctx.send("The Reserve needs a **per-server** Red bank. Ask the bot owner to review `$bankset showsettings` before setup.")
+            await ctx.send("The Reserve needs a **per-server** Red bank. Ask the bot owner to review `~bankset showsettings` before setup.")
             return False
         if not await self.config.guild(ctx.guild).enabled():
-            await ctx.send("The Royal Ribbit Reserve has not opened yet. An admin can run `$ribbit setup`.")
+            await ctx.send("The Royal Ribbit Reserve has not opened yet. An admin can run `~ribbit setup`.")
             return False
         return True
 
@@ -81,14 +81,14 @@ class Ribbit(commands.Cog):
         """Frog economy commands."""
         await ctx.send(
             "**The Royal Ribbit Reserve** | Currency: **Ribbucks**\n"
-            "`$ribbit catch` - search the marsh (15m by default)\n"
-            "`$ribbit bag` / `$ribbit sell <catch|all> [count]`\n"
-            "`$ribbit daily` / `$ribbit work`\n"
-            "`$ribbit balance [@member]` / `$ribbit pay @member <amount>`\n"
-            "`$ribbit deposit <amount>` / `$ribbit withdraw <amount>`\n"
-            "`$ribbit shop` / `$ribbit buy <item> [count]`\n"
-            "`$ribbit top` / `$ribbit rates` / `$ribbit crib`\n"
-            "Admin: `$ribbit setup`, `$ribbit config`, `$ribbit grant`, `$ribbit audit`."
+            "`~ribbit catch` - search the marsh (15m by default)\n"
+            "`~ribbit bag` / `~ribbit sell <catch|all> [count]`\n"
+            "`~ribbit daily` / `~ribbit work`\n"
+            "`~ribbit balance [@member]` / `~ribbit pay @member <amount>`\n"
+            "`~ribbit deposit <amount>` / `~ribbit withdraw <amount>`\n"
+            "`~ribbit shop` / `~ribbit buy <item> [count]`\n"
+            "`~ribbit top` / `~ribbit rates` / `~ribbit crib`\n"
+            "Admin: `~ribbit setup`, `~ribbit config`, `~ribbit grant`, `~ribbit audit`."
         )
 
     @ribbit.command(name="setup")
@@ -103,18 +103,18 @@ class Ribbit(commands.Cog):
             await bank.set_currency_name(CURRENCY, ctx.guild)
             await bank.set_default_balance(0, ctx.guild)
             await self.config.guild(ctx.guild).enabled.set(True)
-        await ctx.send(f"**{BANK_NAME} is OPEN!** All newly created accounts start with **0 {CURRENCY}**. Try `$ribbit catch`.")
+        await ctx.send(f"**{BANK_NAME} is OPEN!** All newly created accounts start with **0 {CURRENCY}**. Try `~ribbit catch`.")
 
     @ribbit.command(name="crib")
     async def crib_shortcut(self, ctx):
         """Find the connected Frog Cribbage table."""
         if self.bot.get_cog("FrogCrib") is None:
-            await ctx.send("Frog Cribbage is not loaded. Install `frogcrib` and run `$load frogcrib`.")
+            await ctx.send("Frog Cribbage is not loaded. Install `frogcrib` and run `~load frogcrib`.")
             return
         await ctx.send(
             "**Frog Cribbage at the Royal Ribbit Reserve\n"
-            "Challenge another player with `$crib challenge @member`. "
-            "Use `$crib` for game commands. Completed games pay Ribbucks "
+            "Challenge another player with `~crib challenge @member`. "
+            "Use `~crib` for game commands. Completed games pay Ribbucks "
             "through the Reserve; no wagers or entry fees."
         )
 
@@ -158,7 +158,7 @@ class Ribbit(commands.Cog):
                 async with conf.inventory() as inventory:
                     inventory[item_id] = int(inventory.get(item_id, 0)) + 1
                 msg = (f"You caught a **{item['name']}**! Added to your bag. "
-                       f"It sells for **{item['value']} Ribbucks**. Use `$ribbit sell {item_id}`.")
+                       f"It sells for **{item['value']} Ribbucks**. Use `~ribbit sell {item_id}`.")
             await conf.last_catch.set(now)
         await ctx.send(msg)
 
@@ -178,7 +178,7 @@ class Ribbit(commands.Cog):
                 lines.append(f"{item['name']} x{quantity} (sell: {item['value']} each)")
             elif key in SHOP:
                 lines.append(f"{SHOP[key]['name']} x{quantity} (collectible)")
-        await ctx.send(f"**{discord.utils.escape_markdown(member.display_name)}'s frog bag**\n" + ("\n".join(lines) if lines else "Your bag is empty. Try `$ribbit catch`."))
+        await ctx.send(f"**{discord.utils.escape_markdown(member.display_name)}'s frog bag**\n" + ("\n".join(lines) if lines else "Your bag is empty. Try `~ribbit catch`."))
 
     @ribbit.command(name="sell")
     async def sell(self, ctx, item: str, quantity: int = 1):
@@ -197,14 +197,14 @@ class Ribbit(commands.Cog):
             elif item in CATCHES and CATCHES[item]["value"] and inv.get(item, 0) >= quantity:
                 sold = {item: quantity}
             else:
-                await ctx.send("You don't have enough of that catch to sell. See `$ribbit bag` and `$ribbit rates`.")
+                await ctx.send("You don't have enough of that catch to sell. See `~ribbit bag` and `~ribbit rates`.")
                 return
             total = sum(CATCHES[k]["value"] * v for k, v in sold.items())
             if not total:
                 await ctx.send("No tasty catches to sell!")
                 return
             if not await self._add(ctx.author, total):
-                await ctx.send("Your wallet is at its bank limit. Store some Ribbucks first with `$ribbit deposit`.")
+                await ctx.send("Your wallet is at its bank limit. Store some Ribbucks first with `~ribbit deposit`.")
                 return
             for k, v in sold.items():
                 inv[k] -= v
@@ -350,7 +350,7 @@ class Ribbit(commands.Cog):
         if not await self._ready(ctx):
             return
         lines = [f"**{v['name']}** (`{k}`) — {v['price']:,} Ribbucks" for k, v in SHOP.items()]
-        await ctx.send("**The Lily Pad Market**\n" + "\n".join(lines) + "\nUse `$ribbit buy item_key`. These items are cosmetic collectibles, not powers.")
+        await ctx.send("**The Lily Pad Market**\n" + "\n".join(lines) + "\nUse `~ribbit buy item_key`. These items are cosmetic collectibles, not powers.")
 
     @ribbit.command(name="buy")
     async def buy(self, ctx, item: str, quantity: int = 1):
@@ -359,7 +359,7 @@ class Ribbit(commands.Cog):
             return
         item = item.lower().replace("-", "_")
         if item not in SHOP or quantity < 1 or quantity > 100:
-            await ctx.send("Unknown collectible or invalid quantity. Check `$ribbit shop`.")
+            await ctx.send("Unknown collectible or invalid quantity. Check `~ribbit shop`.")
             return
         total = SHOP[item]["price"] * quantity
         async with self._lock(ctx.guild):
@@ -412,7 +412,7 @@ class Ribbit(commands.Cog):
             f"Work cooldown: {fmt(settings['work_seconds'])}\n"
             f"Daily base: {settings['daily_base']} Ribbucks\n"
             f"Work reward: {settings['work_min']}–{settings['work_max']} Ribbucks\n"
-            "Change with `$ribbit config catch <minutes>`, `workcooldown <minutes>`, "
+            "Change with `~ribbit config catch <minutes>`, `workcooldown <minutes>`, "
             "`daily <amount>`, or `workreward <minimum> <maximum>`."
         )
 

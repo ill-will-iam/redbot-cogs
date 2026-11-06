@@ -71,7 +71,7 @@ class RedBackup(commands.Cog):
     @commands.is_owner()
     @commands.bot_has_permissions(send_messages=True)
     async def backup(self, ctx):
-        """Create a VPS-local, timestamped recovery point. `$backup`"""
+        """Create a VPS-local, timestamped recovery point. `~backup`"""
         if storage_type().upper() != "JSON":
             await ctx.send("Backup refused: Red is using a non-JSON storage backend. "
                            "Use that database's consistent backup tool first (e.g. pg_dump).")
@@ -148,7 +148,7 @@ class RedBackup(commands.Cog):
     @backup.command(name="create", aliases=["now", "save"])
     @commands.is_owner()
     async def backup_create(self, ctx):
-        """Explicit alias for `$backup`."""
+        """Explicit alias for `~backup`."""
         await ctx.invoke(self.backup)
 
     @backup.command(name="list", aliases=["ls"])
@@ -158,7 +158,7 @@ class RedBackup(commands.Cog):
         directory = await self._location()
         files = list_archives(directory, self._prefix)
         if not files:
-            await ctx.send("No RedBackup archives saved yet. Run `$backup`.")
+            await ctx.send("No RedBackup archives saved yet. Run `~backup`.")
             return
         lines = [f"**Local Red backups** (showing {min(10, len(files))} of {len(files)}):"]
         for file in files[:10]:
@@ -168,7 +168,7 @@ class RedBackup(commands.Cog):
     @backup.command(name="verify")
     @commands.is_owner()
     async def backup_verify(self, ctx, filename: str = "latest"):
-        """Verify latest backup, or a filename from `$backup list`."""
+        """Verify latest backup, or a filename from `~backup list`."""
         directory = await self._location()
         files = list_archives(directory, self._prefix)
         if filename == "latest":
@@ -178,7 +178,7 @@ class RedBackup(commands.Cog):
             path = files[0]
         else:
             if filename != Path(filename).name or not filename.startswith(self._prefix) or not filename.endswith(".zip"):
-                await ctx.send("Invalid archive name. Use the exact filename from `$backup list`.")
+                await ctx.send("Invalid archive name. Use the exact filename from `~backup list`.")
                 return
             path = directory / filename
             if path not in files:
@@ -216,7 +216,7 @@ class RedBackup(commands.Cog):
     @backup.command(name="setpath")
     @commands.is_owner()
     async def backup_setpath(self, ctx, *, directory: str):
-        """Configure an absolute backup directory. `$backup setpath /some/private/path`"""
+        """Configure an absolute backup directory. `~backup setpath /some/private/path`"""
         requested = Path(os.path.expandvars(directory)).expanduser()
         if not requested.is_absolute():
             await ctx.send("Use an absolute Linux path (e.g. `/home/redbot/backups`).")

@@ -33,7 +33,7 @@ class PP(commands.Cog):
             except discord.HTTPException:
                 await ctx.send(
                     "I couldn't retrieve this server's emojis from Discord. "
-                    "Please try $pp again."
+                    "Please try ~pp again."
                 )
                 return
 

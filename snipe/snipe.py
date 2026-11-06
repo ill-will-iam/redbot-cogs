@@ -78,7 +78,7 @@ class _SnipePages(discord.ui.View):
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user.id != self.user_id:
             await interaction.response.send_message(
-                "Only the person who ran $snipe can control these pages.",
+                "Only the person who ran ~snipe can control these pages.",
                 ephemeral=True,
             )
             return False
