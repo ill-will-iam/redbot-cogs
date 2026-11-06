@@ -77,10 +77,16 @@ class FatboyInfo(commands.Cog):
             self._saved_core_info = current
             self.bot.remove_command("info")
 
-        alias = commands.command(name="info", help="Show FATBOY's custom bot profile.")(
-            self._alias_info
-        )
+        # Discord.py treats a class method callback as (self, ctx). Passing
+        # the bound method (which exposes only ctx) raises a signature error
+        # at command creation time. Use a local one-argument function instead.
         try:
+            async def info_callback(ctx):
+                await self._send_profile(ctx)
+
+            alias = commands.command(
+                name="info", help="Show FATBOY's custom bot profile."
+            )(info_callback)
             self.bot.add_command(alias)
         except Exception:
             log.exception("Could not register FATBOY's info alias; restoring Core info.")
@@ -105,10 +111,6 @@ class FatboyInfo(commands.Cog):
 
     def cog_unload(self):
         self._restore_info()
-
-    async def _alias_info(self, ctx):
-        """Show FATBOY's customized information panel."""
-        await self._send_profile(ctx)
 
     @commands.command(name="fatboy", aliases=["fatboyinfo", "fbinfo"])
     async def fatboy(self, ctx):

@@ -1,6 +1,7 @@
 """Offline tests for FATBOY profile formatting and reversible Core info alias."""
 
 import datetime
+import inspect
 import importlib.util
 import sys
 import types
@@ -18,6 +19,13 @@ class FakeCommand:
 
 def command_decorator(*args, **kwargs):
     def make_command(fn):
+        # Match the Discord.py callback signature check that failed on Fatboy.
+        # A class method needs (self, ctx), a module/local function needs (ctx).
+        remaining, _, _ = fn.__qualname__.rpartition(".")
+        is_class_method = remaining != "" and not remaining.endswith("<locals>")
+        minimum_params = 2 if is_class_method else 1
+        if len(inspect.signature(fn).parameters) < minimum_params:
+            raise TypeError("Invalid command callback signature")
         return FakeCommand(fn, kwargs.get("name", fn.__name__))
     return make_command
 
@@ -124,6 +132,11 @@ class FatboyInfoTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(await cog.activate_info_alias())
         self.assertIsNot(bot.get_command("info"), core_info)
         self.assertEqual(bot.get_command("info").name, "info")
+        self.assertFalse(inspect.ismethod(bot.get_command("info").callback))
+        self.assertEqual(
+            list(inspect.signature(bot.get_command("info").callback).parameters),
+            ["ctx"],
+        )
         self.assertTrue(await cog.activate_info_alias())
         cog.cog_unload()
         self.assertIs(bot.get_command("info"), core_info)
