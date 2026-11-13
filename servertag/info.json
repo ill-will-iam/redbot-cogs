@@ -2,7 +2,7 @@
   "author": [
     "Will"
   ],
-  "description": "Assign regular-member and booster rewards based on equipped Discord Server Tags and current server boosts, with full read-only role permission snapshots and permission-change comparisons.",
+  "description": "Assign regular-member and booster rewards based on equipped Discord Server Tags and current server boosts, with full read-only role permission snapshots and permission-change comparisons. Elevated reward roles require per-role server-owner approval which is bound to each role's current permission bits.",
   "short": "Tiered tag and booster roles with permission audit",
   "type": "COG",
   "min_bot_version": "3.5.0",
@@ -19,5 +19,5 @@
     "audit",
     "permissions"
   ],
-  "end_user_data_statement": "Stores per-guild reward role IDs, an optional basic eligibility role ID, enabled state, and an administrator-requested snapshot of role permission bits and channel-level role overwrites. No member-specific data is persisted."
+  "end_user_data_statement": "Stores per-guild reward role IDs, an optional basic eligibility role ID, enabled state, and an administrator-requested snapshot of role permission bits and channel-level role overwrites. No member-specific data is persisted. Explicit owner approvals of elevated reward role IDs and their permission bitsets are also stored."
 }

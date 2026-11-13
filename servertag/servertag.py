@@ -30,7 +30,7 @@ class ServerTag(commands.Cog):
     """Safely manage different tag rewards for basic members and boosters."""
 
     __author__ = "Will"
-    __version__ = "2.0.0"
+    __version__ = "2.1.0"
 
     def __init__(self, bot):
         self.bot = bot
@@ -43,6 +43,7 @@ class ServerTag(commands.Cog):
             boost_role_id=None,
             boost_tag_role_id=None,
             role_snapshot={},
+            privileged_role_approvals={},
         )
         self._member_locks: Dict[Tuple[int, int], asyncio.Lock] = {}
         self._sync_locks: Dict[int, asyncio.Lock] = {}
@@ -66,11 +67,26 @@ class ServerTag(commands.Cog):
     def _dangerous(role: discord.Role) -> bool:
         return any(bool(getattr(role.permissions, key, False)) for key in RESTRICTED_PERMISSIONS)
 
-    def _role_issue(self, guild: discord.Guild, role: discord.Role) -> Optional[str]:
+    def _role_issue(
+        self, guild: discord.Guild, role: discord.Role, approvals=None
+    ) -> Optional[str]:
         if not self._manageable(guild, role):
             return "I need Manage Roles; the reward role must be unmanaged and below my top role."
         if self._dangerous(role):
-            return "That reward role grants moderation or administration privileges. Use a safe reward role."
+            permissions = [
+                name for name in RESTRICTED_PERMISSIONS
+                if getattr(role.permissions, name, False)
+            ]
+            if not isinstance(approvals, dict) or (
+                approvals.get(str(role.id)) != role.permissions.value
+            ):
+                return (
+                    "That reward role grants elevated permissions: "
+                    + ", ".join(permissions)
+                    + ". The server owner must explicitly approve it with "
+                    + "tagrole approve @Role I_ACCEPT_PRIVILEGES, then retry. "
+                    + "Anyone meeting the reward conditions may receive these permissions."
+                )
         return None
 
     @staticmethod
@@ -82,12 +98,14 @@ class ServerTag(commands.Cog):
         }
 
     async def _set_reward(self, ctx, key: str, role: discord.Role, label: str):
-        issue = self._role_issue(ctx.guild, role)
+        settings = await self.config.guild(ctx.guild).all()
+        issue = self._role_issue(
+            ctx.guild, role, settings.get("privileged_role_approvals")
+        )
         if issue:
             return await ctx.send(issue)
         if ctx.author.id != ctx.guild.owner_id and role >= ctx.author.top_role:
             return await ctx.send("You cannot configure a role at or above your highest role.")
-        settings = await self.config.guild(ctx.guild).all()
         used = self._reward_ids(settings)
         if any(existing_key != key and role.id == rid for existing_key, rid in used.items()):
             return await ctx.send("Each reward must use a different role to avoid conflicting assignments.")
@@ -179,7 +197,9 @@ class ServerTag(commands.Cog):
             failures = 0
             for role_id, desired in wanted.items():
                 role = guild.get_role(role_id)
-                if role is None or self._role_issue(guild, role):
+                if role is None or self._role_issue(
+                    guild, role, settings.get("privileged_role_approvals")
+                ):
                     failures += 1
                     continue
                 if (role_id in current_ids) != desired:
@@ -276,6 +296,56 @@ class ServerTag(commands.Cog):
         """Configure tag and boost rewards and audit existing role permissions."""
         await ctx.send_help()
 
+    @tagrole.command(name="approve")
+    async def tagrole_approve(
+        self, ctx: commands.Context, role: discord.Role, confirmation: str = ""
+    ):
+        """Owner-only: approve one elevated reward role's CURRENT permission bits.
+
+        Usage: tagrole approve @Role I_ACCEPT_PRIVILEGES
+        """
+        if ctx.author.id != ctx.guild.owner_id:
+            return await ctx.send("Only the server owner can approve elevated reward roles.")
+        if not self._manageable(ctx.guild, role):
+            return await ctx.send(
+                "That role is managed by Discord, is @everyone, or sits above my top role."
+            )
+        if not self._dangerous(role):
+            return await ctx.send(
+                "That role has no elevated server permissions. Approval is not needed."
+            )
+        flagged = [
+            name for name in RESTRICTED_PERMISSIONS
+            if getattr(role.permissions, name, False)
+        ]
+        if confirmation != "I_ACCEPT_PRIVILEGES":
+            return await ctx.send(
+                f"{role.mention} grants: {', '.join(flagged)}. "
+                "An ordinary member may gain these privileges by equipping "
+                "your server tag (and, for the upgraded role, boosting). "
+                "To allow this exact role and permission set, the server owner must run "
+                f"{ctx.clean_prefix}tagrole approve @Role I_ACCEPT_PRIVILEGES."
+            )
+        async with self.config.guild(ctx.guild).privileged_role_approvals() as approvals:
+            approvals[str(role.id)] = role.permissions.value
+        await ctx.send(
+            f"Approved {role.mention} with its CURRENT elevated permissions: "
+            + ", ".join(flagged)
+            + ". Approval expires if the role's guild permission bits change."
+        )
+
+    @tagrole.command(name="revokeapproval")
+    async def tagrole_revokeapproval(self, ctx: commands.Context, role: discord.Role):
+        """Owner-only: stop authorizing new updates to an elevated reward role."""
+        if ctx.author.id != ctx.guild.owner_id:
+            return await ctx.send("Only the server owner can revoke role approvals.")
+        async with self.config.guild(ctx.guild).privileged_role_approvals() as approvals:
+            approvals.pop(str(role.id), None)
+        await ctx.send(
+            f"Approval removed for {role.mention}. "
+            "Existing reward-role assignments have not been removed."
+        )
+
     @tagrole.command(name="setrole")
     async def tagrole_setrole(self, ctx: commands.Context, role: discord.Role):
         """Set the normal server-tag reward (also used by v1)."""
@@ -329,7 +399,11 @@ class ServerTag(commands.Cog):
             role = ctx.guild.get_role(role_id)
             if not role:
                 return f"Deleted role ({role_id})"
-            return f"{role.mention} ({'safe' if not self._role_issue(ctx.guild, role) else 'NOT SAFE/UNMANAGEABLE'})"
+            issue = self._role_issue(
+                ctx.guild, role, settings.get("privileged_role_approvals")
+            )
+            status = "approved" if self._dangerous(role) and not issue else ("safe" if not issue else "BLOCKED")
+            return f"{role.mention} ({status})"
         audit = settings.get("role_snapshot") or {}
         await ctx.send(
             f"**ServerTag v2** — {'Enabled' if settings['enabled'] else 'Disabled'}\n"
@@ -350,8 +424,10 @@ class ServerTag(commands.Cog):
             return await ctx.send("Configure at least one reward first.")
         for role_id in rewards.values():
             role = ctx.guild.get_role(role_id)
-            if role is None or self._role_issue(ctx.guild, role):
-                return await ctx.send("A configured reward role is missing or unsafe. Check tagrole status.")
+            if role is None or self._role_issue(
+                ctx.guild, role, settings.get("privileged_role_approvals")
+            ):
+                return await ctx.send("A configured reward role is missing or not approved. Check tagrole status.")
         await self.config.guild(ctx.guild).enabled.set(True)
         await ctx.send("Tag and booster reward automation enabled.")
 

@@ -15,15 +15,15 @@ If this is your **first** installation, use `~cog install redbot-cogs servertag`
 ```text
 ~tagrole roles
 ~tagrole snapshot
-~tagrole setbaserole @Member
-~tagrole setrole @Tag Member
-~tagrole setboostrole @Booster Perks
-~tagrole setboosttagrole @Tag Booster
+~tagrole setbaserole @Wisps
+~tagrole setrole @Luminaries
+~tagrole setboosttagrole @Radiants
+~tagrole unsetboostrole
 ~tagrole status
 ~tagrole sync
 ```
 
-**Basic member with tag** → `@Tag Member`; **booster without tag** → `@Booster Perks`; **booster with tag** → `@Booster Perks` + `@Tag Booster` (instead of `@Tag Member`). If a booster loses their boost while still wearing the tag and has the basic membership role, their tag reward is downgraded. Removing/changing the tag revokes only the tag-related reward.
+**With this configuration:** `@Wisps` is the baseline join role, `@Luminaries` is rewarded when a non-booster equips this server's tag, and `@Radiants` is rewarded **only when both the tag and an active server boost are present**. A booster without the tag receives **neither** reward role. On a tag/boost transition, `@Radiants` replaces `@Luminaries` or vice versa. The built-in Discord Server Booster role stays unchanged. `~tagrole unsetboostrole` disables independent booster-only rewards.
 
 If you do not configure `setboosttagrole`, boosters who equip the tag use the regular tag reward. If you do not configure `setbaserole`, all non-boosting members qualify for the normal tag reward.
 
@@ -40,7 +40,9 @@ If you do not configure `setboosttagrole`, boosters who equip the tag use the re
 | `~tagrole setrole @Role` | Regular tag reward (retains v1 config) |
 | `~tagrole setboostrole @Role` | Booster reward, tag not required |
 | `~tagrole setboosttagrole @Role` | Upgraded tag reward for boosters |
-| `~tagrole unsetboostrole` | Stop managing a booster-only reward |
+| `~tagrole unsetboostrole` | Stop managing a booster-only reward (important for tag+boost-only setup) |
+| `~tagrole approve @Role I_ACCEPT_PRIVILEGES` | Server owner explicitly approves one role with elevated guild permissions |
+| `~tagrole revokeapproval @Role` | Server owner revokes an elevated-role approval |
 | `~tagrole unsetboosttagrole` | Stop managing the boosted tag upgrade |
 | `~tagrole check @Member` | Correct one member's reward roles |
 | `~tagrole sync` | Audit all members and correct reward roles |
@@ -52,7 +54,7 @@ If you do not configure `setboosttagrole`, boosters who equip the tag use the re
 
 - `Manage Roles` bot permission and **Server Members Intent** are required.
 - Bot's highest role must sit above all custom reward roles.
-- Reward roles cannot be Discord-managed or grant administrator/management/moderation privileges.
+- Reward roles cannot be Discord-managed. Roles with moderation or administrator privileges are blocked **unless the server owner explicitly approves each role and its exact guild-permissions bitset** using `~tagrole approve @Role I_ACCEPT_PRIVILEGES`. The approval becomes invalid if those permissions change. This is dangerous: any member can potentially equip a server tag, and some may boost to obtain elevated privileges. Prefer removing moderation permissions from reward roles.
 - Every reward role must be distinct from the others and from the basic eligibility role.
 - A saved permission snapshot covers guild-level role permissions and explicit role-based channel overwrites, *not* member-specific overwrites or individual members' effective permissions.
 - Automatic events use `GUILD_MEMBER_UPDATE` for server identity and boost state. Manual `sync` reconciles missed gateway events and existing members.
