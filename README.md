@@ -26,6 +26,7 @@ Custom [Red-DiscordBot](https://docs.discord.red/en/stable/) V3 cogs for Fatboy.
 | [`runescapex`](runescapex/) | `~rsx help` | OSRS-only player hiscores, boss records, gains and GE prices. |
 | [`sanity`](sanity/) | `~sanity` | Random sanity meter and humorous response. |
 | [`sexiness`](sexiness/) | `~sexy` | Random sexiness percentage with a playful quip; optional @member target. |
+| [`servertag`](servertag/) | `~tagrole setrole @Role` | Auto-assigns/removes a reward role when a member equips, changes, or removes this server's tag. |
 | [`autorole`](autorole/) | `~autorole add @Member` | Silent per-server join roles, multiple roles, and screening-aware assignment. |
 | [`birthday`](birthday/) | `~birthday 01/01/2000` | Global birthday profiles, countdowns and per-server daily announcements. |
 | [`truthordare`](truthordare/) | `~tod` / `~truth` / `~dare` | 233 R-rated truth/dare prompts for age-restricted channels, voluntary turn-taking and admin controls. |

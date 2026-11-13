@@ -1,0 +1,21 @@
+{
+  "author": [
+    "Will"
+  ],
+  "description": "Assign a configured role to members who equip this Discord server's Server Tag and revoke it when they switch or remove the tag. Includes a manual server-wide resync.",
+  "short": "Automatic Discord Server Tag roles",
+  "type": "COG",
+  "min_bot_version": "3.5.0",
+  "min_python_version": [
+    3,
+    9,
+    0
+  ],
+  "requirements": [],
+  "tags": [
+    "roles",
+    "server tag",
+    "automation"
+  ],
+  "end_user_data_statement": "This cog stores only a guild's configuration (enabled flag and reward role ID). No member-identifying information is persisted."
+}
