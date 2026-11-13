@@ -5,9 +5,11 @@ ServerTag manages **custom reward roles**, never Discord's managed Server Booste
 ## Install/update on Fatboy
 ```text
 ~repo update redbot-cogs
-~cog install redbot-cogs servertag
+~cog update servertag
 ~reload servertag
 ```
+
+If this is your **first** installation, use `~cog install redbot-cogs servertag` followed by `~load servertag` instead. Updating and installing are different Downloader commands.
 
 ## Recommended configuration
 ```text
