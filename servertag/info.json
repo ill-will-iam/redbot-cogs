@@ -2,8 +2,8 @@
   "author": [
     "Will"
   ],
-  "description": "Assign a configured role to members who equip this Discord server's Server Tag and revoke it when they switch or remove the tag. Includes a manual server-wide resync.",
-  "short": "Automatic Discord Server Tag roles",
+  "description": "Assign regular-member and booster rewards based on equipped Discord Server Tags and current server boosts, with full read-only role permission snapshots and permission-change comparisons.",
+  "short": "Tiered tag and booster roles with permission audit",
   "type": "COG",
   "min_bot_version": "3.5.0",
   "min_python_version": [
@@ -15,7 +15,9 @@
   "tags": [
     "roles",
     "server tag",
-    "automation"
+    "boosts",
+    "audit",
+    "permissions"
   ],
-  "end_user_data_statement": "This cog stores only a guild's configuration (enabled flag and reward role ID). No member-identifying information is persisted."
+  "end_user_data_statement": "Stores per-guild reward role IDs, an optional basic eligibility role ID, enabled state, and an administrator-requested snapshot of role permission bits and channel-level role overwrites. No member-specific data is persisted."
 }
