@@ -30,7 +30,7 @@ class ServerTag(commands.Cog):
     """Safely manage different tag rewards for basic members and boosters."""
 
     __author__ = "Will"
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     def __init__(self, bot):
         self.bot = bot
@@ -59,7 +59,13 @@ class ServerTag(commands.Cog):
         return guild is not None and guild.id == await self.config.server_id()
 
     async def cog_check(self, ctx: commands.Context) -> bool:
-        if ctx.command is self.tagrole_bind or await self._in_bound_server(ctx.guild):
+        # Red checks the group before dispatching a subcommand, including bind.
+        if ctx.command is self.tagrole or ctx.command is self.tagrole_bind:
+            return True
+        return await self._check_bound_context(ctx)
+
+    async def _check_bound_context(self, ctx: commands.Context) -> bool:
+        if await self._in_bound_server(ctx.guild):
             return True
         if await self.bot.is_owner(ctx.author):
             await ctx.send(
@@ -338,7 +344,8 @@ class ServerTag(commands.Cog):
     @commands.admin_or_permissions(manage_guild=True)
     async def tagrole(self, ctx: commands.Context):
         """Configure tag and boost rewards and audit existing role permissions."""
-        await ctx.send_help()
+        if await self._check_bound_context(ctx):
+            await ctx.send_help()
 
     @tagrole.command(name="bind")
     @commands.guild_only()
