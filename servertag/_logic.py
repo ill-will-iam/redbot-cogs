@@ -43,16 +43,31 @@ def wanted_roles(
     tag_role_id: Optional[int],
     boost_tag_role_id: Optional[int],
     boost_role_id: Optional[int],
+    *,
+    boost_requires_no_tag: bool = False,
 ) -> Dict[int, bool]:
     """Map each configured reward role ID to whether it should be present.
 
     Unavailable tag/boost state is not interpreted as a negative observation.
-    Boost-tag replaces basic-tag if configured; booster reward is independent.
+    Boost-tag replaces basic-tag if configured.
     """
     wanted: Dict[int, bool] = {}
-    if boost_role_id is not None and boosting is not None:
-        wanted[boost_role_id] = boosting
-    if tag is not None:
+    if boost_role_id is not None:
+        if boost_requires_no_tag:
+            if boosting is False or tag is True:
+                wanted[boost_role_id] = False
+            elif boosting is True and tag is False:
+                wanted[boost_role_id] = True
+        elif boosting is not None:
+            wanted[boost_role_id] = boosting
+
+    if tag is False:
+        for role_id in (tag_role_id, boost_tag_role_id):
+            if role_id is not None:
+                wanted[role_id] = False
+    elif tag is None and boosting is False and boost_tag_role_id is not None:
+        wanted[boost_tag_role_id] = False
+    elif tag is True:
         if boost_tag_role_id is not None:
             if boosting is not None:
                 wanted[boost_tag_role_id] = bool(tag and boosting)

@@ -30,27 +30,42 @@ class ServerTag(commands.Cog):
     """Safely manage different tag rewards for basic members and boosters."""
 
     __author__ = "Will"
-    __version__ = "2.1.0"
+    __version__ = "2.2.0"
 
     def __init__(self, bot):
         self.bot = bot
         # Reuse v1's identifier and role_id key so existing tag roles survive upgrades.
         self.config = Config.get_conf(self, identifier=78721092413512, force_registration=True)
+        self.config.register_global(server_id=None)
         self.config.register_guild(
             enabled=False,
             role_id=None,
             basic_role_id=None,
             boost_role_id=None,
+            boost_requires_no_tag=False,
             boost_tag_role_id=None,
             role_snapshot={},
             privileged_role_approvals={},
         )
         self._member_locks: Dict[Tuple[int, int], asyncio.Lock] = {}
         self._sync_locks: Dict[int, asyncio.Lock] = {}
+        self._binding_lock = asyncio.Lock()
 
     async def red_delete_data_for_user(self, *, requester, user_id):
         """No per-user data is stored by this cog."""
         return
+
+    async def _in_bound_server(self, guild: Optional[discord.Guild]) -> bool:
+        return guild is not None and guild.id == await self.config.server_id()
+
+    async def cog_check(self, ctx: commands.Context) -> bool:
+        if ctx.command is self.tagrole_bind or await self._in_bound_server(ctx.guild):
+            return True
+        if await self.bot.is_owner(ctx.author):
+            await ctx.send(
+                f"Run `{ctx.clean_prefix}tagrole bind` in the server you want to use."
+            )
+        return False
 
     @staticmethod
     def _manageable(guild: discord.Guild, role: discord.Role) -> bool:
@@ -97,23 +112,29 @@ class ServerTag(commands.Cog):
             if settings.get(key) is not None
         }
 
-    async def _set_reward(self, ctx, key: str, role: discord.Role, label: str):
-        settings = await self.config.guild(ctx.guild).all()
-        issue = self._role_issue(
-            ctx.guild, role, settings.get("privileged_role_approvals")
-        )
-        if issue:
-            return await ctx.send(issue)
-        if ctx.author.id != ctx.guild.owner_id and role >= ctx.author.top_role:
-            return await ctx.send("You cannot configure a role at or above your highest role.")
-        used = self._reward_ids(settings)
-        if any(existing_key != key and role.id == rid for existing_key, rid in used.items()):
-            return await ctx.send("Each reward must use a different role to avoid conflicting assignments.")
-        if role.id == settings.get("basic_role_id"):
-            return await ctx.send("The reward cannot also be the basic eligibility role.")
-        old = settings.get(key)
-        await self.config.guild(ctx.guild).set_raw(key, value=role.id)
-        await self.config.guild(ctx.guild).enabled.set(True)
+    async def _set_reward(
+        self, ctx, key: str, role: discord.Role, label: str, *,
+        boost_requires_no_tag: bool = False,
+    ):
+        guild_config = self.config.guild(ctx.guild)
+        async with guild_config.all() as settings:
+            issue = self._role_issue(
+                ctx.guild, role, settings.get("privileged_role_approvals")
+            )
+            if issue:
+                return await ctx.send(issue)
+            if ctx.author.id != ctx.guild.owner_id and role >= ctx.author.top_role:
+                return await ctx.send("You cannot configure a role at or above your highest role.")
+            used = self._reward_ids(settings)
+            if any(existing_key != key and role.id == rid for existing_key, rid in used.items()):
+                return await ctx.send("Each reward must use a different role.")
+            if role.id == settings.get("basic_role_id"):
+                return await ctx.send("The reward cannot also be the basic eligibility role.")
+            old = settings.get(key)
+            settings[key] = role.id
+            settings["enabled"] = True
+            if key == "boost_role_id":
+                settings["boost_requires_no_tag"] = boost_requires_no_tag
         message = (
             f"{label} reward set to {role.mention}. Automation enabled. "
             f"Run {ctx.clean_prefix}tagrole sync to update everyone."
@@ -149,8 +170,8 @@ class ServerTag(commands.Cog):
         }
 
     async def _reconcile_record(self, guild: discord.Guild, raw: dict):
-        """Reconcile only configured custom rewards using the latest observed state."""
-        if not await self.config.guild(guild).enabled():
+        """Reconcile the configured custom rewards for one member."""
+        if not await self._in_bound_server(guild):
             return "disabled"
         if await self.bot.cog_disabled_in_guild(self, guild):
             return "disabled"
@@ -166,6 +187,8 @@ class ServerTag(commands.Cog):
 
         settings = await self.config.guild(guild).all()
         configured = self._reward_ids(settings)
+        if not settings["enabled"]:
+            return "disabled"
         if not configured:
             return "unavailable"
 
@@ -175,6 +198,8 @@ class ServerTag(commands.Cog):
         )
         premium_role = guild.premium_subscriber_role
         boosting = booster_state(raw, premium_role.id if premium_role else None)
+        if boosting is None and premium_role is None:
+            boosting = False
         basic_id = settings.get("basic_role_id")
         has_basic = basic_id is None or basic_id == guild.id or basic_id in current_ids
 
@@ -185,28 +210,18 @@ class ServerTag(commands.Cog):
             settings.get("role_id"),
             settings.get("boost_tag_role_id"),
             settings.get("boost_role_id"),
+            boost_requires_no_tag=settings["boost_requires_no_tag"],
         )
         if not wanted:
             return "unknown"
 
         lock = self._member_locks.setdefault((guild.id, user_id), asyncio.Lock())
+        queued = lock.locked()
         async with lock:
-            # Fetch a fresh role list only if an update is needed. Avoid stale
-            # member caches, especially for members fetched during bulk sync.
-            changes = []
-            failures = 0
-            for role_id, desired in wanted.items():
-                role = guild.get_role(role_id)
-                if role is None or self._role_issue(
-                    guild, role, settings.get("privileged_role_approvals")
-                ):
-                    failures += 1
-                    continue
-                if (role_id in current_ids) != desired:
-                    changes.append((role, desired))
-
-            if not changes:
-                return "unavailable" if failures else "unchanged"
+            if not queued and all(
+                (role_id in current_ids) == desired for role_id, desired in wanted.items()
+            ):
+                return "unchanged"
 
             try:
                 member = await guild.fetch_member(user_id)
@@ -216,29 +231,47 @@ class ServerTag(commands.Cog):
                 log.exception("Could not fetch member %s in guild %s", user_id, guild.id)
                 return "failed"
 
+            current_ids = {role.id for role in member.roles}
             applied = []
-            for role, desired in changes:
-                # Re-evaluate actual role possession after fetching the member.
-                has = role in member.roles
-                if has == desired:
-                    continue
-                try:
-                    if desired:
-                        await member.add_roles(role, reason="ServerTag: tag/boost reward granted")
-                        applied.append("added")
-                    else:
-                        await member.remove_roles(role, reason="ServerTag: tag/boost reward revoked")
-                        applied.append("removed")
-                except (discord.Forbidden, discord.HTTPException):
-                    log.exception("Failed to manage role %s for user %s", role.id, user_id)
-                    failures += 1
+            failures = 0
+            async with self._binding_lock:
+                if not await self._in_bound_server(guild):
+                    return "disabled"
+                # Revoke the outgoing tier before granting the incoming one.
+                for role_id, desired in sorted(wanted.items(), key=lambda item: item[1]):
+                    if (role_id in current_ids) == desired:
+                        continue
+                    role = guild.get_role(role_id)
+                    if role is None or not self._manageable(guild, role):
+                        failures += 1
+                        continue
+                    if desired and (
+                        (settings["boost_requires_no_tag"] and failures)
+                        or self._role_issue(guild, role, settings["privileged_role_approvals"])
+                    ):
+                        failures += 1
+                        continue
+                    try:
+                        if desired:
+                            await member.add_roles(role, reason="ServerTag reward granted")
+                            applied.append("added")
+                        else:
+                            await member.remove_roles(role, reason="ServerTag reward revoked")
+                            applied.append("removed")
+                    except discord.HTTPException:
+                        log.exception("Failed to manage role %s for user %s", role_id, user_id)
+                        failures += 1
             if failures:
                 return "failed"
             if not applied:
                 return "unchanged"
-            return "updated" if len(applied) > 1 or len(set(applied)) > 1 else applied[0]
+            return "updated" if len(applied) > 1 else applied[0]
 
-    async def _refresh(self, guild, user_id):
+    async def _refresh(self, guild, user_id, *, primary_guild=...):
+        if not await self._in_bound_server(guild):
+            return "disabled"
+        if not await self.config.guild(guild).enabled():
+            return "disabled"
         try:
             payload = await self.bot.http.get_member(guild.id, user_id)
         except discord.NotFound:
@@ -246,25 +279,29 @@ class ServerTag(commands.Cog):
         except (discord.Forbidden, discord.HTTPException):
             log.exception("Could not retrieve member %s for tag/boost check", user_id)
             return "failed"
+        if primary_guild is not ...:
+            payload["user"].setdefault("primary_guild", primary_guild)
         return await self._reconcile_record(guild, payload)
 
     @commands.Cog.listener()
-    async def on_socket_response(self, event):
-        if not isinstance(event, dict) or event.get("t") != "GUILD_MEMBER_UPDATE":
+    async def on_user_update(self, before: discord.User, after: discord.User):
+        """Respond to changes in the server tag displayed on a user's profile."""
+        if after.bot or not hasattr(after, "primary_guild"):
             return
-        payload = event.get("d")
-        if not isinstance(payload, dict):
+        server_id = await self.config.server_id()
+        if server_id is None:
             return
-        try:
-            guild_id = int(payload["guild_id"])
-        except (ValueError, TypeError, KeyError):
+        old, new = before.primary_guild, after.primary_guild
+        wore_tag = old.identity_enabled is True and old.id == server_id
+        wears_tag = new.identity_enabled is True and new.id == server_id
+        if wore_tag == wears_tag:
             return
-        guild = self.bot.get_guild(guild_id)
-        if guild is None:
-            return
-        # The Gateway event carries user.primary_guild and premium_since.
-        # Missing tag data is never treated as tag removal.
-        await self._reconcile_record(guild, payload)
+        guild = self.bot.get_guild(server_id)
+        if guild is not None and guild.get_member(after.id) is not None:
+            await self._refresh(
+                guild, after.id,
+                primary_guild={"identity_guild_id": new.id, "identity_enabled": new.identity_enabled},
+            )
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
@@ -272,7 +309,9 @@ class ServerTag(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
-        """A second route for booster / basic eligibility changes."""
+        """Respond to changes in boost status and the basic membership role."""
+        if after.bot or not await self._in_bound_server(after.guild):
+            return
         settings = await self.config.guild(after.guild).all()
         if not settings.get("enabled"):
             return
@@ -286,7 +325,12 @@ class ServerTag(commands.Cog):
             basic_id is not None
             and ((basic_id in {r.id for r in before.roles}) != (basic_id in {r.id for r in after.roles}))
         )
-        if before.premium_since != after.premium_since or boost_role_changed or basic_changed:
+        if (
+            before.premium_since != after.premium_since
+            or boost_role_changed
+            or basic_changed
+            or not hasattr(after, "primary_guild")
+        ):
             await self._refresh(after.guild, after.id)
 
     @commands.group(name="tagrole", aliases=["servertag"], invoke_without_command=True)
@@ -295,6 +339,19 @@ class ServerTag(commands.Cog):
     async def tagrole(self, ctx: commands.Context):
         """Configure tag and boost rewards and audit existing role permissions."""
         await ctx.send_help()
+
+    @tagrole.command(name="bind")
+    @commands.guild_only()
+    @commands.is_owner()
+    async def tagrole_bind(self, ctx: commands.Context):
+        """Choose the one server where ServerTag can manage rewards."""
+        async with self._binding_lock:
+            previous = await self.config.server_id()
+            await self.config.server_id.set(ctx.guild.id)
+        message = f"ServerTag is bound to {ctx.guild.name}."
+        if previous is not None and previous != ctx.guild.id:
+            message += " Previously assigned rewards in the former server can be removed there manually."
+        await ctx.send(message, allowed_mentions=discord.AllowedMentions.none())
 
     @tagrole.command(name="approve")
     async def tagrole_approve(
@@ -356,6 +413,13 @@ class ServerTag(commands.Cog):
         """Set a custom role awarded while boosting, whether tagged or not."""
         await self._set_reward(ctx, "boost_role_id", role, "Booster")
 
+    @tagrole.command(name="setboostonlyrole")
+    async def tagrole_setboostonlyrole(self, ctx: commands.Context, role: discord.Role):
+        """Reward active boosters whose profiles display no tag from this server."""
+        await self._set_reward(
+            ctx, "boost_role_id", role, "Boost-only", boost_requires_no_tag=True
+        )
+
     @tagrole.command(name="setboosttagrole")
     async def tagrole_setboosttagrole(self, ctx: commands.Context, role: discord.Role):
         """Set upgraded tag reward while boosting; replaces basic tag reward."""
@@ -378,9 +442,11 @@ class ServerTag(commands.Cog):
 
     @tagrole.command(name="unsetboostrole")
     async def tagrole_unsetboostrole(self, ctx: commands.Context):
-        """Disable booster-only reward without removing already-assigned old roles."""
-        await self.config.guild(ctx.guild).boost_role_id.set(None)
-        await ctx.send("Booster-only reward unset. Existing assignments remain until manually cleaned.")
+        """Stop managing the configured booster reward."""
+        async with self.config.guild(ctx.guild).all() as settings:
+            settings["boost_role_id"] = None
+            settings["boost_requires_no_tag"] = False
+        await ctx.send("Booster reward unset. Remove any old assignments manually.")
 
     @tagrole.command(name="unsetboosttagrole")
     async def tagrole_unsetboosttagrole(self, ctx: commands.Context):
@@ -405,11 +471,15 @@ class ServerTag(commands.Cog):
             status = "approved" if self._dangerous(role) and not issue else ("safe" if not issue else "BLOCKED")
             return f"{role.mention} ({status})"
         audit = settings.get("role_snapshot") or {}
+        boost_label = (
+            "Boost-only reward" if settings["boost_requires_no_tag"] else "Booster reward (any tag)"
+        )
         await ctx.send(
-            f"**ServerTag v2** — {'Enabled' if settings['enabled'] else 'Disabled'}\n"
+            f"**ServerTag {self.__version__}** — {'Enabled' if settings['enabled'] else 'Disabled'}\n"
+            f"Bound server: {ctx.guild.name} ({ctx.guild.id})\n"
             f"Basic eligibility: {fmt('basic_role_id') if settings.get('basic_role_id') else 'All members'}\n"
             f"Basic tag reward: {fmt('role_id')}\n"
-            f"Booster reward (tag not required): {fmt('boost_role_id')}\n"
+            f"{boost_label}: {fmt('boost_role_id')}\n"
             f"Booster + tag upgrade: {fmt('boost_tag_role_id')}\n"
             f"Role snapshot: {audit.get('captured_at', 'Not taken')}\n"
             "Built-in Discord boost role is never modified."
@@ -440,10 +510,11 @@ class ServerTag(commands.Cog):
     @tagrole.command(name="clear")
     async def tagrole_clear(self, ctx: commands.Context):
         """Clear automation rules but retain saved permissions snapshot."""
-        g = self.config.guild(ctx.guild)
-        await g.enabled.set(False)
-        for key in ("role_id", "boost_role_id", "boost_tag_role_id", "basic_role_id"):
-            await g.set_raw(key, value=None)
+        async with self.config.guild(ctx.guild).all() as settings:
+            settings.update(
+                enabled=False, role_id=None, boost_role_id=None,
+                boost_tag_role_id=None, basic_role_id=None, boost_requires_no_tag=False,
+            )
         await ctx.send("Reward configuration cleared. Current roles and permission snapshot remain intact.")
 
     @tagrole.command(name="roles")
@@ -523,7 +594,7 @@ class ServerTag(commands.Cog):
         async with lock:
             try:
                 after = None
-                while True:
+                while await self._in_bound_server(ctx.guild):
                     batch = await self.bot.http.get_members(ctx.guild.id, 1000, after)
                     if not batch:
                         break

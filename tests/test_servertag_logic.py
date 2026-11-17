@@ -27,6 +27,38 @@ class ServerTagRuleTests(unittest.TestCase):
             {30: True, 20: False, 10: False},
         )
 
+    def test_exclusive_booster_tiers(self):
+        cases = (
+            (False, False, {30: False, 20: False, 10: False}),
+            (True, False, {30: False, 20: False, 10: True}),
+            (False, True, {30: True, 20: False, 10: False}),
+            (True, True, {30: False, 20: True, 10: False}),
+        )
+        for tag, boosting, expected in cases:
+            with self.subTest(tag=tag, boosting=boosting):
+                self.assertEqual(
+                    logic.wanted_roles(
+                        tag, boosting, True, 10, 20, 30, boost_requires_no_tag=True
+                    ),
+                    expected,
+                )
+
+    def test_exclusive_booster_with_missing_data(self):
+        cases = (
+            (None, True, {}),
+            (False, None, {20: False, 10: False}),
+            (None, False, {30: False, 20: False}),
+            (True, None, {30: False}),
+        )
+        for tag, boosting, expected in cases:
+            with self.subTest(tag=tag, boosting=boosting):
+                self.assertEqual(
+                    logic.wanted_roles(
+                        tag, boosting, True, 10, 20, 30, boost_requires_no_tag=True
+                    ),
+                    expected,
+                )
+
     def test_no_basic_role(self):
         self.assertEqual(
             logic.wanted_roles(True, False, False, 10, 20, 30),
